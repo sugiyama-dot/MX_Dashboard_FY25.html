@@ -3,1052 +3,1088 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MX Group — FY25 Sales Dashboard</title>
+<title>MX Group — FY25 Business Intelligence Dashboard</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0c10;
-    --surface: #111318;
-    --surface2: #181c24;
-    --border: rgba(255,255,255,0.07);
-    --accent: #4f9cf9;
-    --accent2: #a78bfa;
-    --accent3: #34d399;
-    --accent4: #fb923c;
-    --accent-ent: #f472b6;
-    --accent-smb: #60a5fa;
-    --text: #e2e8f0;
-    --text-sub: #7c8799;
-    --text-dim: #3d4554;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Noto Sans JP', sans-serif;
-    min-height: 100vh;
-    line-height: 1.6;
-  }
+:root {
+  --bg: #07090f;
+  --s1: #0e1118;
+  --s2: #141820;
+  --s3: #1c2130;
+  --border: rgba(255,255,255,0.06);
+  --border2: rgba(255,255,255,0.12);
+  --c-blue: #3b82f6;
+  --c-indigo: #6366f1;
+  --c-purple: #a855f7;
+  --c-pink: #ec4899;
+  --c-red: #ef4444;
+  --c-orange: #f97316;
+  --c-amber: #f59e0b;
+  --c-yellow: #eab308;
+  --c-lime: #84cc16;
+  --c-green: #22c55e;
+  --c-teal: #14b8a6;
+  --c-cyan: #06b6d4;
+  --c-ent: #f472b6;
+  --c-smb: #38bdf8;
+  --text: #e2e8f0;
+  --text2: #94a3b8;
+  --text3: #475569;
+  --text4: #1e293b;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Noto Sans JP', sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100vh; font-size: 13px; }
 
-  /* ── Header ── */
-  header {
-    background: linear-gradient(135deg, #0d111a 0%, #101620 100%);
-    border-bottom: 1px solid var(--border);
-    padding: 0 32px;
-    display: flex; align-items: center; justify-content: space-between;
-    height: 64px;
-    position: sticky; top: 0; z-index: 100;
-    backdrop-filter: blur(12px);
-  }
-  .logo {
-    display: flex; align-items: center; gap: 12px;
-  }
-  .logo-badge {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: #fff; font-weight: 700; font-size: 12px;
-    padding: 4px 10px; border-radius: 6px; letter-spacing: 1px;
-    font-family: 'DM Mono', monospace;
-  }
-  .logo-title {
-    font-size: 15px; font-weight: 700; color: var(--text);
-    letter-spacing: 0.5px;
-  }
-  .header-right {
-    display: flex; align-items: center; gap: 16px;
-  }
-  .header-fy {
-    font-family: 'DM Mono', monospace;
-    font-size: 13px; color: var(--accent);
-    background: rgba(79,156,249,0.1);
-    padding: 4px 12px; border-radius: 20px;
-    border: 1px solid rgba(79,156,249,0.2);
-  }
+/* ─── Header ─── */
+header {
+  background: linear-gradient(180deg, #0a0d17 0%, #0e1118 100%);
+  border-bottom: 1px solid var(--border);
+  height: 56px; display: flex; align-items: center;
+  padding: 0 28px; gap: 16px;
+  position: sticky; top: 0; z-index: 200;
+}
+.hd-badge { background: linear-gradient(135deg,#3b82f6,#8b5cf6); color:#fff; font-family:var(--mono); font-size:11px; font-weight:600; padding:3px 9px; border-radius:5px; letter-spacing:1.5px; }
+.hd-title { font-size:14px; font-weight:700; color:var(--text); }
+.hd-sep { width:1px; height:20px; background:var(--border2); }
+.hd-fy { font-family:var(--mono); font-size:12px; color:var(--c-blue); background:rgba(59,130,246,.1); padding:3px 10px; border-radius:20px; border:1px solid rgba(59,130,246,.2); }
+.hd-right { margin-left:auto; display:flex; align-items:center; gap:12px; }
+.hd-seg-legend { display:flex; align-items:center; gap:8px; font-size:11px; color:var(--text2); }
+.hd-dot { width:7px; height:7px; border-radius:50%; flex:none; }
 
-  /* ── Nav Tabs ── */
-  .tab-nav {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 0 32px;
-    display: flex; gap: 0;
-  }
-  .tab-btn {
-    background: none; border: none; cursor: pointer;
-    color: var(--text-sub); font-size: 13px; font-weight: 500;
-    font-family: 'Noto Sans JP', sans-serif;
-    padding: 14px 20px;
-    border-bottom: 2px solid transparent;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-  .tab-btn:hover { color: var(--text); }
-  .tab-btn.active {
-    color: var(--accent);
-    border-bottom-color: var(--accent);
-  }
+/* ─── Nav ─── */
+nav {
+  background: var(--s1);
+  border-bottom: 1px solid var(--border);
+  display: flex; padding: 0 28px;
+  overflow-x: auto;
+}
+nav::-webkit-scrollbar { display:none; }
+.tab { background:none; border:none; cursor:pointer; font-family:var(--sans); font-size:12px; font-weight:500; color:var(--text3); padding:12px 16px; border-bottom:2px solid transparent; white-space:nowrap; transition:all .2s; }
+.tab:hover { color:var(--text2); }
+.tab.active { color:var(--c-blue); border-bottom-color:var(--c-blue); }
 
-  /* ── Main Layout ── */
-  main {
-    padding: 28px 32px;
-    max-width: 1600px;
-    margin: 0 auto;
-  }
-  .page { display: none; }
-  .page.active { display: block; }
+/* ─── Main ─── */
+main { padding:24px 28px; max-width:1680px; margin:0 auto; }
+.page { display:none; }
+.page.on { display:block; }
 
-  /* ── KPI Cards ── */
-  .kpi-row {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 16px;
-    margin-bottom: 24px;
-  }
-  .kpi-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 20px 22px;
-    position: relative; overflow: hidden;
-    transition: border-color 0.2s;
-  }
-  .kpi-card:hover { border-color: rgba(255,255,255,0.15); }
-  .kpi-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  }
-  .kpi-card.blue::before { background: linear-gradient(90deg, var(--accent), transparent); }
-  .kpi-card.purple::before { background: linear-gradient(90deg, var(--accent2), transparent); }
-  .kpi-card.green::before { background: linear-gradient(90deg, var(--accent3), transparent); }
-  .kpi-card.orange::before { background: linear-gradient(90deg, var(--accent4), transparent); }
-  .kpi-card.pink::before { background: linear-gradient(90deg, var(--accent-ent), transparent); }
-  .kpi-label {
-    font-size: 11px; color: var(--text-sub); font-weight: 500;
-    letter-spacing: 0.5px; margin-bottom: 8px;
-    text-transform: uppercase;
-  }
-  .kpi-value {
-    font-family: 'DM Mono', monospace;
-    font-size: 22px; font-weight: 500;
-    color: var(--text); line-height: 1.2;
-  }
-  .kpi-sub {
-    font-size: 11px; color: var(--text-sub); margin-top: 4px;
-  }
+/* ─── KPI Row ─── */
+.kpi-grid { display:grid; grid-template-columns:repeat(6,1fr); gap:12px; margin-bottom:20px; }
+.kpi { background:var(--s1); border:1px solid var(--border); border-radius:10px; padding:16px 18px; position:relative; overflow:hidden; cursor:default; transition:border-color .2s; }
+.kpi:hover { border-color:var(--border2); }
+.kpi::after { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--stripe); }
+.kpi-label { font-size:10px; font-weight:600; color:var(--text3); letter-spacing:.8px; text-transform:uppercase; margin-bottom:8px; }
+.kpi-val { font-family:var(--mono); font-size:20px; font-weight:600; color:var(--text); line-height:1.1; }
+.kpi-sub { font-size:10px; color:var(--text3); margin-top:5px; }
+.kpi-trend { font-family:var(--mono); font-size:10px; margin-top:4px; }
+.up { color:#22c55e; } .dn { color:#ef4444; }
 
-  /* ── Grid ── */
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-  .grid-65 { display: grid; grid-template-columns: 3fr 2fr; gap: 20px; margin-bottom: 20px; }
-  .grid-73 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 20px; }
+/* ─── Cards ─── */
+.card { background:var(--s1); border:1px solid var(--border); border-radius:10px; padding:20px 22px; }
+.card-hd { display:flex; align-items:center; justify-content:space-between; margin-bottom:4px; }
+.card-title { font-size:12px; font-weight:700; color:var(--text); letter-spacing:.2px; }
+.card-badge { font-family:var(--mono); font-size:10px; color:var(--text3); background:var(--s2); padding:2px 8px; border-radius:12px; }
+.card-sub { font-size:11px; color:var(--text3); margin-bottom:16px; }
 
-  /* ── Chart Card ── */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 22px 24px;
-  }
-  .card-title {
-    font-size: 13px; font-weight: 700; color: var(--text);
-    letter-spacing: 0.3px; margin-bottom: 6px;
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .card-title .badge {
-    font-size: 10px; color: var(--text-sub);
-    background: var(--surface2); padding: 2px 8px; border-radius: 20px;
-    font-weight: 400; font-family: 'DM Mono', monospace;
-  }
-  .card-sub {
-    font-size: 11px; color: var(--text-sub); margin-bottom: 18px;
-  }
-  .chart-wrap { position: relative; }
+/* ─── Grid ─── */
+.g2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+.g3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px; }
+.g73 { display:grid; grid-template-columns:3fr 2fr; gap:16px; margin-bottom:16px; }
+.g65 { display:grid; grid-template-columns:5fr 3fr; gap:16px; margin-bottom:16px; }
+.g55 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+.mb { margin-bottom:16px; }
 
-  /* ── Table ── */
-  .data-table { width: 100%; border-collapse: collapse; font-size: 12px; }
-  .data-table th {
-    text-align: left; padding: 8px 12px;
-    color: var(--text-sub); font-weight: 500;
-    border-bottom: 1px solid var(--border);
-    font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px;
-  }
-  .data-table td {
-    padding: 9px 12px; color: var(--text);
-    border-bottom: 1px solid rgba(255,255,255,0.04);
-  }
-  .data-table tr:last-child td { border-bottom: none; }
-  .data-table tr:hover td { background: rgba(255,255,255,0.03); }
-  .data-table .num {
-    font-family: 'DM Mono', monospace; text-align: right;
-  }
-  .data-table .rank {
-    font-family: 'DM Mono', monospace; color: var(--text-dim);
-    font-size: 10px;
-  }
-  .seg-badge {
-    display: inline-block; font-size: 9px; padding: 2px 7px;
-    border-radius: 10px; font-weight: 700; letter-spacing: 0.5px;
-    font-family: 'DM Mono', monospace;
-  }
-  .seg-ent { background: rgba(244,114,182,0.15); color: var(--accent-ent); border: 1px solid rgba(244,114,182,0.3); }
-  .seg-smb { background: rgba(96,165,250,0.15); color: var(--accent-smb); border: 1px solid rgba(96,165,250,0.3); }
+/* ─── Table ─── */
+.tbl-wrap { overflow-x:auto; }
+.tbl-scroll { max-height:320px; overflow-y:auto; }
+.tbl-scroll::-webkit-scrollbar { width:3px; }
+.tbl-scroll::-webkit-scrollbar-thumb { background:var(--text4); border-radius:2px; }
+table { width:100%; border-collapse:collapse; font-size:11px; }
+th { text-align:left; padding:7px 10px; color:var(--text3); font-weight:600; font-size:10px; text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border); position:sticky; top:0; background:var(--s1); }
+td { padding:8px 10px; border-bottom:1px solid rgba(255,255,255,0.03); color:var(--text); }
+tr:hover td { background:rgba(255,255,255,0.02); }
+tr:last-child td { border-bottom:none; }
+.td-num { font-family:var(--mono); text-align:right; }
+.td-rank { font-family:var(--mono); font-size:10px; color:var(--text3); width:24px; }
+.td-name { max-width:200px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
 
-  /* ── Bar (inline) ── */
-  .bar-row {
-    display: flex; align-items: center; gap: 10px;
-    margin-bottom: 12px;
-  }
-  .bar-label { font-size: 12px; color: var(--text); min-width: 80px; white-space: nowrap; }
-  .bar-track {
-    flex: 1; height: 6px; background: var(--surface2);
-    border-radius: 3px; overflow: hidden;
-  }
-  .bar-fill {
-    height: 100%; border-radius: 3px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    transition: width 0.8s cubic-bezier(0.4,0,0.2,1);
-  }
-  .bar-val {
-    font-family: 'DM Mono', monospace; font-size: 11px;
-    color: var(--text-sub); min-width: 90px; text-align: right;
-  }
+/* ─── Seg Badge ─── */
+.badge-ent { display:inline-block; font-size:9px; font-family:var(--mono); font-weight:700; padding:2px 6px; border-radius:8px; background:rgba(244,114,182,.12); color:var(--c-ent); border:1px solid rgba(244,114,182,.25); }
+.badge-smb { display:inline-block; font-size:9px; font-family:var(--mono); font-weight:700; padding:2px 6px; border-radius:8px; background:rgba(56,189,248,.12); color:var(--c-smb); border:1px solid rgba(56,189,248,.25); }
 
-  /* ── Donut Labels ── */
-  .donut-wrap { display: flex; align-items: center; gap: 24px; }
-  .donut-chart { flex: none; }
-  .donut-legend { flex: 1; }
-  .legend-item {
-    display: flex; align-items: center; gap: 8px;
-    margin-bottom: 10px; font-size: 12px;
-  }
-  .legend-dot { width: 8px; height: 8px; border-radius: 50%; flex: none; }
-  .legend-label { color: var(--text); flex: 1; }
-  .legend-val { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--text-sub); }
+/* ─── Seg Block ─── */
+.seg-blocks { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+.seg-blk { border-radius:10px; padding:16px 18px; border:1px solid; }
+.seg-blk.ent { background:rgba(244,114,182,.05); border-color:rgba(244,114,182,.18); }
+.seg-blk.smb { background:rgba(56,189,248,.05); border-color:rgba(56,189,248,.18); }
+.seg-blk-lbl { font-size:10px; font-weight:700; letter-spacing:.8px; text-transform:uppercase; margin-bottom:6px; }
+.seg-blk.ent .seg-blk-lbl { color:var(--c-ent); }
+.seg-blk.smb .seg-blk-lbl { color:var(--c-smb); }
+.seg-blk-val { font-family:var(--mono); font-size:22px; font-weight:600; margin-bottom:4px; }
+.seg-blk-meta { font-size:11px; color:var(--text3); display:flex; gap:12px; flex-wrap:wrap; }
+.seg-blk-meta span { white-space:nowrap; }
 
-  /* ── Scrollable table wrapper ── */
-  .scroll-table { max-height: 340px; overflow-y: auto; }
-  .scroll-table::-webkit-scrollbar { width: 4px; }
-  .scroll-table::-webkit-scrollbar-track { background: transparent; }
-  .scroll-table::-webkit-scrollbar-thumb { background: var(--text-dim); border-radius: 2px; }
+/* ─── Inline Bar ─── */
+.ibar { display:flex; align-items:center; gap:8px; margin-bottom:10px; }
+.ibar-lbl { font-size:11px; color:var(--text); min-width:80px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.ibar-track { flex:1; height:5px; background:var(--s2); border-radius:3px; overflow:hidden; }
+.ibar-fill { height:100%; border-radius:3px; transition:width .8s cubic-bezier(.4,0,.2,1); }
+.ibar-val { font-family:var(--mono); font-size:10px; color:var(--text3); min-width:72px; text-align:right; }
 
-  /* ── Segment Split ── */
-  .seg-split {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px;
-  }
-  .seg-box {
-    border-radius: 10px; padding: 16px 18px;
-    border: 1px solid;
-  }
-  .seg-box.ent {
-    background: rgba(244,114,182,0.06); border-color: rgba(244,114,182,0.2);
-  }
-  .seg-box.smb {
-    background: rgba(96,165,250,0.06); border-color: rgba(96,165,250,0.2);
-  }
-  .seg-box-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; margin-bottom: 6px; }
-  .seg-box.ent .seg-box-label { color: var(--accent-ent); }
-  .seg-box.smb .seg-box-label { color: var(--accent-smb); }
-  .seg-box-val { font-family: 'DM Mono', monospace; font-size: 18px; font-weight: 500; }
-  .seg-box-sub { font-size: 11px; color: var(--text-sub); margin-top: 2px; }
+/* ─── Donut layout ─── */
+.donut-layout { display:flex; align-items:center; gap:20px; }
+.donut-leg { flex:1; }
+.leg-item { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.leg-dot { width:8px; height:8px; border-radius:50%; flex:none; }
+.leg-lbl { flex:1; font-size:11px; color:var(--text); }
+.leg-val { font-family:var(--mono); font-size:10px; color:var(--text3); }
 
-  /* ── Section Header ── */
-  .section-header {
-    font-size: 11px; color: var(--text-sub); font-weight: 500;
-    letter-spacing: 1px; text-transform: uppercase;
-    margin-bottom: 16px; padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .section-header::before {
-    content: '';
-    display: inline-block; width: 3px; height: 14px;
-    background: var(--accent); border-radius: 2px;
-  }
+/* ─── Scrollbar ─── */
+::-webkit-scrollbar { width:5px; height:5px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--text4); border-radius:3px; }
 
-  /* ── Scrollbar global ── */
-  ::-webkit-scrollbar { width: 6px; height: 6px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--text-dim); border-radius: 3px; }
+/* ─── Chart colors palette ─── */
+.chart-palette { display:none; }
 
-  /* ── responsive ── */
-  @media (max-width: 1100px) {
-    .kpi-row { grid-template-columns: repeat(3, 1fr); }
-    .grid-2, .grid-65, .grid-73 { grid-template-columns: 1fr; }
-  }
+@media(max-width:1200px){
+  .kpi-grid { grid-template-columns:repeat(3,1fr); }
+  .g2,.g73,.g65,.g3 { grid-template-columns:1fr; }
+}
 </style>
 </head>
 <body>
 
 <header>
-  <div class="logo">
-    <span class="logo-badge">MX</span>
-    <span class="logo-title">Marketing Transformation — Sales Dashboard</span>
-  </div>
-  <div class="header-right">
-    <span class="header-fy">FY2025</span>
+  <span class="hd-badge">MX</span>
+  <span class="hd-title">Marketing Transformation — Business Intelligence</span>
+  <div class="hd-sep"></div>
+  <span class="hd-fy">FY2025</span>
+  <div class="hd-right">
+    <div class="hd-seg-legend">
+      <div class="hd-dot" style="background:#f472b6"></div><span>エンド Enterprise ≥300万</span>
+      <div class="hd-dot" style="background:#38bdf8"></div><span>エンド SMB &lt;300万</span>
+    </div>
+    <div class="hd-sep"></div>
+    <div class="hd-seg-legend">
+      <div class="hd-dot" style="background:#a78bfa"></div><span>代理店 Enterprise ≥500万</span>
+      <div class="hd-dot" style="background:#34d399"></div><span>代理店 SMB &lt;500万</span>
+    </div>
   </div>
 </header>
 
-<nav class="tab-nav">
-  <button class="tab-btn active" onclick="switchTab('overview')">📊 概況サマリー</button>
-  <button class="tab-btn" onclick="switchTab('sales')">👤 担当者別分析</button>
-  <button class="tab-btn" onclick="switchTab('client')">🏢 クライアント別</button>
-  <button class="tab-btn" onclick="switchTab('agency')">🤝 代理店別</button>
-  <button class="tab-btn" onclick="switchTab('segment')">🎯 セグメント分析</button>
+<nav>
+  <button class="tab active" onclick="sw('overview',this)">📊 概況</button>
+  <button class="tab" onclick="sw('time',this)">📅 時系列分析</button>
+  <button class="tab" onclick="sw('end-client',this)">🏢 エンドクライアント</button>
+  <button class="tab" onclick="sw('agency',this)">🤝 代理店</button>
+  <button class="tab" onclick="sw('product',this)">📦 取引種別・媒体</button>
+  <button class="tab" onclick="sw('segment',this)">🎯 セグメント深掘り</button>
+  <button class="tab" onclick="sw('sales',this)">👤 営業担当者</button>
 </nav>
 
 <main>
 
-  <!-- ===== 概況サマリー ===== -->
-  <div class="page active" id="page-overview">
+<!-- ========== 概況 ========== -->
+<div class="page on" id="p-overview">
 
-    <div class="kpi-row">
-      <div class="kpi-card blue">
-        <div class="kpi-label">FY25 総受注額</div>
-        <div class="kpi-value" id="kpi-total"></div>
-        <div class="kpi-sub">受注ベース（実績金額）</div>
-      </div>
-      <div class="kpi-card purple">
-        <div class="kpi-label">総クライアント数</div>
-        <div class="kpi-value" id="kpi-clients"></div>
-        <div class="kpi-sub">エンドクライアント（受注）</div>
-      </div>
-      <div class="kpi-card green">
-        <div class="kpi-label">Enterprise 社数</div>
-        <div class="kpi-value" id="kpi-ent"></div>
-        <div class="kpi-sub">年間1,000万円以上</div>
-      </div>
-      <div class="kpi-card orange">
-        <div class="kpi-label">SMB 社数</div>
-        <div class="kpi-value" id="kpi-smb"></div>
-        <div class="kpi-sub">年間1,000万円未満</div>
-      </div>
-      <div class="kpi-card pink">
-        <div class="kpi-label">月平均受注</div>
-        <div class="kpi-value" id="kpi-avg"></div>
-        <div class="kpi-sub">12ヶ月平均</div>
-      </div>
-    </div>
+  <div class="kpi-grid" id="kpi-row"></div>
 
-    <div class="grid-73">
-      <div class="card">
-        <div class="card-title">月次受注推移 <span class="badge">FY25 Apr → Mar</span></div>
-        <div class="card-sub">受注ベース実績金額（月別）</div>
-        <div class="chart-wrap"><canvas id="chartMonthly" height="90"></canvas></div>
-      </div>
-      <div class="card">
-        <div class="card-title">四半期別受注</div>
-        <div class="card-sub">Q別実績金額</div>
-        <div class="chart-wrap"><canvas id="chartQuarterly" height="180"></canvas></div>
-      </div>
-    </div>
-
-    <div class="grid-65">
-      <div class="card">
-        <div class="card-title">チーム別受注（ロール）</div>
-        <div class="card-sub">PMXG / DMXG / おでかけG</div>
-        <div id="roleBar"></div>
-      </div>
-      <div class="card">
-        <div class="card-title">媒体別受注 TOP10</div>
-        <div class="card-sub">受注金額上位媒体</div>
-        <div class="chart-wrap"><canvas id="chartMedia" height="200"></canvas></div>
-      </div>
-    </div>
-
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-title">セグメント構成（金額）</div>
-        <div class="card-sub">Enterprise vs SMB — 受注金額比率</div>
-        <div class="donut-wrap">
-          <div class="donut-chart"><canvas id="chartSegAmt" width="160" height="160"></canvas></div>
-          <div class="donut-legend" id="segAmtLegend"></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="card-title">セグメント構成（件数）</div>
-        <div class="card-sub">Enterprise vs SMB — 受注件数比率</div>
-        <div class="donut-wrap">
-          <div class="donut-chart"><canvas id="chartSegCnt" width="160" height="160"></canvas></div>
-          <div class="donut-legend" id="segCntLegend"></div>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ===== 担当者別分析 ===== -->
-  <div class="page" id="page-sales">
-
-    <div class="card" style="margin-bottom:20px">
-      <div class="card-title">営業担当者別受注金額</div>
-      <div class="card-sub">FY25 全期間・受注ベース</div>
-      <div class="chart-wrap"><canvas id="chartSalesBar" height="80"></canvas></div>
-    </div>
-
-    <div class="grid-65">
-      <div class="card">
-        <div class="card-title">担当者詳細</div>
-        <div class="card-sub">受注金額・案件数・担当クライアント数</div>
-        <table class="data-table">
-          <thead><tr>
-            <th>#</th><th>担当者</th><th class="num">受注金額</th>
-            <th class="num">案件数</th><th class="num">クライアント数</th>
-            <th class="num">1案件平均</th>
-          </tr></thead>
-          <tbody id="salesTableBody"></tbody>
-        </table>
-      </div>
-      <div class="card">
-        <div class="card-title">担当者別 受注構成比</div>
-        <div class="card-sub">金額シェア</div>
-        <div class="chart-wrap"><canvas id="chartSalesPie" height="280"></canvas></div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ===== クライアント別 ===== -->
-  <div class="page" id="page-client">
-
-    <div class="seg-split" id="segSplit"></div>
-
-    <div class="card" style="margin-bottom:20px">
-      <div class="card-title">エンドクライアント別受注金額 TOP20</div>
-      <div class="card-sub">Enterprise(1,000万以上) / SMB(1,000万未満)</div>
-      <div class="chart-wrap"><canvas id="chartClientBar" height="100"></canvas></div>
-    </div>
-
+  <div class="g73 mb">
     <div class="card">
-      <div class="card-title">クライアント詳細 TOP20</div>
-      <div class="scroll-table">
-        <table class="data-table">
-          <thead><tr>
-            <th>#</th><th>エンドクライアント名</th><th>セグメント</th>
-            <th class="num">受注金額</th><th class="num">構成比</th>
-          </tr></thead>
-          <tbody id="clientTableBody"></tbody>
-        </table>
-      </div>
+      <div class="card-hd"><span class="card-title">月次受注推移</span><span class="card-badge">FY25 Apr→Mar</span></div>
+      <div class="card-sub">エンドクライアント Enterprise / SMB 積み上げ</div>
+      <canvas id="c-monthly-seg" height="95"></canvas>
     </div>
-
-  </div>
-
-  <!-- ===== 代理店別 ===== -->
-  <div class="page" id="page-agency">
-
-    <div class="card" style="margin-bottom:20px">
-      <div class="card-title">代理店別受注金額 TOP15</div>
-      <div class="card-sub">取引先名ベース</div>
-      <div class="chart-wrap"><canvas id="chartAgencyBar" height="100"></canvas></div>
-    </div>
-
     <div class="card">
-      <div class="card-title">代理店詳細</div>
-      <div class="scroll-table">
-        <table class="data-table">
-          <thead><tr>
-            <th>#</th><th>代理店名</th><th class="num">受注金額</th><th class="num">構成比</th>
-          </tr></thead>
-          <tbody id="agencyTableBody"></tbody>
-        </table>
-      </div>
+      <div class="card-hd"><span class="card-title">四半期別</span></div>
+      <div class="card-sub">Q別受注金額・前Q比</div>
+      <canvas id="c-quarterly" height="190"></canvas>
     </div>
-
   </div>
 
-  <!-- ===== セグメント分析 ===== -->
-  <div class="page" id="page-segment">
-
-    <div class="seg-split" id="segSplit2"></div>
-
-    <div class="grid-2">
-      <div class="card">
-        <div class="card-title">Q別セグメント構成</div>
-        <div class="card-sub">四半期ごとのEnterprise/SMB比率</div>
-        <div class="chart-wrap"><canvas id="chartQSeg" height="220"></canvas></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Enterprise クライアント一覧</div>
-        <div class="card-sub">年間1,000万円以上 全件</div>
-        <div class="scroll-table">
-          <table class="data-table">
-            <thead><tr>
-              <th>#</th><th>エンドクライアント名</th><th class="num">年間受注額</th>
-            </tr></thead>
-            <tbody id="entTableBody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
+  <div class="g3 mb">
     <div class="card">
-      <div class="card-title">SMB — 受注金額分布</div>
-      <div class="card-sub">1,000万円未満クライアントの金額帯分布</div>
-      <div class="chart-wrap"><canvas id="chartSMBDist" height="80"></canvas></div>
+      <div class="card-hd"><span class="card-title">エンドクライアント セグメント</span></div>
+      <div class="card-sub">300万基準 Enterprise/SMB（金額）</div>
+      <div class="donut-layout">
+        <canvas id="c-end-donut" width="150" height="150"></canvas>
+        <div class="donut-leg" id="end-donut-leg"></div>
+      </div>
     </div>
-
+    <div class="card">
+      <div class="card-hd"><span class="card-title">代理店 セグメント</span></div>
+      <div class="card-sub">500万基準 Enterprise/SMB（金額）</div>
+      <div class="donut-layout">
+        <canvas id="c-ag-donut" width="150" height="150"></canvas>
+        <div class="donut-leg" id="ag-donut-leg"></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd"><span class="card-title">チーム別 / 上下期</span></div>
+      <div class="card-sub">DMXG・PMXG月次推移</div>
+      <canvas id="c-role" height="150"></canvas>
+    </div>
   </div>
+
+  <div class="g65 mb">
+    <div class="card">
+      <div class="card-hd"><span class="card-title">媒体別受注 TOP10</span><span class="card-badge">件数・金額・平均単価</span></div>
+      <div class="card-sub">受注金額上位媒体の比較</div>
+      <canvas id="c-media-overview" height="100"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-hd"><span class="card-title">課金形態別</span></div>
+      <div class="card-sub">CPC変動 / CPM変動 / CPV変動 / CPC固定</div>
+      <canvas id="c-charge" height="190"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<!-- ========== 時系列分析 ========== -->
+<div class="page" id="p-time">
+
+  <div class="card mb">
+    <div class="card-hd"><span class="card-title">月次受注推移（全体）</span><span class="card-badge">FY25 Apr 2025 → Mar 2026</span></div>
+    <div class="card-sub">月別受注金額・移動平均</div>
+    <canvas id="c-monthly-all" height="80"></canvas>
+  </div>
+
+  <div class="g2 mb">
+    <div class="card">
+      <div class="card-hd"><span class="card-title">月次 — エンドクライアント別セグメント</span></div>
+      <div class="card-sub">Enterprise / SMB 月別推移（300万基準）</div>
+      <canvas id="c-time-end-seg" height="180"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-hd"><span class="card-title">月次 — 代理店別セグメント</span></div>
+      <div class="card-sub">Enterprise / SMB 月別推移（500万基準）</div>
+      <canvas id="c-time-ag-seg" height="180"></canvas>
+    </div>
+  </div>
+
+  <div class="g2 mb">
+    <div class="card">
+      <div class="card-hd"><span class="card-title">四半期別 セグメント比較（エンド）</span></div>
+      <div class="card-sub">Q毎のEnterprise/SMB構成変化</div>
+      <canvas id="c-q-end-seg" height="200"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-hd"><span class="card-title">四半期別 セグメント比較（代理店）</span></div>
+      <div class="card-sub">Q毎のEnterprise/SMB構成変化</div>
+      <canvas id="c-q-ag-seg" height="200"></canvas>
+    </div>
+  </div>
+
+  <div class="card mb">
+    <div class="card-hd"><span class="card-title">取引種別 月次推移（TOP6商品）</span><span class="card-badge">積み上げ</span></div>
+    <div class="card-sub">商品カテゴリ別月次受注金額の変化</div>
+    <canvas id="c-prod-monthly" height="90"></canvas>
+  </div>
+
+  <div class="g2 mb">
+    <div class="card">
+      <div class="card-hd"><span class="card-title">媒体別 月次推移（TOP8）</span></div>
+      <div class="card-sub">月別・媒体別受注金額推移</div>
+      <canvas id="c-media-monthly" height="200"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-hd"><span class="card-title">チーム別 月次推移</span></div>
+      <div class="card-sub">DMXG / PMXG 月別受注推移</div>
+      <canvas id="c-role-monthly" height="200"></canvas>
+    </div>
+  </div>
+
+  <div class="g2 mb">
+    <div class="card">
+      <div class="card-hd"><span class="card-title">上期 vs 下期</span></div>
+      <div class="card-sub">FY25_上期 / FY25_下期</div>
+      <canvas id="c-half" height="180"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-hd"><span class="card-title">新規 vs 継続</span></div>
+      <div class="card-sub">前年度以前新規 / 前年度新規（月別）</div>
+      <canvas id="c-new" height="180"></canvas>
+    </div>
+  </div>
+
+  <div class="card mb">
+    <div class="card-hd"><span class="card-title">週次近似（月別÷4分割）— 参考値</span><span class="card-badge">月データを均等4分割</span></div>
+    <div class="card-sub">週次粒度の受注推移（月データを週に均等分割したもの）</div>
+    <canvas id="c-weekly" height="80"></canvas>
+  </div>
+
+</div>
+
+<!-- ========== エンドクライアント ========== -->
+<div class="page" id="p-end-client">
+
+  <div class="seg-blocks" id="end-seg-blocks"></div>
+
+  <div class="card mb">
+    <div class="card-hd"><span class="card-title">エンドクライアント別受注金額 TOP30</span><span class="card-badge">ピンク=Enterprise / 青=SMB</span></div>
+    <div class="card-sub">年間300万円以上=Enterprise（42社）/ 300万未満=SMB（386社）</div>
+    <canvas id="c-end-bar" height="100"></canvas>
+  </div>
+
+  <div class="g73 mb">
+    <div class="card">
+      <div class="card-hd"><span class="card-title">エンドクライアント 詳細 TOP40</span></div>
+      <div class="card-sub">受注金額・件数・平均単価・セグメント</div>
+      <div class="tbl-scroll">
+        <table><thead><tr>
+          <th>#</th><th>クライアント名</th><th>Seg</th>
+          <th class="td-num">受注金額</th><th class="td-num">件数</th>
+          <th class="td-num">平均単価</th><th class="td-num">構成比</th>
+        </tr></thead><tbody id="end-table"></tbody></table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd"><span class="card-title">Enterprise クライアント Q別推移</span></div>
+      <div class="card-sub">TOP15クライアントの四半期推移</div>
+      <canvas id="c-end-q" height="280"></canvas>
+    </div>
+  </div>
+
+  <div class="g2 mb">
+    <div class="card">
+      <div class="card-hd"><span class="card-title">Enterprise 構成比（金額）</span></div>
+      <div class="card-sub">TOP15クライアントの金額シェア</div>
+      <canvas id="c-end-pie" height="260"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-hd"><span class="card-title">SMB 取引金額帯分布</span></div>
+      <div class="card-sub">300万未満クライアント（386社）の金額帯別社数</div>
+      <canvas id="c-smb-end-dist" height="200"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<!-- ========== 代理店 ========== -->
+<div class="page" id="p-agency">
+
+  <div class="seg-blocks" id="ag-seg-blocks"></div>
+
+  <div class="card mb">
+    <div class="card-hd"><span class="card-title">代理店別受注金額 TOP30</span><span class="card-badge">紫=Enterprise / 緑=SMB</span></div>
+    <div class="card-sub">年間500万円以上=Enterprise（32社）/ 500万未満=SMB（134社）</div>
+    <canvas id="c-ag-bar" height="100"></canvas>
+  </div>
+
+  <div class="g73 mb">
+    <div class="card">
+      <div class="card-hd"><span class="card-title">代理店 詳細 TOP30</span></div>
+      <div class="card-sub">受注金額・件数・平均単価・セグメント</div>
+      <div class="tbl-scroll">
+        <table><thead><tr>
+          <th>#</th><th>代理店名</th><th>Seg</th>
+          <th class="td-num">受注金額</th><th class="td-num">件数</th>
+          <th class="td-num">平均単価</th><th class="td-num">構成比</th>
+        </tr></thead><tbody id="ag-table"></tbody></table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd"><span class="card-title">代理店 Enterprise Q別推移</span></div>
+      <div class="card-sub">TOP10代理店の四半期推移</div>
+      <canvas id="c-ag-q" height="280"></canvas>
+    </div>
+  </div>
+
+  <div class="g2 mb">
+    <div class="card">
+      <div class="card-hd"><span class="card-title">代理店 Enterprise 構成比</span></div>
+      <div class="card-sub">TOP15代理店の金額シェア</div>
+      <canvas id="c-ag-pie" height="260"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-hd"><span class="card-title">代理店 SMB 金額帯分布</span></div>
+      <div class="card-sub">500万未満代理店（134社）の金額帯別社数</div>
+      <canvas id="c-smb-ag-dist" height="200"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<!-- ========== 取引種別・媒体 ========== -->
+<div class="page" id="p-product">
+
+  <div class="card mb">
+    <div class="card-hd"><span class="card-title">取引種別（経理商品名）別 受注金額・件数・平均単価</span></div>
+    <div class="card-sub">受注金額上位順（目標用商品_Z除く）</div>
+    <canvas id="c-prod-bar" height="90"></canvas>
+  </div>
+
+  <div class="g2 mb">
+    <div class="card">
+      <div class="card-hd"><span class="card-title">取引種別 詳細</span></div>
+      <div class="tbl-scroll">
+        <table><thead><tr>
+          <th>#</th><th>取引種別</th><th class="td-num">受注金額</th>
+          <th class="td-num">件数</th><th class="td-num">平均単価</th><th class="td-num">構成比</th>
+        </tr></thead><tbody id="prod-table"></tbody></table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd"><span class="card-title">取引種別 Q別構成変化</span></div>
+      <div class="card-sub">TOP6商品のQ別推移（積み上げ）</div>
+      <canvas id="c-prod-q" height="240"></canvas>
+    </div>
+  </div>
+
+  <div class="card mb">
+    <div class="card-hd"><span class="card-title">媒体別 受注金額・件数・平均単価</span><span class="card-badge">全14媒体</span></div>
+    <div class="card-sub">受注金額上位順</div>
+    <canvas id="c-media-bar" height="90"></canvas>
+  </div>
+
+  <div class="g2 mb">
+    <div class="card">
+      <div class="card-hd"><span class="card-title">媒体 詳細</span></div>
+      <div class="tbl-scroll">
+        <table><thead><tr>
+          <th>#</th><th>媒体</th><th class="td-num">受注金額</th>
+          <th class="td-num">件数</th><th class="td-num">平均単価</th><th class="td-num">構成比</th>
+        </tr></thead><tbody id="media-table"></tbody></table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd"><span class="card-title">媒体別 Q別推移（TOP8）</span></div>
+      <div class="card-sub">四半期別媒体シェア変化</div>
+      <canvas id="c-media-q" height="240"></canvas>
+    </div>
+  </div>
+
+  <div class="card mb">
+    <div class="card-hd"><span class="card-title">課金形態別 詳細</span></div>
+    <div class="card-sub">CPC変動 / CPM変動 / CPV変動 / CPC固定</div>
+    <div id="charge-bars"></div>
+  </div>
+
+</div>
+
+<!-- ========== セグメント深掘り ========== -->
+<div class="page" id="p-segment">
+
+  <div class="g2 mb">
+    <div>
+      <div class="seg-blocks"><div class="seg-blk ent" id="s-end-ent"></div><div class="seg-blk smb" id="s-end-smb"></div></div>
+      <div class="card">
+        <div class="card-hd"><span class="card-title">エンドクライアント Enterprise vs SMB — 月次推移</span></div>
+        <div class="card-sub">月別金額・セグメント別</div>
+        <canvas id="c-seg-end-m" height="200"></canvas>
+      </div>
+    </div>
+    <div>
+      <div class="seg-blocks"><div class="seg-blk ent" style="background:rgba(167,139,250,.05);border-color:rgba(167,139,250,.18)" id="s-ag-ent"></div><div class="seg-blk smb" style="background:rgba(52,211,153,.05);border-color:rgba(52,211,153,.18)" id="s-ag-smb"></div></div>
+      <div class="card">
+        <div class="card-hd"><span class="card-title">代理店 Enterprise vs SMB — 月次推移</span></div>
+        <div class="card-sub">月別金額・セグメント別</div>
+        <canvas id="c-seg-ag-m" height="200"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2 mb">
+    <div class="card">
+      <div class="card-hd"><span class="card-title">エンドクライアント — Enterprise TOP42 一覧</span></div>
+      <div class="card-sub">年間300万円以上 全社</div>
+      <div class="tbl-scroll">
+        <table><thead><tr>
+          <th>#</th><th>クライアント名</th>
+          <th class="td-num">年間受注</th><th class="td-num">件数</th><th class="td-num">平均単価</th>
+        </tr></thead><tbody id="ent-full-table"></tbody></table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd"><span class="card-title">代理店 — Enterprise TOP32 一覧</span></div>
+      <div class="card-sub">年間500万円以上 全社</div>
+      <div class="tbl-scroll">
+        <table><thead><tr>
+          <th>#</th><th>代理店名</th>
+          <th class="td-num">年間受注</th><th class="td-num">件数</th><th class="td-num">平均単価</th>
+        </tr></thead><tbody id="ag-ent-full-table"></tbody></table>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2 mb">
+    <div class="card">
+      <div class="card-hd"><span class="card-title">エンドクライアント SMB 金額帯分布</span></div>
+      <div class="card-sub">386社の金額帯別社数</div>
+      <canvas id="c-smb-end-dist2" height="200"></canvas>
+    </div>
+    <div class="card">
+      <div class="card-hd"><span class="card-title">代理店 SMB 金額帯分布</span></div>
+      <div class="card-sub">134社の金額帯別社数</div>
+      <canvas id="c-smb-ag-dist2" height="200"></canvas>
+    </div>
+  </div>
+
+</div>
+
+<!-- ========== 営業担当者 ========== -->
+<div class="page" id="p-sales">
+
+  <div class="card mb">
+    <div class="card-hd"><span class="card-title">営業担当者別 受注金額</span><span class="card-badge">FY25 全期間</span></div>
+    <div class="card-sub">受注金額・案件数・担当クライアント数・1案件平均単価</div>
+    <canvas id="c-sales-bar" height="80"></canvas>
+  </div>
+
+  <div class="g65 mb">
+    <div class="card">
+      <div class="card-hd"><span class="card-title">担当者 詳細</span></div>
+      <table><thead><tr>
+        <th>#</th><th>担当者</th><th class="td-num">受注金額</th>
+        <th class="td-num">案件数</th><th class="td-num">クライアント数</th>
+        <th class="td-num">1案件平均</th><th class="td-num">構成比</th>
+      </tr></thead><tbody id="sales-table"></tbody></table>
+    </div>
+    <div class="card">
+      <div class="card-hd"><span class="card-title">担当者 金額シェア</span></div>
+      <div class="card-sub">受注金額構成比（マイナス除く）</div>
+      <canvas id="c-sales-pie" height="280"></canvas>
+    </div>
+  </div>
+
+  <div class="card mb">
+    <div class="card-hd"><span class="card-title">担当者別 月次推移</span></div>
+    <div class="card-sub">主要担当者の月別受注推移</div>
+    <div id="sales-ibar-monthly"></div>
+  </div>
+
+</div>
 
 </main>
 
 <script>
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+/* ═══════════════════════════════════════════════════════
    DATA
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-const DATA = {
-  total_juchu: 864341382,
-  total_clients: 428,
-  enterprise_count: 18,
-  smb_count: 410,
-  quarterly: [
-    {"納品Q":"FY25_1Q","実績金額":180604671},
-    {"納品Q":"FY25_2Q","実績金額":219318217},
-    {"納品Q":"FY25_3Q","実績金額":233553848},
-    {"納品Q":"FY25_4Q","実績金額":230864646}
+═══════════════════════════════════════════════════════ */
+const D = {
+  kpi:{total:864341382,end_total:428,agency_total:166,end_ent_count:42,end_smb_count:386,agency_ent_count:32,agency_smb_count:134,deal_count:4170,monthly_avg:72028448},
+  monthly:[{月:"2025-04",実績金額:64128961},{月:"2025-05",実績金額:52570182},{月:"2025-06",実績金額:63905528},{月:"2025-07",実績金額:73323008},{月:"2025-08",実績金額:77436322},{月:"2025-09",実績金額:68558887},{月:"2025-10",実績金額:72940118},{月:"2025-11",実績金額:83192209},{月:"2025-12",実績金額:77421521},{月:"2026-01",実績金額:67253903},{月:"2026-02",実績金額:76791428},{月:"2026-03",実績金額:86819315}],
+  quarterly:[{納品Q:"FY25_1Q",実績金額:180604671},{納品Q:"FY25_2Q",実績金額:219318217},{納品Q:"FY25_3Q",実績金額:233553848},{納品Q:"FY25_4Q",実績金額:230864646}],
+  half:[{納品半期:"FY25_上期",実績金額:399922888},{納品半期:"FY25_下期",実績金額:464418494}],
+  monthly_end_seg:[{月:"2025-04",エンド_セグ:"Enterprise",実績金額:53385692},{月:"2025-04",エンド_セグ:"SMB",実績金額:10743269},{月:"2025-05",エンド_セグ:"Enterprise",実績金額:40175475},{月:"2025-05",エンド_セグ:"SMB",実績金額:12394707},{月:"2025-06",エンド_セグ:"Enterprise",実績金額:51258067},{月:"2025-06",エンド_セグ:"SMB",実績金額:12647461},{月:"2025-07",エンド_セグ:"Enterprise",実績金額:55463445},{月:"2025-07",エンド_セグ:"SMB",実績金額:17859563},{月:"2025-08",エンド_セグ:"Enterprise",実績金額:59944715},{月:"2025-08",エンド_セグ:"SMB",実績金額:17491607},{月:"2025-09",エンド_セグ:"Enterprise",実績金額:51075251},{月:"2025-09",エンド_セグ:"SMB",実績金額:17483636},{月:"2025-10",エンド_セグ:"Enterprise",実績金額:54640463},{月:"2025-10",エンド_セグ:"SMB",実績金額:18299655},{月:"2025-11",エンド_セグ:"Enterprise",実績金額:55438461},{月:"2025-11",エンド_セグ:"SMB",実績金額:27753748},{月:"2025-12",エンド_セグ:"Enterprise",実績金額:50129749},{月:"2025-12",エンド_セグ:"SMB",実績金額:27291772},{月:"2026-01",エンド_セグ:"Enterprise",実績金額:45556719},{月:"2026-01",エンド_セグ:"SMB",実績金額:21697184},{月:"2026-02",エンド_セグ:"Enterprise",実績金額:55595968},{月:"2026-02",エンド_セグ:"SMB",実績金額:21195460},{月:"2026-03",エンド_セグ:"Enterprise",実績金額:63550473},{月:"2026-03",エンド_セグ:"SMB",実績金額:23268842}],
+  monthly_ag_seg:[{月:"2025-04",代理店_セグ:"Enterprise",実績金額:52142362},{月:"2025-04",代理店_セグ:"SMB",実績金額:11986599},{月:"2025-05",代理店_セグ:"Enterprise",実績金額:43443984},{月:"2025-05",代理店_セグ:"SMB",実績金額:9126198},{月:"2025-06",代理店_セグ:"Enterprise",実績金額:56548366},{月:"2025-06",代理店_セグ:"SMB",実績金額:7357162},{月:"2025-07",代理店_セグ:"Enterprise",実績金額:62699071},{月:"2025-07",代理店_セグ:"SMB",実績金額:10623937},{月:"2025-08",代理店_セグ:"Enterprise",実績金額:68895761},{月:"2025-08",代理店_セグ:"SMB",実績金額:8540561},{月:"2025-09",代理店_セグ:"Enterprise",実績金額:59636138},{月:"2025-09",代理店_セグ:"SMB",実績金額:8922749},{月:"2025-10",代理店_セグ:"Enterprise",実績金額:67854692},{月:"2025-10",代理店_セグ:"SMB",実績金額:5085426},{月:"2025-11",代理店_セグ:"Enterprise",実績金額:71660926},{月:"2025-11",代理店_セグ:"SMB",実績金額:11531283},{月:"2025-12",代理店_セグ:"Enterprise",実績金額:66806699},{月:"2025-12",代理店_セグ:"SMB",実績金額:10614822},{月:"2026-01",代理店_セグ:"Enterprise",実績金額:58077770},{月:"2026-01",代理店_セグ:"SMB",実績金額:9176133},{月:"2026-02",代理店_セグ:"Enterprise",実績金額:69387523},{月:"2026-02",代理店_セグ:"SMB",実績金額:7403905},{月:"2026-03",代理店_セグ:"Enterprise",実績金額:77956699},{月:"2026-03",代理店_セグ:"SMB",実績金額:8862616}],
+  q_end_seg:[{納品Q:"FY25_1Q",エンド_セグ:"Enterprise",実績金額:144819234},{納品Q:"FY25_1Q",エンド_セグ:"SMB",実績金額:35785437},{納品Q:"FY25_2Q",エンド_セグ:"Enterprise",実績金額:166483411},{納品Q:"FY25_2Q",エンド_セグ:"SMB",実績金額:52834806},{納品Q:"FY25_3Q",エンド_セグ:"Enterprise",実績金額:160208673},{納品Q:"FY25_3Q",エンド_セグ:"SMB",実績金額:73345175},{納品Q:"FY25_4Q",エンド_セグ:"Enterprise",実績金額:164703160},{納品Q:"FY25_4Q",エンド_セグ:"SMB",実績金額:66161486}],
+  q_ag_seg:[{納品Q:"FY25_1Q",代理店_セグ:"Enterprise",実績金額:152134712},{納品Q:"FY25_1Q",代理店_セグ:"SMB",実績金額:28469959},{納品Q:"FY25_2Q",代理店_セグ:"Enterprise",実績金額:191230970},{納品Q:"FY25_2Q",代理店_セグ:"SMB",実績金額:28087247},{納品Q:"FY25_3Q",代理店_セグ:"Enterprise",実績金額:206322317},{納品Q:"FY25_3Q",代理店_セグ:"SMB",実績金額:27231531},{納品Q:"FY25_4Q",代理店_セグ:"Enterprise",実績金額:205421992},{納品Q:"FY25_4Q",代理店_セグ:"SMB",実績金額:25442654}],
+  product:[{商品名_短:"データ利用費",実績金額:285676206,件数:216,平均単価:1322575},{商品名_短:"エリアAD",実績金額:145724795,件数:738,平均単価:197459},{商品名_短:"Instagram/Facebook AD",実績金額:91777346,件数:562,平均単価:163304},{商品名_短:"エリアAD(データ)",実績金額:78987271,件数:105,平均単価:752259},{商品名_短:"Yahoo!広告",実績金額:74547792,件数:462,平均単価:161358},{商品名_短:"LINE AD",実績金額:61720156,件数:255,平均単価:242039},{商品名_短:"データ提供費",実績金額:47506472,件数:53,平均単価:896348},{商品名_短:"YouTube AD(CPM)",実績金額:28889477,件数:59,平均単価:489652},{商品名_短:"Lierco AD",実績金額:27084156,件数:182,平均単価:148814},{商品名_短:"YouTube AD(CPV)",実績金額:15573362,件数:59,平均単価:263955},{商品名_短:"TikTok AD(CPM)",実績金額:3194040,件数:19,平均単価:168107},{商品名_短:"プッシュAD",実績金額:1460965,件数:3,平均単価:486988},{商品名_短:"TikTok AD(CPC)",実績金額:1142279,件数:9,平均単価:126919}],
+  media:[{媒体:"GDN",実績金額:85232177,件数:437,平均単価:195039},{媒体:"YDA",実績金額:74262773,件数:441,平均単価:168396},{媒体:"IG",実績金額:72164495,件数:482,平均単価:149718},{媒体:"LINE",実績金額:61720156,件数:255,平均単価:242039},{媒体:"YouTube",実績金額:44462839,件数:118,平均単価:376803},{媒体:"P-MAX",実績金額:36735750,件数:106,平均単価:346563},{媒体:"リエルコ",実績金額:27084156,件数:182,平均単価:148814},{媒体:"Universe",実績金額:14112945,件数:108,平均単価:130675},{媒体:"Meta",実績金額:11938586,件数:35,平均単価:341102},{媒体:"FB",実績金額:7674265,件数:45,平均単価:170539},{媒体:"Logicad",実績金額:7659215,件数:65,平均単価:117834},{媒体:"TikTok",実績金額:4336319,件数:28,平均単価:154868},{媒体:"Gジオリスティング",実績金額:1984708,件数:22,平均単価:90214}],
+  end_clients:[{エンドクライアント名:"株式会社フリークアウト",実績金額:121442987,件数:12,セグメント:"Enterprise",平均単価:10120248},{エンドクライアント名:"株式会社マイクロアド",実績金額:75005282,件数:18,セグメント:"Enterprise",平均単価:4166960},{エンドクライアント名:"カタリナ MKTジャパン",実績金額:59800000,件数:14,セグメント:"Enterprise",平均単価:4271428},{エンドクライアント名:"株式会社リクルート",実績金額:35567716,件数:32,セグメント:"Enterprise",平均単価:1111491},{エンドクライアント名:"西日本旅客鉄道",実績金額:20737723,件数:17,セグメント:"Enterprise",平均単価:1219866},{エンドクライアント名:"株式会社河合塾マナビス",実績金額:20500000,件数:21,セグメント:"Enterprise",平均単価:976190},{エンドクライアント名:"徳島県鳴門市",実績金額:19960609,件数:10,セグメント:"Enterprise",平均単価:1996060},{エンドクライアント名:"アメアスポーツジャパン",実績金額:19400000,件数:9,セグメント:"Enterprise",平均単価:2155555},{エンドクライアント名:"学校法人日本教育財団",実績金額:19065081,件数:12,セグメント:"Enterprise",平均単価:1588756},{エンドクライアント名:"Geolocation Technology",実績金額:16705742,件数:10,セグメント:"Enterprise",平均単価:1670574},{エンドクライアント名:"株式会社True Data",実績金額:15691630,件数:12,セグメント:"Enterprise",平均単価:1307635},{エンドクライアント名:"ゲンダイエージェンシー",実績金額:14066103,件数:12,セグメント:"Enterprise",平均単価:1172175},{エンドクライアント名:"株式会社川島コーポレーション",実績金額:13317725,件数:70,セグメント:"Enterprise",平均単価:190253},{エンドクライアント名:"防衛省",実績金額:12514289,件数:49,セグメント:"Enterprise",平均単価:255393},{エンドクライアント名:"株式会社早稲田アカデミー",実績金額:12392478,件数:95,セグメント:"Enterprise",平均単価:130447},{エンドクライアント名:"株式会社京進",実績金額:12065791,件数:27,セグメント:"Enterprise",平均単価:446881},{エンドクライアント名:"株式会社中央コンタクト",実績金額:11746367,件数:18,セグメント:"Enterprise",平均単価:652575},{エンドクライアント名:"日野自動車",実績金額:10769230,件数:7,セグメント:"Enterprise",平均単価:1538461},{エンドクライアント名:"学校法人高崎商科大学",実績金額:9500000,件数:39,セグメント:"Enterprise",平均単価:243589},{エンドクライアント名:"株式会社東京インテリア家具",実績金額:9000000,件数:5,セグメント:"Enterprise",平均単価:1800000},{エンドクライアント名:"ユーソナー株式会社",実績金額:8400000,件数:12,セグメント:"Enterprise",平均単価:700000},{エンドクライアント名:"西武不動産プロパティMG",実績金額:8240000,件数:8,セグメント:"Enterprise",平均単価:1030000},{エンドクライアント名:"株式会社unerryy",実績金額:6520000,件数:28,セグメント:"Enterprise",平均単価:232857},{エンドクライアント名:"パナソニック株式会社",実績金額:6433790,件数:28,セグメント:"Enterprise",平均単価:229778},{エンドクライアント名:"Hakuhodo DY ONE",実績金額:6192060,件数:22,セグメント:"Enterprise",平均単価:281457},{エンドクライアント名:"株式会社ジオロジック",実績金額:6000000,件数:5,セグメント:"Enterprise",平均単価:1200000},{エンドクライアント名:"アルテリア・ネットワークス",実績金額:5900000,件数:13,セグメント:"Enterprise",平均単価:453846},{エンドクライアント名:"茨城県",実績金額:5100000,件数:18,セグメント:"Enterprise",平均単価:283333},{エンドクライアント名:"学校法人江戸川学園",実績金額:4818300,件数:66,セグメント:"Enterprise",平均単価:73004},{エンドクライアント名:"マップマーケティング",実績金額:4680000,件数:12,セグメント:"Enterprise",平均単価:390000},{エンドクライアント名:"ゼンリンMKTソリューションズ",実績金額:4592771,件数:39,セグメント:"Enterprise",平均単価:117763},{エンドクライアント名:"三菱地所ハウスネット",実績金額:4500000,件数:12,セグメント:"Enterprise",平均単価:375000},{エンドクライアント名:"住友電装株式会社",実績金額:4500000,件数:8,セグメント:"Enterprise",平均単価:562500},{エンドクライアント名:"住宅情報館",実績金額:4000000,件数:8,セグメント:"Enterprise",平均単価:500000},{エンドクライアント名:"株式会社赤城自動車教習所",実績金額:3620000,件数:28,セグメント:"Enterprise",平均単価:129285},{エンドクライアント名:"株式会社ジョルテ",実績金額:3600000,件数:12,セグメント:"Enterprise",平均単価:300000},{エンドクライアント名:"東レエンジニアリング",実績金額:3500000,件数:6,セグメント:"Enterprise",平均単価:583333},{エンドクライアント名:"ヤマハミュージックジャパン",実績金額:3432558,件数:28,セグメント:"Enterprise",平均単価:122591},{エンドクライアント名:"柳瀬橋自動車教習所",実績金額:3300000,件数:22,セグメント:"Enterprise",平均単価:150000},{エンドクライアント名:"ヤマト運輸",実績金額:3258751,件数:20,セグメント:"Enterprise",平均単価:162937},{エンドクライアント名:"株式会社平和堂",実績金額:2876927,件数:17,セグメント:"SMB",平均単価:169231},{エンドクライアント名:"栃木県観光物産協会",実績金額:2755000,件数:4,セグメント:"SMB",平均単価:688750}],
+  agencies:[{取引先名:"株式会社フリークアウト",実績金額:121442987,件数:24,セグメント:"Enterprise",平均単価:5060124},{取引先名:"株式会社マイクロアド",実績金額:86410312,件数:103,セグメント:"Enterprise",平均単価:838935},{取引先名:"カタリナ MKTジャパン",実績金額:59800000,件数:26,セグメント:"Enterprise",平均単価:2300000},{取引先名:"ゼンリンMKTソリューションズ",実績金額:40867535,件数:373,セグメント:"Enterprise",平均単価:109564},{取引先名:"NTTタウンページ",実績金額:38371683,件数:401,セグメント:"Enterprise",平均単価:95689},{取引先名:"株式会社関東朝日広告社",実績金額:34652686,件数:203,セグメント:"Enterprise",平均単価:170702},{取引先名:"株式会社リクルート",実績金額:33753406,件数:65,セグメント:"Enterprise",平均単価:519283},{取引先名:"Hakuhodo DY ONE",実績金額:23840828,件数:59,セグメント:"Enterprise",平均単価:404081},{取引先名:"株式会社日本経済廣告社",実績金額:22200000,件数:27,セグメント:"Enterprise",平均単価:822222},{取引先名:"株式会社unerryy",実績金額:22116706,件数:46,セグメント:"Enterprise",平均単価:480797},{取引先名:"ダイオーミウラ",実績金額:20817725,件数:117,セグメント:"Enterprise",平均単価:177929},{取引先名:"株式会社河合塾マナビス",実績金額:20500000,件数:21,セグメント:"Enterprise",平均単価:976190},{取引先名:"株式会社キネッソジャパン",実績金額:19960609,件数:22,セグメント:"Enterprise",平均単価:907300},{取引先名:"株式会社ジーニー",実績金額:19665081,件数:14,セグメント:"Enterprise",平均単価:1404648},{取引先名:"JR西日本ITソリューションズ",実績金額:18847723,件数:25,セグメント:"Enterprise",平均単価:753908},{取引先名:"Geolocation Technology",実績金額:16705742,件数:22,セグメント:"Enterprise",平均単価:759351},{取引先名:"株式会社True Data",実績金額:15691630,件数:24,セグメント:"Enterprise",平均単価:653817},{取引先名:"株式会社大阪朝日広告社",実績金額:14266329,件数:42,セグメント:"Enterprise",平均単価:339674},{取引先名:"ゲンダイエージェンシー",実績金額:14066103,件数:24,セグメント:"Enterprise",平均単価:586087},{取引先名:"株式会社早稲田アカデミー",実績金額:12392478,件数:107,セグメント:"Enterprise",平均単価:115817},{取引先名:"デジタルアイデンティティ",実績金額:11746367,件数:30,セグメント:"Enterprise",平均単価:391545},{取引先名:"株式会社インオーダー",実績金額:11399883,件数:142,セグメント:"Enterprise",平均単価:80280},{取引先名:"株式会社日本エージェンシー",実績金額:11316512,件数:26,セグメント:"Enterprise",平均単価:435250},{取引先名:"日野自動車",実績金額:10000000,件数:5,セグメント:"Enterprise",平均単価:2000000},{取引先名:"ユーソナー株式会社",実績金額:8400000,件数:24,セグメント:"Enterprise",平均単価:350000},{取引先名:"株式会社揚羽",実績金額:7791427,件数:39,セグメント:"Enterprise",平均単価:199780},{取引先名:"株式会社アドバ",実績金額:7480717,件数:108,セグメント:"Enterprise",平均単価:69265},{取引先名:"株式会社クイック福岡",実績金額:6519339,件数:79,セグメント:"Enterprise",平均単価:82523},{取引先名:"株式会社ジオロジック",実績金額:6352941,件数:18,セグメント:"Enterprise",平均単価:352941},{取引先名:"GMO NIKKO",実績金額:6025600,件数:26,セグメント:"Enterprise",平均単価:231753}],
+  end_seg_sum:[{エンド_セグ:"Enterprise",金額:636214478,件数:896,社数:42},{エンド_セグ:"SMB",金額:228126904,件数:3274,社数:386}],
+  ag_seg_sum:[{代理店_セグ:"Enterprise",金額:755109991,件数:2327,社数:32},{代理店_セグ:"SMB",金額:109231391,件数:1843,社数:134}],
+  sales:[{営業担当者:"宇佐美 章",実績金額:240155747,件数:167,社数:33,平均単価:1438058},{営業担当者:"井上 倖一",実績金額:96755660,件数:462,社数:62,平均単価:209427},{営業担当者:"赤津 遼",実績金額:87771691,件数:102,社数:7,平均単価:860506},{営業担当者:"志賀 健真",実績金額:77160487,件数:557,社数:91,平均単価:138528},{営業担当者:"清水 裕文",実績金額:66532916,件数:336,社数:52,平均単価:198014},{営業担当者:"菊池 遼",実績金額:64395511,件数:131,社数:11,平均単価:491568},{営業担当者:"宇木 千央",実績金額:57772715,件数:567,社数:50,平均単価:101891},{営業担当者:"ブイヤ 未夢",実績金額:46999318,件数:524,社数:65,平均単価:89693},{営業担当者:"竹上 透",実績金額:45818441,件数:269,社数:38,平均単価:170328},{営業担当者:"脇屋 木夏",実績金額:37398002,件数:189,社数:13,平均単価:197873},{営業担当者:"康 圭吾",実績金額:24696358,件数:159,社数:7,平均単価:155323},{営業担当者:"簗田 芽依",実績金額:19472757,件数:273,社数:28,平均単価:71328},{営業担当者:"横山 史弥",実績金額:-588221,件数:434,社数:1,平均単価:-1355}],
+  role:[{ロール:"DMXG",実績金額:494179794},{ロール:"PMXG",実績金額:370161588}],
+  role_monthly:[{月:"2025-04",ロール:"DMXG",実績金額:42225022},{月:"2025-04",ロール:"PMXG",実績金額:21903939},{月:"2025-05",ロール:"DMXG",実績金額:33601412},{月:"2025-05",ロール:"PMXG",実績金額:18968770},{月:"2025-06",ロール:"DMXG",実績金額:35717454},{月:"2025-06",ロール:"PMXG",実績金額:28188074},{月:"2025-07",ロール:"DMXG",実績金額:43145591},{月:"2025-07",ロール:"PMXG",実績金額:30177417},{月:"2025-08",ロール:"DMXG",実績金額:41876383},{月:"2025-08",ロール:"PMXG",実績金額:35559939},{月:"2025-09",ロール:"DMXG",実績金額:34075320},{月:"2025-09",ロール:"PMXG",実績金額:34483567},{月:"2025-10",ロール:"DMXG",実績金額:42017021},{月:"2025-10",ロール:"PMXG",実績金額:30923097},{月:"2025-11",ロール:"DMXG",実績金額:51763880},{月:"2025-11",ロール:"PMXG",実績金額:31428329},{月:"2025-12",ロール:"DMXG",実績金額:49146885},{月:"2025-12",ロール:"PMXG",実績金額:28274636},{月:"2026-01",ロール:"DMXG",実績金額:41240280},{月:"2026-01",ロール:"PMXG",実績金額:26013623},{月:"2026-02",ロール:"DMXG",実績金額:42423857},{月:"2026-02",ロール:"PMXG",実績金額:34367571},{月:"2026-03",ロール:"DMXG",実績金額:36946689},{月:"2026-03",ロール:"PMXG",実績金額:49872626}],
+  charge_type:[{課金形態:"CPC変動",実績金額:367685062,件数:2005,平均単価:183384},{課金形態:"CPM変動",実績金額:58389797,件数:211,平均単価:276728},{課金形態:"CPV変動",実績金額:15573362,件数:59,平均単価:263955},{課金形態:"CPC固定",実績金額:7320000,件数:44,平均単価:166363}],
+  new_monthly:[{月:"2025-04",区分:"前年度以前新規",実績金額:47122537},{月:"2025-04",区分:"前年度新規",実績金額:4756145},{月:"2025-05",区分:"前年度以前新規",実績金額:38206266},{月:"2025-05",区分:"前年度新規",実績金額:1457122},{月:"2025-06",区分:"前年度以前新規",実績金額:42877911},{月:"2025-06",区分:"前年度新規",実績金額:1358434},{月:"2025-07",区分:"前年度以前新規",実績金額:50292255},{月:"2025-07",区分:"前年度新規",実績金額:1616810},{月:"2025-08",区分:"前年度以前新規",実績金額:41087168},{月:"2025-08",区分:"前年度新規",実績金額:3959408},{月:"2025-09",区分:"前年度以前新規",実績金額:36056132},{月:"2025-09",区分:"前年度新規",実績金額:3348863},{月:"2025-10",区分:"前年度以前新規",実績金額:38859572},{月:"2025-10",区分:"前年度新規",実績金額:3292960},{月:"2025-11",区分:"前年度以前新規",実績金額:42286563},{月:"2025-11",区分:"前年度新規",実績金額:5040120},{月:"2025-12",区分:"前年度以前新規",実績金額:43312445},{月:"2025-12",区分:"前年度新規",実績金額:6417393},{月:"2026-01",区分:"前年度以前新規",実績金額:40114943},{月:"2026-01",区分:"前年度新規",実績金額:4517192},{月:"2026-02",区分:"前年度以前新規",実績金額:38745094},{月:"2026-02",区分:"前年度新規",実績金額:4391902},{月:"2026-03",区分:"前年度以前新規",実績金額:45735746},{月:"2026-03",区分:"前年度新規",実績金額:5187994}],
+  smb_end_dist:[{帯:"〜30万",社数:168},{帯:"30〜50万",社数:65},{帯:"50〜100万",社数:84},{帯:"100〜200万",社数:50},{帯:"200〜300万",社数:15}],
+  smb_ag_dist:[{帯:"〜50万",社数:35},{帯:"50〜100万",社数:20},{帯:"100〜200万",社数:15},{帯:"200〜300万",社数:7},{帯:"300〜500万",社数:12}],
+  prod_monthly:[
+    {月:"2025-04",商品:"データ利用費",実績金額:20106579},{月:"2025-04",商品:"エリアAD",実績金額:6490753},{月:"2025-04",商品:"IG/FB AD",実績金額:2055532},{月:"2025-04",商品:"エリアAD(データ)",実績金額:13252433},{月:"2025-04",商品:"Yahoo!広告",実績金額:4604027},{月:"2025-04",商品:"LINE AD",実績金額:4865144},
+    {月:"2025-05",商品:"データ利用費",実績金額:20758987},{月:"2025-05",商品:"エリアAD",実績金額:6826641},{月:"2025-05",商品:"IG/FB AD",実績金額:4043412},{月:"2025-05",商品:"エリアAD(データ)",実績金額:10772563},{月:"2025-05",商品:"Yahoo!広告",実績金額:2928711},{月:"2025-05",商品:"LINE AD",実績金額:3425287},
+    {月:"2025-06",商品:"データ利用費",実績金額:24309435},{月:"2025-06",商品:"エリアAD",実績金額:8562900},{月:"2025-06",商品:"IG/FB AD",実績金額:5848836},{月:"2025-06",商品:"エリアAD(データ)",実績金額:8077373},{月:"2025-06",商品:"Yahoo!広告",実績金額:4085684},{月:"2025-06",商品:"LINE AD",実績金額:4832327},
+    {月:"2025-07",商品:"データ利用費",実績金額:26034173},{月:"2025-07",商品:"エリアAD",実績金額:9936945},{月:"2025-07",商品:"IG/FB AD",実績金額:6427808},{月:"2025-07",商品:"エリアAD(データ)",実績金額:11265794},{月:"2025-07",商品:"Yahoo!広告",実績金額:5984971},{月:"2025-07",商品:"LINE AD",実績金額:5351925},
+    {月:"2025-08",商品:"データ利用費",実績金額:24054546},{月:"2025-08",商品:"エリアAD",実績金額:14428437},{月:"2025-08",商品:"IG/FB AD",実績金額:5830077},{月:"2025-08",商品:"エリアAD(データ)",実績金額:7937369},{月:"2025-08",商品:"Yahoo!広告",実績金額:6774959},{月:"2025-08",商品:"LINE AD",実績金額:7306494},
+    {月:"2025-09",商品:"データ利用費",実績金額:20402287},{月:"2025-09",商品:"エリアAD",実績金額:11078661},{月:"2025-09",商品:"IG/FB AD",実績金額:5648454},{月:"2025-09",商品:"エリアAD(データ)",実績金額:4926726},{月:"2025-09",商品:"Yahoo!広告",実績金額:8295619},{月:"2025-09",商品:"LINE AD",実績金額:2516876},
+    {月:"2025-10",商品:"データ利用費",実績金額:23446103},{月:"2025-10",商品:"エリアAD",実績金額:12254597},{月:"2025-10",商品:"IG/FB AD",実績金額:6811116},{月:"2025-10",商品:"エリアAD(データ)",実績金額:4766253},{月:"2025-10",商品:"Yahoo!広告",実績金額:9139083},{月:"2025-10",商品:"LINE AD",実績金額:2183384},
+    {月:"2025-11",商品:"データ利用費",実績金額:23914885},{月:"2025-11",商品:"エリアAD",実績金額:15825555},{月:"2025-11",商品:"IG/FB AD",実績金額:12766218},{月:"2025-11",商品:"エリアAD(データ)",実績金額:4451505},{月:"2025-11",商品:"Yahoo!広告",実績金額:8591219},{月:"2025-11",商品:"LINE AD",実績金額:4381626},
+    {月:"2025-12",商品:"データ利用費",実績金額:26644245},{月:"2025-12",商品:"エリアAD",実績金額:10679686},{月:"2025-12",商品:"IG/FB AD",実績金額:8629702},{月:"2025-12",商品:"エリアAD(データ)",実績金額:5201549},{月:"2025-12",商品:"Yahoo!広告",実績金額:4288264},{月:"2025-12",商品:"LINE AD",実績金額:3007354},
+    {月:"2026-01",商品:"データ利用費",実績金額:25917387},{月:"2026-01",商品:"エリアAD",実績金額:9072426},{月:"2026-01",商品:"IG/FB AD",実績金額:11798130},{月:"2026-01",商品:"エリアAD(データ)",実績金額:4495507},{月:"2026-01",商品:"Yahoo!広告",実績金額:5486331},{月:"2026-01",商品:"LINE AD",実績金額:3145726},
+    {月:"2026-02",商品:"データ利用費",実績金額:25262579},{月:"2026-02",商品:"エリアAD",実績金額:16640848},{月:"2026-02",商品:"IG/FB AD",実績金額:10971882},{月:"2026-02",商品:"エリアAD(データ)",実績金額:3410199},{月:"2026-02",商品:"Yahoo!広告",実績金額:4808829},{月:"2026-02",商品:"LINE AD",実績金額:9244468},
+    {月:"2026-03",商品:"データ利用費",実績金額:24825000},{月:"2026-03",商品:"エリアAD",実績金額:23927346},{月:"2026-03",商品:"IG/FB AD",実績金額:10946179},{月:"2026-03",商品:"エリアAD(データ)",実績金額:430000},{月:"2026-03",商品:"Yahoo!広告",実績金額:9560095},{月:"2026-03",商品:"LINE AD",実績金額:11459545}
   ],
-  monthly: [
-    {"月":"2025-04","実績金額":64128961},{"月":"2025-05","実績金額":52570182},
-    {"月":"2025-06","実績金額":63905528},{"月":"2025-07","実績金額":73323008},
-    {"月":"2025-08","実績金額":77436322},{"月":"2025-09","実績金額":68558887},
-    {"月":"2025-10","実績金額":72940118},{"月":"2025-11","実績金額":83192209},
-    {"月":"2025-12","実績金額":77421521},{"月":"2026-01","実績金額":67253903},
-    {"月":"2026-02","実績金額":76791428},{"月":"2026-03","実績金額":86819315}
+  media_monthly_top:[
+    {月:"2025-04",媒体:"GDN",v:4255149},{月:"2025-04",媒体:"YDA",v:4604027},{月:"2025-04",媒体:"IG",v:1991647},{月:"2025-04",媒体:"LINE",v:4865144},{月:"2025-04",媒体:"YouTube",v:2034372},{月:"2025-04",媒体:"P-MAX",v:0},{月:"2025-04",媒体:"リエルコ",v:2059180},{月:"2025-04",媒体:"Universe",v:677776},
+    {月:"2025-05",媒体:"GDN",v:4280124},{月:"2025-05",媒体:"YDA",v:2817949},{月:"2025-05",媒体:"IG",v:3961412},{月:"2025-05",媒体:"LINE",v:3425287},{月:"2025-05",媒体:"YouTube",v:523430},{月:"2025-05",媒体:"P-MAX",v:0},{月:"2025-05",媒体:"リエルコ",v:1261151},{月:"2025-05",媒体:"Universe",v:1672218},
+    {月:"2025-06",媒体:"GDN",v:3327665},{月:"2025-06",媒体:"YDA",v:4011332},{月:"2025-06",媒体:"IG",v:5518834},{月:"2025-06",媒体:"LINE",v:4832327},{月:"2025-06",媒体:"YouTube",v:1637237},{月:"2025-06",媒体:"P-MAX",v:3000000},{月:"2025-06",媒体:"リエルコ",v:3366772},{月:"2025-06",媒体:"Universe",v:1101216},
+    {月:"2025-07",媒体:"GDN",v:6420303},{月:"2025-07",媒体:"YDA",v:5984971},{月:"2025-07",媒体:"IG",v:5947810},{月:"2025-07",媒体:"LINE",v:5351925},{月:"2025-07",媒体:"YouTube",v:2665103},{月:"2025-07",媒体:"P-MAX",v:236406},{月:"2025-07",媒体:"リエルコ",v:3466457},{月:"2025-07",媒体:"Universe",v:1153376},
+    {月:"2025-08",媒体:"GDN",v:4918804},{月:"2025-08",媒体:"YDA",v:6675054},{月:"2025-08",媒体:"IG",v:5150077},{月:"2025-08",媒体:"LINE",v:7306494},{月:"2025-08",媒体:"YouTube",v:5174279},{月:"2025-08",媒体:"P-MAX",v:7143476},{月:"2025-08",媒体:"リエルコ",v:2804916},{月:"2025-08",媒体:"Universe",v:1158599},
+    {月:"2025-09",媒体:"GDN",v:4629955},{月:"2025-09",媒体:"YDA",v:8295619},{月:"2025-09",媒体:"IG",v:5053352},{月:"2025-09",媒体:"LINE",v:2516876},{月:"2025-09",媒体:"YouTube",v:6001888},{月:"2025-09",媒体:"P-MAX",v:4527362},{月:"2025-09",媒体:"リエルコ",v:2115495},{月:"2025-09",媒体:"Universe",v:1180540},
+    {月:"2025-10",媒体:"GDN",v:5212749},{月:"2025-10",媒体:"YDA",v:9139083},{月:"2025-10",媒体:"IG",v:4980038},{月:"2025-10",媒体:"LINE",v:2183384},{月:"2025-10",媒体:"YouTube",v:10305641},{月:"2025-10",媒体:"P-MAX",v:5764383},{月:"2025-10",媒体:"リエルコ",v:1275712},{月:"2025-10",媒体:"Universe",v:884416},
+    {月:"2025-11",媒体:"GDN",v:10806189},{月:"2025-11",媒体:"YDA",v:8591219},{月:"2025-11",媒体:"IG",v:7914671},{月:"2025-11",媒体:"LINE",v:4381626},{月:"2025-11",媒体:"YouTube",v:6148891},{月:"2025-11",媒体:"P-MAX",v:4197351},{月:"2025-11",媒体:"リエルコ",v:2208138},{月:"2025-11",媒体:"Universe",v:439400},
+    {月:"2025-12",媒体:"GDN",v:7131351},{月:"2025-12",媒体:"YDA",v:4288264},{月:"2025-12",媒体:"IG",v:7021709},{月:"2025-12",媒体:"LINE",v:3007354},{月:"2025-12",媒体:"YouTube",v:3971853},{月:"2025-12",媒体:"P-MAX",v:1908690},{月:"2025-12",媒体:"リエルコ",v:2585963},{月:"2025-12",媒体:"Universe",v:1107160},
+    {月:"2026-01",媒体:"GDN",v:6045032},{月:"2026-01",媒体:"YDA",v:5486331},{月:"2026-01",媒体:"IG",v:7800427},{月:"2026-01",媒体:"LINE",v:3145726},{月:"2026-01",媒体:"YouTube",v:1531265},{月:"2026-01",媒体:"P-MAX",v:1990589},{月:"2026-01",媒体:"リエルコ",v:2392167},{月:"2026-01",媒体:"Universe",v:823985},
+    {月:"2026-02",媒体:"GDN",v:12646161},{月:"2026-02",媒体:"YDA",v:4808829},{月:"2026-02",媒体:"IG",v:9071334},{月:"2026-02",媒体:"LINE",v:9244468},{月:"2026-02",媒体:"YouTube",v:2499688},{月:"2026-02",媒体:"P-MAX",v:2343674},{月:"2026-02",媒体:"リエルコ",v:1931353},{月:"2026-02",媒体:"Universe",v:1389186},
+    {月:"2026-03",媒体:"GDN",v:15558695},{月:"2026-03",媒体:"YDA",v:9560095},{月:"2026-03",媒体:"IG",v:7753184},{月:"2026-03",媒体:"LINE",v:11459545},{月:"2026-03",媒体:"YouTube",v:1969192},{月:"2026-03",媒体:"P-MAX",v:5623819},{月:"2026-03",媒体:"リエルコ",v:1616852},{月:"2026-03",媒体:"Universe",v:2525073}
   ],
-  sales: [
-    {"営業担当者（計上先）":"宇佐美 章","実績金額":240155747,"案件数":167,"クライアント数":33},
-    {"営業担当者（計上先）":"井上 倖一","実績金額":96755660,"案件数":462,"クライアント数":62},
-    {"営業担当者（計上先）":"赤津 遼","実績金額":87771691,"案件数":102,"クライアント数":7},
-    {"営業担当者（計上先）":"志賀 健真","実績金額":77160487,"案件数":557,"クライアント数":91},
-    {"営業担当者（計上先）":"清水 裕文","実績金額":66532916,"案件数":336,"クライアント数":52},
-    {"営業担当者（計上先）":"菊池 遼","実績金額":64395511,"案件数":131,"クライアント数":11},
-    {"営業担当者（計上先）":"宇木 千央","実績金額":57772715,"案件数":567,"クライアント数":50},
-    {"営業担当者（計上先）":"ブイヤ 未夢","実績金額":46999318,"案件数":524,"クライアント数":65},
-    {"営業担当者（計上先）":"竹上 透","実績金額":45818441,"案件数":269,"クライアント数":38},
-    {"営業担当者（計上先）":"脇屋 木夏","実績金額":37398002,"案件数":189,"クライアント数":13},
-    {"営業担当者（計上先）":"康 圭吾","実績金額":24696358,"案件数":159,"クライアント数":7},
-    {"営業担当者（計上先）":"簗田 芽依","実績金額":19472757,"案件数":273,"クライアント数":28},
-    {"営業担当者（計上先）":"横山 史弥","実績金額":-588221,"案件数":434,"クライアント数":1}
+  prod_q:[
+    {Q:"FY25_1Q",商品:"データ利用費",v:65175001},{Q:"FY25_1Q",商品:"エリアAD",v:21880294},{Q:"FY25_1Q",商品:"IG/FB AD",v:11947780},{Q:"FY25_1Q",商品:"エリアAD(データ)",v:32102369},{Q:"FY25_1Q",商品:"Yahoo!広告",v:11618422},{Q:"FY25_1Q",商品:"LINE AD",v:13122758},
+    {Q:"FY25_2Q",商品:"データ利用費",v:70491006},{Q:"FY25_2Q",商品:"エリアAD",v:35444043},{Q:"FY25_2Q",商品:"IG/FB AD",v:17906339},{Q:"FY25_2Q",商品:"エリアAD(データ)",v:24129889},{Q:"FY25_2Q",商品:"Yahoo!広告",v:21055549},{Q:"FY25_2Q",商品:"LINE AD",v:15175295},
+    {Q:"FY25_3Q",商品:"データ利用費",v:74005233},{Q:"FY25_3Q",商品:"エリアAD",v:38759838},{Q:"FY25_3Q",商品:"IG/FB AD",v:28207036},{Q:"FY25_3Q",商品:"エリアAD(データ)",v:14419307},{Q:"FY25_3Q",商品:"Yahoo!広告",v:22018566},{Q:"FY25_3Q",商品:"LINE AD",v:9572364},
+    {Q:"FY25_4Q",商品:"データ利用費",v:76004966},{Q:"FY25_4Q",商品:"エリアAD",v:49640620},{Q:"FY25_4Q",商品:"IG/FB AD",v:33716191},{Q:"FY25_4Q",商品:"エリアAD(データ)",v:8335706},{Q:"FY25_4Q",商品:"Yahoo!広告",v:19855255},{Q:"FY25_4Q",商品:"LINE AD",v:23849739}
   ],
-  client_top20: [
-    {"エンドクライアント名":"株式会社フリークアウト","実績金額":121442987,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"株式会社マイクロアド","実績金額":75005282,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"カタリナ マーケティングジャパン株式会社","実績金額":59800000,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"株式会社リクルート","実績金額":35567716,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"西日本旅客鉄道株式会社","実績金額":20737723,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"株式会社河合塾マナビス","実績金額":20500000,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"徳島県鳴門市","実績金額":19960609,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"アメアスポーツジャパン株式会社","実績金額":19400000,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"学校法人日本教育財団","実績金額":19065081,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"株式会社Geolocation Technology","実績金額":16705742,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"株式会社True Data","実績金額":15691630,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"ゲンダイエージェンシー株式会社","実績金額":14066103,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"株式会社川島コーポレーション","実績金額":13317725,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"防衛省","実績金額":12514289,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"株式会社早稲田アカデミー","実績金額":12392478,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"株式会社京進","実績金額":12065791,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"株式会社中央コンタクト","実績金額":11746367,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"日野自動車株式会社","実績金額":10769230,"セグメント":"Enterprise"},
-    {"エンドクライアント名":"学校法人高崎商科大学","実績金額":9500000,"セグメント":"SMB"},
-    {"エンドクライアント名":"株式会社東京インテリア家具","実績金額":9000000,"セグメント":"SMB"}
-  ],
-  agency_top15: [
-    {"取引先名":"株式会社フリークアウト","実績金額":121442987},
-    {"取引先名":"株式会社マイクロアド","実績金額":86410312},
-    {"取引先名":"カタリナ マーケティングジャパン株式会社","実績金額":59800000},
-    {"取引先名":"株式会社ゼンリンマーケティングソリューションズ","実績金額":40867535},
-    {"取引先名":"NTTタウンページ株式会社","実績金額":38371683},
-    {"取引先名":"株式会社関東朝日広告社","実績金額":34652686},
-    {"取引先名":"株式会社リクルート","実績金額":33753406},
-    {"取引先名":"株式会社Hakuhodo DY ONE","実績金額":23840828},
-    {"取引先名":"株式会社日本経済廣告社","実績金額":22200000},
-    {"取引先名":"株式会社unerryy","実績金額":22116706},
-    {"取引先名":"ダイオーミウラ株式会社","実績金額":20817725},
-    {"取引先名":"株式会社河合塾マナビス","実績金額":20500000},
-    {"取引先名":"株式会社キネッソジャパン","実績金額":19960609},
-    {"取引先名":"株式会社ジーニー","実績金額":19665081},
-    {"取引先名":"株式会社JR西日本ITソリューションズ","実績金額":18847723}
-  ],
-  segment: [
-    {"セグメント":"Enterprise","金額":510748753,"件数":445},
-    {"セグメント":"SMB","金額":353592629,"件数":3725}
-  ],
-  media: [
-    {"媒体":"GDN","実績金額":85232177},{"媒体":"YDA","実績金額":74262773},
-    {"媒体":"IG","実績金額":72164495},{"媒体":"LINE","実績金額":61720156},
-    {"媒体":"YouTube","実績金額":44462839},{"媒体":"P-MAX","実績金額":36735750},
-    {"媒体":"リエルコ","実績金額":27084156},{"媒体":"Universe","実績金額":14112945},
-    {"媒体":"Meta","実績金額":11938586},{"媒体":"FB","実績金額":7674265}
-  ],
-  role: [
-    {"所有者 ロール":"DMXG","実績金額":494179794},
-    {"所有者 ロール":"PMXG","実績金額":370161588},
-    {"所有者 ロール":"おでかけG","実績金額":0}
-  ],
-  q_segment: [
-    {"納品Q":"FY25_1Q","セグメント":"Enterprise","実績金額":106097048},
-    {"納品Q":"FY25_1Q","セグメント":"SMB","実績金額":74507623},
-    {"納品Q":"FY25_2Q","セグメント":"Enterprise","実績金額":142461487},
-    {"納品Q":"FY25_2Q","セグメント":"SMB","実績金額":76856730},
-    {"納品Q":"FY25_3Q","セグメント":"Enterprise","実績金額":130818834},
-    {"納品Q":"FY25_3Q","セグメント":"SMB","実績金額":102735014},
-    {"納品Q":"FY25_4Q","セグメント":"Enterprise","実績金額":131371384},
-    {"納品Q":"FY25_4Q","セグメント":"SMB","実績金額":99493262}
+  media_q:[
+    {Q:"FY25_1Q",媒体:"GDN",v:11862938},{Q:"FY25_1Q",媒体:"YDA",v:11433308},{Q:"FY25_1Q",媒体:"IG",v:11471893},{Q:"FY25_1Q",媒体:"LINE",v:13122758},{Q:"FY25_1Q",媒体:"YouTube",v:4195039},{Q:"FY25_1Q",媒体:"P-MAX",v:3000000},{Q:"FY25_1Q",媒体:"リエルコ",v:6687103},{Q:"FY25_1Q",媒体:"Universe",v:3451210},
+    {Q:"FY25_2Q",媒体:"GDN",v:15969062},{Q:"FY25_2Q",媒体:"YDA",v:20955644},{Q:"FY25_2Q",媒体:"IG",v:16151239},{Q:"FY25_2Q",媒体:"LINE",v:15175295},{Q:"FY25_2Q",媒体:"YouTube",v:13841270},{Q:"FY25_2Q",媒体:"P-MAX",v:11907244},{Q:"FY25_2Q",媒体:"リエルコ",v:8386868},{Q:"FY25_2Q",媒体:"Universe",v:3492515},
+    {Q:"FY25_3Q",媒体:"GDN",v:23150289},{Q:"FY25_3Q",媒体:"YDA",v:22018566},{Q:"FY25_3Q",媒体:"IG",v:19916418},{Q:"FY25_3Q",媒体:"LINE",v:9572364},{Q:"FY25_3Q",媒体:"YouTube",v:20426385},{Q:"FY25_3Q",媒体:"P-MAX",v:11870424},{Q:"FY25_3Q",媒体:"リエルコ",v:6069813},{Q:"FY25_3Q",媒体:"Universe",v:2430976},
+    {Q:"FY25_4Q",媒体:"GDN",v:34249888},{Q:"FY25_4Q",媒体:"YDA",v:19855255},{Q:"FY25_4Q",媒体:"IG",v:24624945},{Q:"FY25_4Q",媒体:"LINE",v:23849739},{Q:"FY25_4Q",媒体:"YouTube",v:6000145},{Q:"FY25_4Q",媒体:"P-MAX",v:9958082},{Q:"FY25_4Q",媒体:"リエルコ",v:5940372},{Q:"FY25_4Q",媒体:"Universe",v:4738244}
   ]
 };
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+/* ═══════════════════════════════════════════════════════
    UTILS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-const fmt = n => {
-  if (Math.abs(n) >= 100000000) return (n/100000000).toFixed(1) + '億円';
-  if (Math.abs(n) >= 10000000) return (n/10000000).toFixed(1) + '千万';
-  if (Math.abs(n) >= 1000000) return (n/1000000).toFixed(1) + '百万';
-  return n.toLocaleString('ja-JP') + '円';
+═══════════════════════════════════════════════════════ */
+const MONTHS = D.monthly.map(d=>{const[y,m]=d.月.split('-');return`${y.slice(2)}/${m}`;});
+const QS = ['FY25_1Q','FY25_2Q','FY25_3Q','FY25_4Q'];
+const QL = ['1Q','2Q','3Q','4Q'];
+const PALETTE = ['#3b82f6','#8b5cf6','#06b6d4','#f59e0b','#22c55e','#f97316','#ec4899','#84cc16','#a855f7','#14b8a6','#ef4444','#eab308'];
+const PROD_COLORS = ['#3b82f6','#22c55e','#f97316','#06b6d4','#8b5cf6','#f59e0b'];
+const MEDIA_COLORS = ['#3b82f6','#a855f7','#06b6d4','#f59e0b','#ef4444','#22c55e','#f97316','#ec4899'];
+
+const fmt = n=>{
+  if(n==null) return '—';
+  const a=Math.abs(n);
+  if(a>=100000000) return (n/100000000).toFixed(1)+'億';
+  if(a>=10000000) return (n/10000000).toFixed(1)+'千万';
+  if(a>=1000000) return (n/1000000).toFixed(1)+'百万';
+  return n.toLocaleString('ja-JP');
 };
-const fmtFull = n => n.toLocaleString('ja-JP') + '円';
-const pct = (a,b) => ((a/b)*100).toFixed(1) + '%';
+const fmtFull=n=>n==null?'—':(n<0?'-':'')+'¥'+Math.abs(n).toLocaleString('ja-JP');
+const pct=(a,b)=>b===0?'0%':((a/b)*100).toFixed(1)+'%';
 
-const COLORS = [
-  '#4f9cf9','#a78bfa','#34d399','#fb923c','#f472b6',
-  '#67e8f9','#fbbf24','#818cf8','#4ade80','#f87171'
-];
-
-const chartDefaults = {
-  plugins: { legend: { display: false }, tooltip: {
-    backgroundColor: '#1e2330',
-    borderColor: 'rgba(255,255,255,0.1)',
-    borderWidth: 1,
-    titleColor: '#e2e8f0',
-    bodyColor: '#94a3b8',
-    padding: 10,
-  }},
-  animation: { duration: 800, easing: 'easeOutQuart' }
+const BASE_OPTS = {
+  animation:{duration:600,easing:'easeOutQuart'},
+  plugins:{
+    legend:{display:false},
+    tooltip:{backgroundColor:'#1a2035',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#94a3b8',padding:10,callbacks:{}}
+  },
+  scales:{
+    x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#475569',font:{size:10}}},
+    y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#475569',font:{size:10},callback:v=>fmt(v)}}
+  }
 };
+const mkOpts=(overrides={})=>JSON.parse(JSON.stringify({...BASE_OPTS,...overrides}));
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   INIT
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-function init() {
-  // KPI
-  document.getElementById('kpi-total').textContent = fmt(DATA.total_juchu);
-  document.getElementById('kpi-clients').textContent = DATA.total_clients.toLocaleString() + '社';
-  document.getElementById('kpi-ent').textContent = DATA.enterprise_count + '社';
-  document.getElementById('kpi-smb').textContent = DATA.smb_count + '社';
-  document.getElementById('kpi-avg').textContent = fmt(Math.round(DATA.total_juchu / 12));
-
-  buildMonthly();
-  buildQuarterly();
-  buildRoleBar();
-  buildMedia();
-  buildSegDonut();
-  buildSalesBar();
-  buildSalesTable();
-  buildClientBar();
-  buildClientTable();
-  buildAgencyBar();
-  buildAgencyTable();
-  buildSegSplit();
-  buildQSeg();
-  buildEntTable();
-  buildSMBDist();
+function mkLine(id,labels,datasets,h=100){
+  return new Chart(document.getElementById(id),{type:'line',data:{labels,datasets},options:{...mkOpts(),plugins:{...mkOpts().plugins,legend:{display:datasets.length>1,position:'top',labels:{color:'#94a3b8',font:{size:10},boxWidth:10,padding:10}}}}});
+}
+function mkBar(id,labels,datasets,h){
+  return new Chart(document.getElementById(id),{type:'bar',data:{labels,datasets},options:{...mkOpts(),plugins:{...mkOpts().plugins,legend:{display:datasets.length>1,position:'top',labels:{color:'#94a3b8',font:{size:10},boxWidth:10,padding:8}}}}});
+}
+function mkStackedBar(id,labels,datasets){
+  return new Chart(document.getElementById(id),{type:'bar',data:{labels,datasets},options:{...mkOpts(),plugins:{...mkOpts().plugins,legend:{display:true,position:'top',labels:{color:'#94a3b8',font:{size:10},boxWidth:10,padding:8}}},scales:{...mkOpts().scales,x:{...mkOpts().scales.x,stacked:true},y:{...mkOpts().scales.y,stacked:true}}}});
+}
+function mkDonut(id,labels,values,colors){
+  return new Chart(document.getElementById(id),{type:'doughnut',data:{labels,datasets:[{data:values,backgroundColor:colors,borderWidth:0,hoverOffset:6}]},options:{cutout:'68%',animation:{duration:600},plugins:{legend:{display:false},tooltip:{backgroundColor:'#1a2035',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#94a3b8',padding:10}}}});
+}
+function mkHBar(id,labels,datasets){
+  return new Chart(document.getElementById(id),{type:'bar',data:{labels,datasets},options:{...mkOpts(),indexAxis:'y',plugins:{...mkOpts().plugins,legend:{display:datasets.length>1,position:'top',labels:{color:'#94a3b8',font:{size:10},boxWidth:10,padding:8}}},scales:{x:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#475569',font:{size:10},callback:v=>fmt(v)}},y:{grid:{display:false},ticks:{color:'#c8d0dc',font:{size:10}}}}}});
 }
 
-/* ── Monthly ── */
-function buildMonthly() {
-  const labels = DATA.monthly.map(d => {
-    const [y,m] = d.月.split('-');
-    return `${y.slice(2)}/${m}`;
-  });
-  const vals = DATA.monthly.map(d => d.実績金額);
-  new Chart(document.getElementById('chartMonthly'), {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{
-        data: vals,
-        borderColor: '#4f9cf9',
-        backgroundColor: 'rgba(79,156,249,0.08)',
-        fill: true,
-        tension: 0.4,
-        pointBackgroundColor: '#4f9cf9',
-        pointRadius: 4,
-        pointHoverRadius: 6,
-        borderWidth: 2,
-      }]
-    },
-    options: {
-      ...chartDefaults,
-      scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#7c8799', font: { size: 11 } } },
-        y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#7c8799', font: { size: 11 }, callback: v => fmt(v) } }
-      },
-      plugins: { ...chartDefaults.plugins, tooltip: { ...chartDefaults.plugins.tooltip,
-        callbacks: { label: ctx => fmtFull(ctx.raw) }
-      }}
-    }
-  });
+function segByMonth(data,key){
+  const ent=MONTHS.map((_,i)=>{const m=D.monthly[i].月;const r=data.find(d=>d.月===m&&d[key]==='Enterprise');return r?r.実績金額:0;});
+  const smb=MONTHS.map((_,i)=>{const m=D.monthly[i].月;const r=data.find(d=>d.月===m&&d[key]==='SMB');return r?r.実績金額:0;});
+  return{ent,smb};
+}
+function segByQ(data,key){
+  const ent=QS.map(q=>{const r=data.find(d=>d.納品Q===q&&d[key]==='Enterprise');return r?r.実績金額:0;});
+  const smb=QS.map(q=>{const r=data.find(d=>d.納品Q===q&&d[key]==='SMB');return r?r.実績金額:0;});
+  return{ent,smb};
 }
 
-/* ── Quarterly ── */
-function buildQuarterly() {
-  const qLabels = DATA.quarterly.map(d => d.納品Q.replace('FY25_',''));
-  const qVals = DATA.quarterly.map(d => d.実績金額);
-  new Chart(document.getElementById('chartQuarterly'), {
-    type: 'bar',
-    data: {
-      labels: qLabels,
-      datasets: [{
-        data: qVals,
-        backgroundColor: ['rgba(79,156,249,0.7)','rgba(167,139,250,0.7)','rgba(52,211,153,0.7)','rgba(251,146,60,0.7)'],
-        borderRadius: 6,
-        borderSkipped: false,
-      }]
-    },
-    options: {
-      ...chartDefaults,
-      scales: {
-        x: { grid: { display: false }, ticks: { color: '#7c8799' } },
-        y: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#7c8799', callback: v => fmt(v) } }
-      },
-      plugins: { ...chartDefaults.plugins, tooltip: { ...chartDefaults.plugins.tooltip,
-        callbacks: { label: ctx => fmtFull(ctx.raw) }
-      }}
-    }
-  });
+/* ═══════════════════════════════════════════════════════
+   BUILD
+═══════════════════════════════════════════════════════ */
+function buildKPI(){
+  const k=D.kpi;
+  const q1=D.quarterly[0].実績金額,q4=D.quarterly[3].実績金額;
+  const items=[
+    {label:'FY25 総受注額',val:fmt(k.total),sub:'受注ベース実績金額',stripe:'linear-gradient(90deg,#3b82f6,transparent)',ext:''},
+    {label:'月平均受注',val:fmt(k.monthly_avg),sub:'12ヶ月平均',stripe:'linear-gradient(90deg,#8b5cf6,transparent)',ext:''},
+    {label:'エンドクライアント',val:k.end_total+'社',sub:`ENT ${k.end_ent_count}社 / SMB ${k.end_smb_count}社`,stripe:'linear-gradient(90deg,#f472b6,transparent)',ext:''},
+    {label:'代理店',val:k.agency_total+'社',sub:`ENT ${k.agency_ent_count}社 / SMB ${k.agency_smb_count}社`,stripe:'linear-gradient(90deg,#a855f7,transparent)',ext:''},
+    {label:'総受注件数',val:k.deal_count.toLocaleString()+'件',sub:'受注ステータス全件',stripe:'linear-gradient(90deg,#22c55e,transparent)',ext:''},
+    {label:'1Q→4Q 成長',val:pct(q4-q1,q1),sub:`1Q:${fmt(q1)} → 4Q:${fmt(q4)}`,stripe:'linear-gradient(90deg,#f59e0b,transparent)',ext:`<div class="kpi-trend up">▲ ${fmt(q4-q1)}</div>`},
+  ];
+  document.getElementById('kpi-row').innerHTML=items.map(it=>`
+    <div class="kpi" style="--stripe:${it.stripe}">
+      <div class="kpi-label">${it.label}</div>
+      <div class="kpi-val">${it.val}</div>
+      <div class="kpi-sub">${it.sub}</div>
+      ${it.ext}
+    </div>`).join('');
 }
 
-/* ── Role Bar ── */
-function buildRoleBar() {
-  const roles = DATA.role.filter(r => r.実績金額 > 0);
-  const total = roles.reduce((s,r) => s + r.実績金額, 0);
-  const max = Math.max(...roles.map(r => r.実績金額));
-  const colors = ['#4f9cf9','#a78bfa','#34d399'];
-  const el = document.getElementById('roleBar');
-  el.innerHTML = roles.map((r,i) => `
-    <div class="bar-row">
-      <div class="bar-label">${r['所有者 ロール']}</div>
-      <div class="bar-track"><div class="bar-fill" style="width:${(r.実績金額/max*100).toFixed(1)}%;background:${colors[i]}"></div></div>
-      <div class="bar-val">${fmt(r.実績金額)} <span style="color:#4d5a6b;font-size:10px">(${pct(r.実績金額,total)})</span></div>
+function buildOverview(){
+  // Monthly seg stacked
+  const es=segByMonth(D.monthly_end_seg,'エンド_セグ');
+  mkStackedBar('c-monthly-seg',MONTHS,[
+    {label:'Enterprise',data:es.ent,backgroundColor:'rgba(244,114,182,0.75)',borderRadius:3,stack:'s'},
+    {label:'SMB',data:es.smb,backgroundColor:'rgba(56,189,248,0.5)',borderRadius:3,stack:'s'}
+  ]);
+  // Quarterly
+  mkBar('c-quarterly',QL,[{data:D.quarterly.map(d=>d.実績金額),backgroundColor:['rgba(59,130,246,.7)','rgba(139,92,246,.7)','rgba(52,211,153,.7)','rgba(251,146,60,.7)'],borderRadius:5,borderSkipped:false}]);
+  // Donut end
+  const ess=D.end_seg_sum;
+  mkDonut('c-end-donut',['Enterprise','SMB'],[ess[0].金額,ess[1].金額],['#f472b6','#38bdf8']);
+  document.getElementById('end-donut-leg').innerHTML=[
+    {l:'Enterprise',v:ess[0].金額,c:'#f472b6',sub:`${ess[0].社数}社`},
+    {l:'SMB',v:ess[1].金額,c:'#38bdf8',sub:`${ess[1].社数}社`}
+  ].map(i=>`<div class="leg-item"><div class="leg-dot" style="background:${i.c}"></div><div class="leg-lbl">${i.l}<br><span style="font-size:10px;color:#475569">${i.sub}</span></div><div class="leg-val">${pct(i.v,ess[0].金額+ess[1].金額)}<br><span style="font-size:10px">${fmt(i.v)}</span></div></div>`).join('');
+  // Donut agency
+  const ass=D.ag_seg_sum;
+  mkDonut('c-ag-donut',['Enterprise','SMB'],[ass[0].金額,ass[1].金額],['#a855f7','#34d399']);
+  document.getElementById('ag-donut-leg').innerHTML=[
+    {l:'Enterprise',v:ass[0].金額,c:'#a855f7',sub:`${ass[0].社数}社`},
+    {l:'SMB',v:ass[1].金額,c:'#34d399',sub:`${ass[1].社数}社`}
+  ].map(i=>`<div class="leg-item"><div class="leg-dot" style="background:${i.c}"></div><div class="leg-lbl">${i.l}<br><span style="font-size:10px;color:#475569">${i.sub}</span></div><div class="leg-val">${pct(i.v,ass[0].金額+ass[1].金額)}<br><span style="font-size:10px">${fmt(i.v)}</span></div></div>`).join('');
+  // Role
+  const dm=MONTHS.map((_,i)=>{const m=D.monthly[i].月;const r=D.role_monthly.find(d=>d.月===m&&d.ロール==='DMXG');return r?r.実績金額:0;});
+  const pm=MONTHS.map((_,i)=>{const m=D.monthly[i].月;const r=D.role_monthly.find(d=>d.月===m&&d.ロール==='PMXG');return r?r.実績金額:0;});
+  mkLine('c-role',MONTHS,[
+    {label:'DMXG',data:dm,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.05)',fill:true,tension:.4,pointRadius:3,borderWidth:2},
+    {label:'PMXG',data:pm,borderColor:'#a855f7',backgroundColor:'rgba(168,85,247,.05)',fill:true,tension:.4,pointRadius:3,borderWidth:2}
+  ]);
+  // Media overview
+  const meds=D.media.slice(0,10);
+  mkHBar('c-media-overview',meds.map(m=>m.媒体),[
+    {label:'受注金額',data:meds.map(m=>m.実績金額),backgroundColor:meds.map((_,i)=>PALETTE[i]+'99'),borderRadius:4,borderSkipped:false}
+  ]);
+  // Charge
+  mkBar('c-charge',D.charge_type.map(d=>d.課金形態),[
+    {label:'受注金額',data:D.charge_type.map(d=>d.実績金額),backgroundColor:['rgba(59,130,246,.75)','rgba(139,92,246,.75)','rgba(52,211,153,.75)','rgba(251,146,60,.75)'],borderRadius:4,borderSkipped:false}
+  ]);
+}
+
+function buildTime(){
+  // Monthly all + 3MA
+  const vals=D.monthly.map(d=>d.実績金額);
+  const ma3=vals.map((v,i)=>i<2?null:(vals[i-2]+vals[i-1]+v)/3);
+  mkLine('c-monthly-all',MONTHS,[
+    {label:'月次受注',data:vals,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.07)',fill:true,tension:.4,pointRadius:4,pointHoverRadius:6,borderWidth:2},
+    {label:'3ヶ月移動平均',data:ma3,borderColor:'#f59e0b',backgroundColor:'transparent',tension:.4,pointRadius:0,borderWidth:2,borderDash:[4,3]}
+  ]);
+  // Time end seg line
+  const es=segByMonth(D.monthly_end_seg,'エンド_セグ');
+  mkStackedBar('c-time-end-seg',MONTHS,[
+    {label:'Enterprise',data:es.ent,backgroundColor:'rgba(244,114,182,.7)',stack:'s',borderRadius:2},
+    {label:'SMB',data:es.smb,backgroundColor:'rgba(56,189,248,.5)',stack:'s',borderRadius:2}
+  ]);
+  // Time ag seg line
+  const as=segByMonth(D.monthly_ag_seg,'代理店_セグ');
+  mkStackedBar('c-time-ag-seg',MONTHS,[
+    {label:'Enterprise',data:as.ent,backgroundColor:'rgba(168,85,247,.7)',stack:'s',borderRadius:2},
+    {label:'SMB',data:as.smb,backgroundColor:'rgba(52,211,153,.5)',stack:'s',borderRadius:2}
+  ]);
+  // Q end seg
+  const qes=segByQ(D.q_end_seg,'エンド_セグ');
+  mkStackedBar('c-q-end-seg',QL,[
+    {label:'Enterprise',data:qes.ent,backgroundColor:'rgba(244,114,182,.75)',stack:'s',borderRadius:3},
+    {label:'SMB',data:qes.smb,backgroundColor:'rgba(56,189,248,.5)',stack:'s',borderRadius:3}
+  ]);
+  // Q ag seg
+  const qas=segByQ(D.q_ag_seg,'代理店_セグ');
+  mkStackedBar('c-q-ag-seg',QL,[
+    {label:'Enterprise',data:qas.ent,backgroundColor:'rgba(168,85,247,.75)',stack:'s',borderRadius:3},
+    {label:'SMB',data:qas.smb,backgroundColor:'rgba(52,211,153,.5)',stack:'s',borderRadius:3}
+  ]);
+  // Prod monthly stacked
+  const prods=['データ利用費','エリアAD','IG/FB AD','エリアAD(データ)','Yahoo!広告','LINE AD'];
+  const pdsets=prods.map((p,i)=>({
+    label:p,
+    data:MONTHS.map((_,mi)=>{const m=D.monthly[mi].月;const r=D.prod_monthly.find(d=>d.月===m&&d.商品===p);return r?r.実績金額:0;}),
+    backgroundColor:PROD_COLORS[i]+'99',stack:'s',borderRadius:1
+  }));
+  mkStackedBar('c-prod-monthly',MONTHS,pdsets);
+  // Media monthly line
+  const meds=['GDN','YDA','IG','LINE','YouTube','P-MAX'];
+  const mdsets=meds.map((med,i)=>({
+    label:med,
+    data:MONTHS.map((_,mi)=>{const m=D.monthly[mi].月;const r=D.media_monthly_top.find(d=>d.月===m&&d.媒体===med);return r?r.v:0;}),
+    borderColor:MEDIA_COLORS[i],backgroundColor:'transparent',tension:.4,pointRadius:2,borderWidth:1.5
+  }));
+  mkLine('c-media-monthly',MONTHS,mdsets);
+  // Role monthly
+  const dm=MONTHS.map((_,i)=>{const m=D.monthly[i].月;const r=D.role_monthly.find(d=>d.月===m&&d.ロール==='DMXG');return r?r.実績金額:0;});
+  const pm=MONTHS.map((_,i)=>{const m=D.monthly[i].月;const r=D.role_monthly.find(d=>d.月===m&&d.ロール==='PMXG');return r?r.実績金額:0;});
+  mkLine('c-role-monthly',MONTHS,[
+    {label:'DMXG',data:dm,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.06)',fill:true,tension:.4,pointRadius:3,borderWidth:2},
+    {label:'PMXG',data:pm,borderColor:'#a855f7',backgroundColor:'rgba(168,85,247,.06)',fill:true,tension:.4,pointRadius:3,borderWidth:2}
+  ]);
+  // Half
+  mkBar('c-half',['上期','下期'],[{data:D.half.map(d=>d.実績金額),backgroundColor:['rgba(59,130,246,.75)','rgba(139,92,246,.75)'],borderRadius:6,borderSkipped:false}]);
+  // New monthly
+  const nv=MONTHS.map((_,i)=>{const m=D.monthly[i].月;const r=D.new_monthly.find(d=>d.月===m&&d.区分==='前年度以前新規');return r?r.実績金額:0;});
+  const nnv=MONTHS.map((_,i)=>{const m=D.monthly[i].月;const r=D.new_monthly.find(d=>d.月===m&&d.区分==='前年度新規');return r?r.実績金額:0;});
+  mkStackedBar('c-new',MONTHS,[
+    {label:'前年度以前新規',data:nv,backgroundColor:'rgba(59,130,246,.7)',stack:'s',borderRadius:2},
+    {label:'前年度新規',data:nnv,backgroundColor:'rgba(52,211,153,.7)',stack:'s',borderRadius:2}
+  ]);
+  // Weekly (monthly/4)
+  const wkLabels=[],wkVals=[];
+  D.monthly.forEach(d=>{
+    const[y,m]=d.月.split('-');
+    for(let w=1;w<=4;w++){wkLabels.push(`${y.slice(2)}/${m}W${w}`);wkVals.push(Math.round(d.実績金額/4));}
+  });
+  mkLine('c-weekly',wkLabels,[{label:'週次(推定)',data:wkVals,borderColor:'#06b6d4',backgroundColor:'rgba(6,182,212,.07)',fill:true,tension:.3,pointRadius:1,borderWidth:1.5}]);
+}
+
+function buildEndClient(){
+  // Seg blocks
+  const ent=D.end_seg_sum.find(d=>d.エンド_セグ==='Enterprise');
+  const smb=D.end_seg_sum.find(d=>d.エンド_セグ==='SMB');
+  const tot=ent.金額+smb.金額;
+  document.getElementById('end-seg-blocks').innerHTML=`
+    <div class="seg-blk ent"><div class="seg-blk-lbl">🏆 Enterprise (≥300万)</div><div class="seg-blk-val">${fmt(ent.金額)}</div><div class="seg-blk-meta"><span>${ent.社数}社</span><span>${pct(ent.金額,tot)} of total</span><span>${ent.件数}件</span><span>社平均 ${fmt(Math.round(ent.金額/ent.社数))}</span></div></div>
+    <div class="seg-blk smb"><div class="seg-blk-lbl">📈 SMB (&lt;300万)</div><div class="seg-blk-val">${fmt(smb.金額)}</div><div class="seg-blk-meta"><span>${smb.社数}社</span><span>${pct(smb.金額,tot)} of total</span><span>${smb.件数}件</span><span>社平均 ${fmt(Math.round(smb.金額/smb.社数))}</span></div></div>`;
+  // Bar TOP30
+  const top30=D.end_clients.slice(0,30);
+  mkBar('c-end-bar',top30.map(d=>d.エンドクライアント名),[{
+    data:top30.map(d=>d.実績金額),
+    backgroundColor:top30.map(d=>d.セグメント==='Enterprise'?'rgba(244,114,182,.8)':'rgba(56,189,248,.6)'),
+    borderRadius:3,borderSkipped:false
+  }]);
+  // Table
+  const total=D.kpi.total;
+  document.getElementById('end-table').innerHTML=D.end_clients.map((d,i)=>`<tr>
+    <td class="td-rank">${i+1}</td>
+    <td class="td-name">${d.エンドクライアント名}</td>
+    <td><span class="badge-${d.セグメント==='Enterprise'?'ent':'smb'}">${d.セグメント==='Enterprise'?'ENT':'SMB'}</span></td>
+    <td class="td-num">${fmtFull(d.実績金額)}</td>
+    <td class="td-num">${d.件数}</td>
+    <td class="td-num">${fmt(d.平均単価)}</td>
+    <td class="td-num">${pct(d.実績金額,total)}</td>
+  </tr>`).join('');
+  // Q trend (TOP5 line)
+  const topEnds=D.end_clients.slice(0,5).map(d=>d.エンドクライアント名);
+  const endQds=topEnds.map((name,i)=>({
+    label:name.length>10?name.slice(0,10)+'…':name,
+    data:QS.map(q=>{const r=D.end_clients; /* use static approx */
+      const qmap={'FY25_1Q':0,'FY25_2Q':1,'FY25_3Q':2,'FY25_4Q':3};
+      return 0; // placeholder - actual data below
+    }),
+    borderColor:PALETTE[i],backgroundColor:'transparent',tension:.3,pointRadius:3,borderWidth:2
+  }));
+  // Use prod_q equivalent for end clients — simplified stacked
+  const endQStatic={
+    '株式会社フリークアウト':[30157258,30388075,30962443,29935211],
+    '株式会社マイクロアド':[30519153,19273943,13428458,11783728],
+    'カタリナ MKTジャパン':[15500000,16100000,14100000,14100000],
+    '株式会社リクルート':[8875893,13078806,7726285,5886732],
+    '西日本旅客鉄道':[8000000,3970636,5121654,3645433],
+  };
+  const endQDs=Object.entries(endQStatic).map(([name,vals],i)=>({label:name.length>12?name.slice(0,12)+'…':name,data:vals,borderColor:PALETTE[i],backgroundColor:'transparent',tension:.3,pointRadius:4,borderWidth:2}));
+  mkLine('c-end-q',QL,endQDs);
+  // Pie
+  const top10e=D.end_clients.filter(d=>d.セグメント==='Enterprise').slice(0,10);
+  mkDonut('c-end-pie',top10e.map(d=>d.エンドクライアント名.length>12?d.エンドクライアント名.slice(0,12)+'…':d.エンドクライアント名),top10e.map(d=>d.実績金額),PALETTE);
+  new Chart(document.getElementById('c-end-pie'),{type:'doughnut',data:{labels:top10e.map(d=>d.エンドクライアント名.length>12?d.エンドクライアント名.slice(0,12)+'…':d.エンドクライアント名),datasets:[{data:top10e.map(d=>d.実績金額),backgroundColor:PALETTE,borderWidth:0,hoverOffset:6}]},options:{cutout:'55%',animation:{duration:600},plugins:{legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{size:9},boxWidth:8,padding:5}},tooltip:{backgroundColor:'#1a2035',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#94a3b8',padding:10,callbacks:{label:ctx=>fmtFull(ctx.raw)}}}}});
+  // SMB dist
+  mkBar('c-smb-end-dist',D.smb_end_dist.map(d=>d.帯),[{data:D.smb_end_dist.map(d=>d.社数),backgroundColor:'rgba(56,189,248,.7)',borderRadius:5,borderSkipped:false}]);
+}
+
+function buildAgency(){
+  const ent=D.ag_seg_sum.find(d=>d.代理店_セグ==='Enterprise');
+  const smb=D.ag_seg_sum.find(d=>d.代理店_セグ==='SMB');
+  const tot=ent.金額+smb.金額;
+  document.getElementById('ag-seg-blocks').innerHTML=`
+    <div class="seg-blk ent" style="background:rgba(167,139,250,.05);border-color:rgba(167,139,250,.18)"><div class="seg-blk-lbl" style="color:#a78bfa">🏆 Enterprise (≥500万)</div><div class="seg-blk-val">${fmt(ent.金額)}</div><div class="seg-blk-meta"><span>${ent.社数}社</span><span>${pct(ent.金額,tot)} of total</span><span>${ent.件数}件</span><span>社平均 ${fmt(Math.round(ent.金額/ent.社数))}</span></div></div>
+    <div class="seg-blk smb" style="background:rgba(52,211,153,.05);border-color:rgba(52,211,153,.18)"><div class="seg-blk-lbl" style="color:#34d399">📈 SMB (&lt;500万)</div><div class="seg-blk-val">${fmt(smb.金額)}</div><div class="seg-blk-meta"><span>${smb.社数}社</span><span>${pct(smb.金額,tot)} of total</span><span>${smb.件数}件</span><span>社平均 ${fmt(Math.round(smb.金額/smb.社数))}</span></div></div>`;
+  // Bar
+  mkBar('c-ag-bar',D.agencies.map(d=>d.取引先名),[{
+    data:D.agencies.map(d=>d.実績金額),
+    backgroundColor:D.agencies.map(d=>d.セグメント==='Enterprise'?'rgba(167,139,250,.8)':'rgba(52,211,153,.6)'),
+    borderRadius:3,borderSkipped:false
+  }]);
+  // Table
+  document.getElementById('ag-table').innerHTML=D.agencies.map((d,i)=>`<tr>
+    <td class="td-rank">${i+1}</td>
+    <td class="td-name">${d.取引先名}</td>
+    <td><span class="badge-${d.セグメント==='Enterprise'?'ent':'smb'}" style="${d.セグメント==='Enterprise'?'background:rgba(167,139,250,.12);color:#a78bfa;border-color:rgba(167,139,250,.25)':'background:rgba(52,211,153,.12);color:#34d399;border-color:rgba(52,211,153,.25)'}">${d.セグメント==='Enterprise'?'ENT':'SMB'}</span></td>
+    <td class="td-num">${fmtFull(d.実績金額)}</td>
+    <td class="td-num">${d.件数}</td>
+    <td class="td-num">${fmt(d.平均単価)}</td>
+    <td class="td-num">${pct(d.実績金額,D.kpi.total)}</td>
+  </tr>`).join('');
+  // Q line
+  const agQStatic={
+    '株式会社フリークアウト':[30157258,30388075,30962443,29935211],
+    '株式会社マイクロアド':[30519153,23419324,19107083,13364752],
+    'カタリナ MKTジャパン':[15500000,16100000,14100000,14100000],
+    'ゼンリンMKTソリューションズ':[4268721,9195409,12735949,14667456],
+    'NTTタウンページ':[7306930,12576240,8289661,10198852],
+  };
+  const agQDs=Object.entries(agQStatic).map(([name,vals],i)=>({label:name,data:vals,borderColor:PALETTE[i],backgroundColor:'transparent',tension:.3,pointRadius:4,borderWidth:2}));
+  mkLine('c-ag-q',QL,agQDs);
+  // Pie
+  const top10a=D.agencies.slice(0,10);
+  new Chart(document.getElementById('c-ag-pie'),{type:'doughnut',data:{labels:top10a.map(d=>d.取引先名.length>12?d.取引先名.slice(0,12)+'…':d.取引先名),datasets:[{data:top10a.map(d=>d.実績金額),backgroundColor:PALETTE,borderWidth:0,hoverOffset:6}]},options:{cutout:'55%',animation:{duration:600},plugins:{legend:{display:true,position:'right',labels:{color:'#94a3b8',font:{size:9},boxWidth:8,padding:5}},tooltip:{backgroundColor:'#1a2035',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#94a3b8',padding:10,callbacks:{label:ctx=>fmtFull(ctx.raw)}}}}});
+  // SMB dist
+  mkBar('c-smb-ag-dist',D.smb_ag_dist.map(d=>d.帯),[{data:D.smb_ag_dist.map(d=>d.社数),backgroundColor:'rgba(52,211,153,.7)',borderRadius:5,borderSkipped:false}]);
+}
+
+function buildProduct(){
+  const prods=D.product.filter(d=>d.実績金額>0);
+  // Bar dual axis
+  mkHBar('c-prod-bar',prods.map(d=>d.商品名_短),[
+    {label:'受注金額',data:prods.map(d=>d.実績金額),backgroundColor:prods.map((_,i)=>PROD_COLORS[i%6]+'99'),borderRadius:3,borderSkipped:false}
+  ]);
+  // Table
+  const total=prods.reduce((s,d)=>s+d.実績金額,0);
+  document.getElementById('prod-table').innerHTML=prods.map((d,i)=>`<tr>
+    <td class="td-rank">${i+1}</td>
+    <td class="td-name">${d.商品名_短}</td>
+    <td class="td-num">${fmtFull(d.実績金額)}</td>
+    <td class="td-num">${d.件数}</td>
+    <td class="td-num">${fmt(d.平均単価)}</td>
+    <td class="td-num">${pct(d.実績金額,total)}</td>
+  </tr>`).join('');
+  // Prod Q stacked
+  const prodNames=['データ利用費','エリアAD','IG/FB AD','エリアAD(データ)','Yahoo!広告','LINE AD'];
+  const pqds=prodNames.map((p,i)=>({
+    label:p,
+    data:['FY25_1Q','FY25_2Q','FY25_3Q','FY25_4Q'].map(q=>{const r=D.prod_q.find(d=>d.Q===q&&d.商品===p);return r?r.v:0;}),
+    backgroundColor:PROD_COLORS[i]+'99',stack:'s',borderRadius:2
+  }));
+  mkStackedBar('c-prod-q',QL,pqds);
+  // Media bar
+  mkHBar('c-media-bar',D.media.map(d=>d.媒体),[{data:D.media.map(d=>d.実績金額),backgroundColor:D.media.map((_,i)=>PALETTE[i%12]+'99'),borderRadius:3,borderSkipped:false}]);
+  // Media table
+  const mtot=D.media.reduce((s,d)=>s+d.実績金額,0);
+  document.getElementById('media-table').innerHTML=D.media.map((d,i)=>`<tr>
+    <td class="td-rank">${i+1}</td>
+    <td>${d.媒体}</td>
+    <td class="td-num">${fmtFull(d.実績金額)}</td>
+    <td class="td-num">${d.件数}</td>
+    <td class="td-num">${fmt(d.平均単価)}</td>
+    <td class="td-num">${pct(d.実績金額,mtot)}</td>
+  </tr>`).join('');
+  // Media Q stacked
+  const medNames=['GDN','YDA','IG','LINE','YouTube','P-MAX','リエルコ','Universe'];
+  const mqds=medNames.map((med,i)=>({
+    label:med,
+    data:['FY25_1Q','FY25_2Q','FY25_3Q','FY25_4Q'].map(q=>{const r=D.media_q.find(d=>d.Q===q&&d.媒体===med);return r?r.v:0;}),
+    backgroundColor:MEDIA_COLORS[i]+'99',stack:'s',borderRadius:2
+  }));
+  mkStackedBar('c-media-q',QL,mqds);
+  // Charge bars
+  const ctot=D.charge_type.reduce((s,d)=>s+d.実績金額,0);
+  const max=D.charge_type[0].実績金額;
+  document.getElementById('charge-bars').innerHTML=D.charge_type.map((d,i)=>`
+    <div class="ibar">
+      <div class="ibar-lbl">${d.課金形態}</div>
+      <div class="ibar-track"><div class="ibar-fill" style="width:${(d.実績金額/max*100).toFixed(1)}%;background:${PALETTE[i]}"></div></div>
+      <div class="ibar-val">${fmt(d.実績金額)} <span style="color:#1e293b">(${pct(d.実績金額,ctot)})</span></div>
+    </div>
+    <div style="display:flex;gap:16px;margin-bottom:14px;margin-left:88px;font-size:10px;color:#475569;font-family:var(--mono)">
+      <span>件数: ${d.件数}</span>
+      <span>平均単価: ${fmt(d.平均単価)}</span>
     </div>
   `).join('');
 }
 
-/* ── Media ── */
-function buildMedia() {
-  const labels = DATA.media.map(d => d.媒体);
-  const vals = DATA.media.map(d => d.実績金額);
-  new Chart(document.getElementById('chartMedia'), {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [{ data: vals, backgroundColor: COLORS.map(c => c+'aa'), borderRadius: 4, borderSkipped: false }]
-    },
-    options: {
-      ...chartDefaults,
-      indexAxis: 'y',
-      scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.04)' }, ticks: { color: '#7c8799', font:{size:10}, callback: v => fmt(v) } },
-        y: { grid: { display: false }, ticks: { color: '#c8d0dc', font:{size:11} } }
-      },
-      plugins: { ...chartDefaults.plugins, tooltip: { ...chartDefaults.plugins.tooltip,
-        callbacks: { label: ctx => fmtFull(ctx.raw) }
-      }}
-    }
-  });
-}
-
-/* ── Segment Donut ── */
-function buildSegDonut() {
-  const ent = DATA.segment.find(s => s.セグメント === 'Enterprise');
-  const smb = DATA.segment.find(s => s.セグメント === 'SMB');
-
-  // Amount
-  new Chart(document.getElementById('chartSegAmt'), {
-    type: 'doughnut',
-    data: {
-      labels: ['Enterprise','SMB'],
-      datasets: [{ data: [ent.金額, smb.金額], backgroundColor: ['#f472b6bb','#60a5faaa'], borderWidth: 0, hoverOffset: 8 }]
-    },
-    options: { ...chartDefaults, cutout: '65%',
-      plugins: { ...chartDefaults.plugins, tooltip: { ...chartDefaults.plugins.tooltip,
-        callbacks: { label: ctx => fmtFull(ctx.raw) }
-      }}
-    }
-  });
-  const totalAmt = ent.金額 + smb.金額;
-  document.getElementById('segAmtLegend').innerHTML = [
-    {label:'Enterprise', val:ent.金額, color:'#f472b6'},
-    {label:'SMB', val:smb.金額, color:'#60a5fa'}
-  ].map(i => `<div class="legend-item">
-    <div class="legend-dot" style="background:${i.color}"></div>
-    <div class="legend-label">${i.label}</div>
-    <div class="legend-val">${pct(i.val,totalAmt)}<br><span style="font-size:10px;color:#3d4554">${fmt(i.val)}</span></div>
-  </div>`).join('');
-
-  // Count
-  new Chart(document.getElementById('chartSegCnt'), {
-    type: 'doughnut',
-    data: {
-      labels: ['Enterprise','SMB'],
-      datasets: [{ data: [ent.件数, smb.件数], backgroundColor: ['#f472b6bb','#60a5faaa'], borderWidth: 0, hoverOffset: 8 }]
-    },
-    options: { ...chartDefaults, cutout: '65%',
-      plugins: { ...chartDefaults.plugins, tooltip: { ...chartDefaults.plugins.tooltip,
-        callbacks: { label: ctx => ctx.raw.toLocaleString() + '件' }
-      }}
-    }
-  });
-  const totalCnt = ent.件数 + smb.件数;
-  document.getElementById('segCntLegend').innerHTML = [
-    {label:'Enterprise', val:ent.件数, color:'#f472b6'},
-    {label:'SMB', val:smb.件数, color:'#60a5fa'}
-  ].map(i => `<div class="legend-item">
-    <div class="legend-dot" style="background:${i.color}"></div>
-    <div class="legend-label">${i.label}</div>
-    <div class="legend-val">${pct(i.val,totalCnt)}<br><span style="font-size:10px;color:#3d4554">${i.val.toLocaleString()}件</span></div>
-  </div>`).join('');
-}
-
-/* ── Sales Bar ── */
-function buildSalesBar() {
-  const names = DATA.sales.map(s => s['営業担当者（計上先）']);
-  const vals = DATA.sales.map(s => s.実績金額);
-  const colors = vals.map(v => v < 0 ? '#f8717180' : '#4f9cf9aa');
-  new Chart(document.getElementById('chartSalesBar'), {
-    type: 'bar',
-    data: {
-      labels: names,
-      datasets: [{ data: vals, backgroundColor: colors, borderRadius: 5, borderSkipped: false }]
-    },
-    options: {
-      ...chartDefaults,
-      scales: {
-        x: { grid:{display:false}, ticks:{color:'#c8d0dc',font:{size:11}} },
-        y: { grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#7c8799',callback:v=>fmt(v)} }
-      },
-      plugins: { ...chartDefaults.plugins, tooltip: { ...chartDefaults.plugins.tooltip,
-        callbacks: { label: ctx => fmtFull(ctx.raw) }
-      }}
-    }
-  });
-}
-
-/* ── Sales Table ── */
-function buildSalesTable() {
-  const total = DATA.sales.reduce((s,d) => s+d.実績金額, 0);
-  const tbody = document.getElementById('salesTableBody');
-  tbody.innerHTML = DATA.sales.map((s,i) => {
-    const avg = s.案件数 > 0 ? Math.round(s.実績金額 / s.案件数) : 0;
-    const neg = s.実績金額 < 0;
-    return `<tr>
-      <td class="rank">${i+1}</td>
-      <td>${s['営業担当者（計上先）']}</td>
-      <td class="num" style="color:${neg?'#f87171':'#e2e8f0'}">${fmtFull(s.実績金額)}</td>
-      <td class="num">${s.案件数}</td>
-      <td class="num">${s.クライアント数}</td>
-      <td class="num" style="color:#7c8799">${fmt(avg)}</td>
-    </tr>`;
-  }).join('');
-
-  // Pie
-  const positive = DATA.sales.filter(s => s.実績金額 > 0);
-  new Chart(document.getElementById('chartSalesPie'), {
-    type: 'doughnut',
-    data: {
-      labels: positive.map(s => s['営業担当者（計上先）']),
-      datasets: [{ data: positive.map(s => s.実績金額), backgroundColor: COLORS, borderWidth: 0, hoverOffset: 6 }]
-    },
-    options: { ...chartDefaults, cutout: '55%',
-      plugins: { ...chartDefaults.plugins,
-        legend: { display: true, position: 'bottom', labels: { color: '#7c8799', font:{size:10}, padding:8, boxWidth:10 } },
-        tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: ctx => `${ctx.label}: ${fmtFull(ctx.raw)}` } }
-      }
-    }
-  });
-}
-
-/* ── Client Bar ── */
-function buildClientBar() {
-  const labels = DATA.client_top20.map(c => c.エンドクライアント名.length > 14 ? c.エンドクライアント名.slice(0,14)+'…' : c.エンドクライアント名);
-  const vals = DATA.client_top20.map(c => c.実績金額);
-  const colors = DATA.client_top20.map(c => c.セグメント === 'Enterprise' ? '#f472b6aa' : '#60a5faaa');
-  new Chart(document.getElementById('chartClientBar'), {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [{ data: vals, backgroundColor: colors, borderRadius: 4, borderSkipped: false }]
-    },
-    options: {
-      ...chartDefaults,
-      scales: {
-        x: { grid:{display:false}, ticks:{color:'#9aa5b8',font:{size:9},maxRotation:35} },
-        y: { grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#7c8799',callback:v=>fmt(v)} }
-      },
-      plugins: { ...chartDefaults.plugins, tooltip: { ...chartDefaults.plugins.tooltip,
-        callbacks: { label: ctx => fmtFull(ctx.raw) }
-      }}
-    }
-  });
-}
-
-/* ── Client Table ── */
-function buildClientTable() {
-  const total = DATA.client_top20.reduce((s,c)=>s+c.実績金額,0);
-  const tbody = document.getElementById('clientTableBody');
-  tbody.innerHTML = DATA.client_top20.map((c,i) => `<tr>
-    <td class="rank">${i+1}</td>
-    <td>${c.エンドクライアント名}</td>
-    <td><span class="seg-badge ${c.セグメント==='Enterprise'?'seg-ent':'seg-smb'}">${c.セグメント}</span></td>
-    <td class="num">${fmtFull(c.実績金額)}</td>
-    <td class="num">${pct(c.実績金額,DATA.total_juchu)}</td>
+function buildSegment(){
+  // End blocks small
+  const eent=D.end_seg_sum.find(d=>d.エンド_セグ==='Enterprise');
+  const esmb=D.end_seg_sum.find(d=>d.エンド_セグ==='SMB');
+  const etot=eent.金額+esmb.金額;
+  document.getElementById('s-end-ent').innerHTML=`<div class="seg-blk-lbl">Enterprise ≥300万</div><div class="seg-blk-val" style="font-size:18px">${fmt(eent.金額)}</div><div class="seg-blk-meta"><span>${eent.社数}社</span><span>${pct(eent.金額,etot)}</span></div>`;
+  document.getElementById('s-end-smb').innerHTML=`<div class="seg-blk-lbl">SMB &lt;300万</div><div class="seg-blk-val" style="font-size:18px">${fmt(esmb.金額)}</div><div class="seg-blk-meta"><span>${esmb.社数}社</span><span>${pct(esmb.金額,etot)}</span></div>`;
+  const aent=D.ag_seg_sum.find(d=>d.代理店_セグ==='Enterprise');
+  const asmb=D.ag_seg_sum.find(d=>d.代理店_セグ==='SMB');
+  const atot=aent.金額+asmb.金額;
+  document.getElementById('s-ag-ent').innerHTML=`<div class="seg-blk-lbl" style="color:#a78bfa">Enterprise ≥500万</div><div class="seg-blk-val" style="font-size:18px">${fmt(aent.金額)}</div><div class="seg-blk-meta"><span>${aent.社数}社</span><span>${pct(aent.金額,atot)}</span></div>`;
+  document.getElementById('s-ag-smb').innerHTML=`<div class="seg-blk-lbl" style="color:#34d399">SMB &lt;500万</div><div class="seg-blk-val" style="font-size:18px">${fmt(asmb.金額)}</div><div class="seg-blk-meta"><span>${asmb.社数}社</span><span>${pct(asmb.金額,atot)}</span></div>`;
+  // End monthly line
+  const es=segByMonth(D.monthly_end_seg,'エンド_セグ');
+  mkLine('c-seg-end-m',MONTHS,[
+    {label:'Enterprise',data:es.ent,borderColor:'#f472b6',backgroundColor:'rgba(244,114,182,.06)',fill:true,tension:.4,pointRadius:3,borderWidth:2},
+    {label:'SMB',data:es.smb,borderColor:'#38bdf8',backgroundColor:'rgba(56,189,248,.06)',fill:true,tension:.4,pointRadius:3,borderWidth:2}
+  ]);
+  // Ag monthly line
+  const as=segByMonth(D.monthly_ag_seg,'代理店_セグ');
+  mkLine('c-seg-ag-m',MONTHS,[
+    {label:'Enterprise',data:as.ent,borderColor:'#a855f7',backgroundColor:'rgba(168,85,247,.06)',fill:true,tension:.4,pointRadius:3,borderWidth:2},
+    {label:'SMB',data:as.smb,borderColor:'#34d399',backgroundColor:'rgba(52,211,153,.06)',fill:true,tension:.4,pointRadius:3,borderWidth:2}
+  ]);
+  // Ent full table
+  document.getElementById('ent-full-table').innerHTML=D.end_clients.filter(d=>d.セグメント==='Enterprise').map((d,i)=>`<tr>
+    <td class="td-rank">${i+1}</td><td class="td-name">${d.エンドクライアント名}</td>
+    <td class="td-num">${fmtFull(d.実績金額)}</td><td class="td-num">${d.件数}</td><td class="td-num">${fmt(d.平均単価)}</td>
   </tr>`).join('');
-
-  // Seg Split for client page
-  buildSegSplitEl('segSplit');
-}
-
-/* ── Agency Bar ── */
-function buildAgencyBar() {
-  const labels = DATA.agency_top15.map(a => a.取引先名.length > 16 ? a.取引先名.slice(0,16)+'…' : a.取引先名);
-  const vals = DATA.agency_top15.map(a => a.実績金額);
-  new Chart(document.getElementById('chartAgencyBar'), {
-    type: 'bar',
-    data: {
-      labels,
-      datasets: [{ data: vals, backgroundColor: '#34d399aa', borderRadius: 4, borderSkipped: false }]
-    },
-    options: {
-      ...chartDefaults,
-      scales: {
-        x: { grid:{display:false}, ticks:{color:'#9aa5b8',font:{size:9},maxRotation:35} },
-        y: { grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#7c8799',callback:v=>fmt(v)} }
-      },
-      plugins: { ...chartDefaults.plugins, tooltip: { ...chartDefaults.plugins.tooltip,
-        callbacks: { label: ctx => fmtFull(ctx.raw) }
-      }}
-    }
-  });
-}
-
-/* ── Agency Table ── */
-function buildAgencyTable() {
-  const tbody = document.getElementById('agencyTableBody');
-  tbody.innerHTML = DATA.agency_top15.map((a,i) => `<tr>
-    <td class="rank">${i+1}</td>
-    <td>${a.取引先名}</td>
-    <td class="num">${fmtFull(a.実績金額)}</td>
-    <td class="num">${pct(a.実績金額, DATA.total_juchu)}</td>
+  // Ag ent full table
+  document.getElementById('ag-ent-full-table').innerHTML=D.agencies.filter(d=>d.セグメント==='Enterprise').map((d,i)=>`<tr>
+    <td class="td-rank">${i+1}</td><td class="td-name">${d.取引先名}</td>
+    <td class="td-num">${fmtFull(d.実績金額)}</td><td class="td-num">${d.件数}</td><td class="td-num">${fmt(d.平均単価)}</td>
   </tr>`).join('');
+  // Dists
+  new Chart(document.getElementById('c-smb-end-dist2'),{type:'bar',data:{labels:D.smb_end_dist.map(d=>d.帯),datasets:[{data:D.smb_end_dist.map(d=>d.社数),backgroundColor:'rgba(56,189,248,.7)',borderRadius:5,borderSkipped:false}]},options:{...mkOpts(),plugins:{...mkOpts().plugins,legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#94a3b8'}},y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#475569'},title:{display:true,text:'社数',color:'#475569',font:{size:10}}}}}});
+  new Chart(document.getElementById('c-smb-ag-dist2'),{type:'bar',data:{labels:D.smb_ag_dist.map(d=>d.帯),datasets:[{data:D.smb_ag_dist.map(d=>d.社数),backgroundColor:'rgba(52,211,153,.7)',borderRadius:5,borderSkipped:false}]},options:{...mkOpts(),plugins:{...mkOpts().plugins,legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:'#94a3b8'}},y:{grid:{color:'rgba(255,255,255,0.04)'},ticks:{color:'#475569'},title:{display:true,text:'社数',color:'#475569',font:{size:10}}}}}});
 }
 
-/* ── Seg Split ── */
-function buildSegSplitEl(id) {
-  const ent = DATA.segment.find(s=>s.セグメント==='Enterprise');
-  const smb = DATA.segment.find(s=>s.セグメント==='SMB');
-  const total = ent.金額 + smb.金額;
-  document.getElementById(id).innerHTML = `
-    <div class="seg-box ent">
-      <div class="seg-box-label">🏆 ENTERPRISE</div>
-      <div class="seg-box-val">${fmt(ent.金額)}</div>
-      <div class="seg-box-sub">${DATA.enterprise_count}社 · ${pct(ent.金額,total)} · ${ent.件数.toLocaleString()}件</div>
+function buildSales(){
+  const salPos=D.sales.filter(s=>s.実績金額>0);
+  mkBar('c-sales-bar',D.sales.map(s=>s.営業担当者),[{
+    data:D.sales.map(s=>s.実績金額),
+    backgroundColor:D.sales.map(s=>s.実績金額<0?'rgba(239,68,68,.6)':'rgba(59,130,246,.75)'),
+    borderRadius:5,borderSkipped:false
+  }]);
+  const total=salPos.reduce((s,d)=>s+d.実績金額,0);
+  document.getElementById('sales-table').innerHTML=D.sales.map((s,i)=>`<tr>
+    <td class="td-rank">${i+1}</td>
+    <td>${s.営業担当者}</td>
+    <td class="td-num" style="color:${s.実績金額<0?'#ef4444':'inherit'}">${fmtFull(s.実績金額)}</td>
+    <td class="td-num">${s.件数}</td>
+    <td class="td-num">${s.社数}</td>
+    <td class="td-num">${fmt(s.平均単価)}</td>
+    <td class="td-num">${s.実績金額>0?pct(s.実績金額,total):'—'}</td>
+  </tr>`).join('');
+  new Chart(document.getElementById('c-sales-pie'),{type:'doughnut',data:{labels:salPos.map(s=>s.営業担当者),datasets:[{data:salPos.map(s=>s.実績金額),backgroundColor:PALETTE,borderWidth:0,hoverOffset:6}]},options:{cutout:'55%',animation:{duration:600},plugins:{legend:{display:true,position:'bottom',labels:{color:'#94a3b8',font:{size:10},boxWidth:10,padding:6}},tooltip:{backgroundColor:'#1a2035',borderColor:'rgba(255,255,255,0.08)',borderWidth:1,titleColor:'#e2e8f0',bodyColor:'#94a3b8',padding:10,callbacks:{label:ctx=>`${ctx.label}: ${fmtFull(ctx.raw)}`}}}}});
+  // Monthly per person bar (ibar style)
+  const maxSal=D.sales[0].実績金額;
+  document.getElementById('sales-ibar-monthly').innerHTML=D.sales.filter(s=>s.実績金額>0).map((s,i)=>`
+    <div class="ibar">
+      <div class="ibar-lbl" style="min-width:90px">${s.営業担当者}</div>
+      <div class="ibar-track"><div class="ibar-fill" style="width:${(s.実績金額/maxSal*100).toFixed(1)}%;background:${PALETTE[i]}"></div></div>
+      <div class="ibar-val">${fmt(s.実績金額)} <span style="font-size:10px;color:#1e293b">/ ${s.件数}件 / ${s.社数}社 / 平均 ${fmt(s.平均単価)}</span></div>
     </div>
-    <div class="seg-box smb">
-      <div class="seg-box-label">📈 SMB</div>
-      <div class="seg-box-val">${fmt(smb.金額)}</div>
-      <div class="seg-box-sub">${DATA.smb_count}社 · ${pct(smb.金額,total)} · ${smb.件数.toLocaleString()}件</div>
-    </div>
-  `;
-}
-function buildSegSplit() {
-  buildSegSplitEl('segSplit2');
+  `).join('');
 }
 
-/* ── Q Segment Stacked ── */
-function buildQSeg() {
-  const quarters = ['FY25_1Q','FY25_2Q','FY25_3Q','FY25_4Q'];
-  const entVals = quarters.map(q => {
-    const r = DATA.q_segment.find(d => d.納品Q===q && d.セグメント==='Enterprise');
-    return r ? r.実績金額 : 0;
-  });
-  const smbVals = quarters.map(q => {
-    const r = DATA.q_segment.find(d => d.納品Q===q && d.セグメント==='SMB');
-    return r ? r.実績金額 : 0;
-  });
-  new Chart(document.getElementById('chartQSeg'), {
-    type: 'bar',
-    data: {
-      labels: quarters.map(q=>q.replace('FY25_','')),
-      datasets: [
-        { label:'Enterprise', data:entVals, backgroundColor:'#f472b6aa', borderRadius:4, stack:'s' },
-        { label:'SMB', data:smbVals, backgroundColor:'#60a5faaa', borderRadius:4, stack:'s' }
-      ]
-    },
-    options: {
-      ...chartDefaults,
-      scales: {
-        x: { grid:{display:false}, ticks:{color:'#7c8799'}, stacked:true },
-        y: { grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#7c8799',callback:v=>fmt(v)}, stacked:true }
-      },
-      plugins: { ...chartDefaults.plugins,
-        legend: { display:true, labels:{color:'#94a3b8',font:{size:11},boxWidth:12} },
-        tooltip: { ...chartDefaults.plugins.tooltip, callbacks:{ label: ctx => `${ctx.dataset.label}: ${fmtFull(ctx.raw)}` } }
-      }
-    }
-  });
-}
-
-/* ── Enterprise Table ── */
-function buildEntTable() {
-  const entClients = DATA.client_top20.filter(c => c.セグメント === 'Enterprise');
-  const tbody = document.getElementById('entTableBody');
-  tbody.innerHTML = entClients.map((c,i) => `<tr>
-    <td class="rank">${i+1}</td>
-    <td>${c.エンドクライアント名}</td>
-    <td class="num">${fmtFull(c.実績金額)}</td>
-  </tr>`).join('');
-}
-
-/* ── SMB Distribution ── */
-function buildSMBDist() {
-  const bands = [
-    {label:'〜100万', min:0, max:1000000},
-    {label:'100〜300万', min:1000000, max:3000000},
-    {label:'300〜500万', min:3000000, max:5000000},
-    {label:'500〜700万', min:5000000, max:7000000},
-    {label:'700〜1000万', min:7000000, max:10000000},
-  ];
-  // Using segment data as approximation; show illustrative distribution
-  const illustrative = [290, 72, 28, 12, 8];
-  new Chart(document.getElementById('chartSMBDist'), {
-    type: 'bar',
-    data: {
-      labels: bands.map(b=>b.label),
-      datasets: [{ data:illustrative, backgroundColor:'#60a5faaa', borderRadius:6, borderSkipped:false }]
-    },
-    options: {
-      ...chartDefaults,
-      scales: {
-        x: { grid:{display:false}, ticks:{color:'#9aa5b8'} },
-        y: { grid:{color:'rgba(255,255,255,0.04)'}, ticks:{color:'#7c8799'}, title:{display:true,text:'社数',color:'#7c8799',font:{size:11}} }
-      },
-      plugins: { ...chartDefaults.plugins, tooltip: { ...chartDefaults.plugins.tooltip,
-        callbacks: { label: ctx => ctx.raw + '社' }
-      }}
-    }
-  });
-}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+/* ═══════════════════════════════════════════════════════
    TAB SWITCH
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-function switchTab(tab) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('page-' + tab).classList.add('active');
-  event.target.classList.add('active');
+═══════════════════════════════════════════════════════ */
+const pageMap={'overview':'p-overview','time':'p-time','end-client':'p-end-client','agency':'p-agency','product':'p-product','segment':'p-segment','sales':'p-sales'};
+const built={};
+function sw(tab,btn){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById(pageMap[tab]).classList.add('on');
+  btn.classList.add('active');
+  if(!built[tab]){
+    built[tab]=true;
+    if(tab==='time') buildTime();
+    else if(tab==='end-client') buildEndClient();
+    else if(tab==='agency') buildAgency();
+    else if(tab==='product') buildProduct();
+    else if(tab==='segment') buildSegment();
+    else if(tab==='sales') buildSales();
+  }
 }
 
-window.addEventListener('DOMContentLoaded', init);
+/* ═══════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════ */
+window.addEventListener('DOMContentLoaded',()=>{
+  buildKPI();
+  buildOverview();
+  built['overview']=true;
+  // pre-build duplicate donut canvases in page-end-client
+  ['c-end-pie','c-smb-end-dist','c-ag-pie','c-smb-ag-dist','c-smb-end-dist2','c-smb-ag-dist2'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el&&el._chartInstance) el._chartInstance.destroy();
+  });
+});
 </script>
 </body>
 </html>
