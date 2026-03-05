@@ -479,16 +479,19 @@ function kCard(c,l,v,s){return '<div class="kpi '+c+'"><div class="kpi-lbl">'+l+
 // =====================
 function rTR(v){
   if(v.mode==='all'){
-    // 月次: 各FYの月を並べる
-    var allMonths={};
-    v.fys.forEach(function(fy){(getD(fy).monthly||[]).forEach(function(m){allMonths[m.month]=1;});});
-    var months=Object.keys(allMonths).sort();
-    var mlabels=months.map(function(m){var p=m.split('-');return p[0]+'/'+(parseInt(p[1]))+'月';});
+    // 月次: FY内相対月（4月=1〜3月=12）でFY比較
+    var REL_LABELS=['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'];
     var mDs=v.fys.map(function(fy,i){
-      var mm={};(getD(fy).monthly||[]).forEach(function(m){mm[m.month]=m.amt;});
-      return{label:'FY'+fy,data:months.map(function(m){return mm[m]||0;}),borderColor:FC[fy]||PAL[i],backgroundColor:'transparent',tension:0.3,pointRadius:2,fill:false};
+      var mm={};
+      (getD(fy).monthly||[]).forEach(function(m){
+        // rel_monthキーがあればそれを使う、なければmonth_labelから逆引き
+        var rm=m.rel_month||(REL_LABELS.indexOf(m.month_label)+1)||null;
+        if(rm)mm[rm]=m.amt;
+      });
+      var vals=[];for(var ri=1;ri<=12;ri++)vals.push(mm[ri]||0);
+      return{label:'FY'+fy,data:vals,borderColor:FC[fy]||PAL[i],backgroundColor:rgba(FC[fy]||PAL[i],0.07),tension:0.3,pointRadius:3,fill:true};
     });
-    lineMulti('cMO',mlabels,mDs);
+    lineMulti('cMO',REL_LABELS,mDs);
     // Qグラフ比較
     var qDs=v.fys.map(function(fy,i){
       var q=getD(fy).quarterly||[];
@@ -504,7 +507,8 @@ function rTR(v){
   } else {
     var fy=v.fy;var d=v.d;var col=FC[fy]||PAL[0];
     var m=d.monthly||[];
-    var ml=m.map(function(r){var p=r.month.split('-');return p[0]+'/'+(parseInt(p[1]))+'月';});
+    // rel_monthで並び替え済み、month_labelをそのまま使う
+    var ml=m.map(function(r){return r.month_label||(r.month?r.month:'');});
     vBar('cMO',ml,m.map(function(r){return r.amt;}),col);
     var q=d.quarterly||[];
     vBar('cQG',q.map(function(r){return r.label||('Q'+r.Q);}),q.map(function(r){return r.amt;}),col);
