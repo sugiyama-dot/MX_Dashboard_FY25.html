@@ -2,207 +2,167 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>MX事業部 売上分析ダッシュボード</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #06080f;
-  --surface: #0d1117;
-  --surface2: #161b27;
-  --surface3: #1e2638;
-  --border: #242d3e;
-  --text: #e2e8f0;
-  --text2: #94a3b8;
-  --text3: #64748b;
-  --green: #4ade80;
-  --red: #f87171;
-  --amber: #fbbf24;
-  --purple: #a78bfa;
-  --orange: #fb923c;
-  --teal: #2dd4bf;
-  --radius: 12px;
+  --bg:       #f0f2f5;
+  --surface:  #ffffff;
+  --surface2: #f8f9fb;
+  --border:   #e2e6ed;
+  --border2:  #d0d6e0;
+  --text:     #1a202c;
+  --text2:    #4a5568;
+  --text3:    #8a97a8;
+  --fy24:     #2563eb;
+  --fy25:     #e11d87;
+  --fy26:     #16a34a;
+  --green:    #16a34a;
+  --red:      #dc2626;
+  --amber:    #d97706;
+  --purple:   #7c3aed;
+  --orange:   #ea580c;
+  --teal:     #0d9488;
+  --radius:   10px;
+  --shadow:   0 1px 3px rgba(0,0,0,.08), 0 1px 8px rgba(0,0,0,.04);
+  --shadow-md:0 4px 12px rgba(0,0,0,.1);
 }
 * { margin:0; padding:0; box-sizing:border-box; }
 body { background:var(--bg); color:var(--text); font-family:'Noto Sans JP',sans-serif; min-height:100vh; }
-a { color:inherit; text-decoration:none; }
 
 /* ── HEADER ── */
 .header {
-  background:var(--surface);
-  border-bottom:1px solid var(--border);
-  padding:0 24px;
-  display:flex; align-items:center; justify-content:space-between;
-  height:56px; position:sticky; top:0; z-index:100;
+  background:var(--surface); border-bottom:1px solid var(--border);
+  padding:0 24px; display:flex; align-items:center; justify-content:space-between;
+  height:54px; position:sticky; top:0; z-index:100; box-shadow:var(--shadow);
 }
-.header-title { font-size:14px; font-weight:700; letter-spacing:.08em; color:var(--text); }
-.header-meta { font-size:11px; color:var(--text3); font-family:'JetBrains Mono',monospace; }
+.header-title { font-size:14px; font-weight:700; color:var(--text); letter-spacing:.04em; }
 .last-updated { font-size:11px; color:var(--text3); font-family:'JetBrains Mono',monospace; }
 
 /* ── FY SWITCHER ── */
 .fy-bar {
-  background:var(--surface);
-  border-bottom:1px solid var(--border);
-  padding:0 24px;
-  display:flex; align-items:center; gap:8px;
-  height:44px; overflow-x:auto;
+  background:var(--surface); border-bottom:1px solid var(--border);
+  padding:0 24px; display:flex; align-items:center; gap:8px; height:46px; overflow-x:auto;
 }
 .fy-btn {
-  padding:5px 16px; border-radius:20px; border:1px solid var(--border);
+  padding:5px 18px; border-radius:20px; border:1.5px solid var(--border2);
   background:transparent; color:var(--text2); font-size:12px; font-weight:500;
   cursor:pointer; transition:all .15s; white-space:nowrap; font-family:inherit;
 }
 .fy-btn:hover { border-color:var(--text3); color:var(--text); }
-.fy-btn.active { color:var(--bg); font-weight:700; }
-.fy-sep { color:var(--border); font-size:16px; padding:0 4px; }
-.fy-all { border-style:dashed; }
+.fy-btn.active { font-weight:700; color:#fff; border-color:transparent; }
+.fy-sep { color:var(--border2); padding:0 4px; }
 
-/* ── TAB NAV ── */
+/* ── NAV ── */
 nav {
-  background:var(--surface);
-  border-bottom:1px solid var(--border);
-  padding:0 24px;
-  display:flex; gap:0; overflow-x:auto;
+  background:var(--surface); border-bottom:1px solid var(--border);
+  padding:0 24px; display:flex; overflow-x:auto;
 }
 .nav-tab {
   padding:12px 18px; font-size:12px; font-weight:500; color:var(--text3);
-  cursor:pointer; border-bottom:2px solid transparent; transition:all .15s;
-  white-space:nowrap;
+  cursor:pointer; border-bottom:2px solid transparent; transition:all .15s; white-space:nowrap;
 }
 .nav-tab:hover { color:var(--text2); }
-.nav-tab.active { color:var(--text); border-bottom-color:currentColor; }
+.nav-tab.active { color:var(--text); border-bottom-color:#2563eb; font-weight:700; }
 
 /* ── MAIN ── */
 main { padding:20px 24px; max-width:1600px; margin:0 auto; }
 .tab-panel { display:none; }
 .tab-panel.active { display:block; }
 
-/* ── LOADING / ERROR ── */
+/* ── LOADING ── */
 .loading-screen {
-  position:fixed; inset:0; background:var(--bg);
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  gap:16px; z-index:999;
+  position:fixed; inset:0; background:rgba(240,242,245,.95);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:16px; z-index:999;
 }
-.loading-spinner {
-  width:40px; height:40px; border-radius:50%;
-  border:3px solid var(--border); border-top-color:var(--amber);
-  animation:spin .8s linear infinite;
-}
+.loading-spinner { width:36px; height:36px; border-radius:50%; border:3px solid var(--border); border-top-color:#2563eb; animation:spin .8s linear infinite; }
 @keyframes spin { to { transform:rotate(360deg); } }
 .loading-text { font-size:13px; color:var(--text3); }
-.error-banner {
-  background:#1a0a0a; border:1px solid var(--red); border-radius:var(--radius);
-  padding:16px 20px; margin-bottom:16px; color:var(--red); font-size:13px;
-}
+.error-banner { background:#fef2f2; border:1px solid #fca5a5; border-radius:var(--radius); padding:14px 18px; margin-bottom:16px; color:var(--red); font-size:13px; }
 
 /* ── SECTION ── */
-.section-header { margin:0 0 16px; }
-.section-title { font-size:16px; font-weight:700; display:block; margin-bottom:4px; }
+.section-header { margin:8px 0 16px; }
+.section-title { font-size:16px; font-weight:700; display:block; margin-bottom:3px; }
 .section-sub { font-size:11px; color:var(--text3); display:block; margin-bottom:10px; }
 .section-line { height:1px; background:var(--border); }
 
 /* ── KPI STRIP ── */
-.kpi-strip {
-  display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap;
-}
+.kpi-strip { display:flex; gap:12px; margin-bottom:20px; flex-wrap:wrap; }
 .kpi-card {
-  background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius);
-  padding:14px 18px; flex:1; min-width:140px;
-  border-top:2px solid var(--border-accent, var(--border));
+  background:var(--surface); border:1px solid var(--border); border-radius:var(--radius);
+  padding:16px 20px; flex:1; min-width:150px; box-shadow:var(--shadow);
+  border-top:3px solid var(--border);
 }
-.kpi-label { font-size:10px; color:var(--text3); letter-spacing:.06em; margin-bottom:6px; text-transform:uppercase; }
-.kpi-val { font-size:20px; font-weight:700; font-family:'JetBrains Mono',monospace; line-height:1; margin-bottom:4px; }
+.kpi-card.k-amt  { border-top-color: #d97706; }
+.kpi-card.k-case { border-top-color: #0d9488; }
+.kpi-card.k-cl   { border-top-color: #7c3aed; }
+.kpi-card.k-ag   { border-top-color: #ea580c; }
+.kpi-card.k-avg  { border-top-color: #16a34a; }
+.kpi-label { font-size:10px; color:var(--text3); letter-spacing:.06em; text-transform:uppercase; margin-bottom:8px; }
+.kpi-val { font-size:22px; font-weight:700; font-family:'JetBrains Mono',monospace; line-height:1; color:var(--text); margin-bottom:4px; }
 .kpi-sub { font-size:10px; color:var(--text3); }
-.kpi-card.k-amt  { --border-accent: var(--amber); }
-.kpi-card.k-case { --border-accent: var(--teal); }
-.kpi-card.k-cl   { --border-accent: var(--purple); }
-.kpi-card.k-ag   { --border-accent: var(--orange); }
-.kpi-card.k-avg  { --border-accent: var(--green); }
 
-/* ── GRID LAYOUTS ── */
-.g2  { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
-.g3  { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px; }
-.g1  { margin-bottom:16px; }
+/* ── GRID ── */
+.g2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px; }
+.g3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:16px; }
+.g1 { margin-bottom:16px; }
 
 /* ── CARD ── */
-.card {
-  background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden;
-}
-.card-head {
-  padding:12px 16px; border-bottom:1px solid var(--border);
-  display:flex; align-items:center; justify-content:space-between;
-}
-.card-title { font-size:12px; font-weight:600; color:var(--text2); letter-spacing:.04em; }
-.card-chart { padding:16px; position:relative; }
-.card-body  { padding:0; }
+.card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow); }
+.card-head { padding:12px 16px; border-bottom:1px solid var(--border); background:var(--surface2); display:flex; align-items:center; justify-content:space-between; }
+.card-title { font-size:12px; font-weight:600; color:var(--text2); letter-spacing:.03em; }
+.card-chart { padding:16px; }
+
+/* ── COMPARE BANNER ── */
+.compare-row { display:grid; gap:12px; margin-bottom:20px; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); }
+.cmp-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:14px 16px; box-shadow:var(--shadow); }
+.cmp-label { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:.06em; margin-bottom:8px; }
+.cmp-vals { display:flex; align-items:baseline; gap:16px; flex-wrap:wrap; }
+.cmp-fy { font-size:15px; font-weight:700; font-family:'JetBrains Mono',monospace; }
+.cmp-delta { font-size:11px; font-weight:600; }
 
 /* ── TABLE ── */
-.tbl-wrap { overflow-x:auto; max-height:360px; overflow-y:auto; }
+.tbl-wrap { overflow-x:auto; max-height:380px; overflow-y:auto; }
 table { width:100%; border-collapse:collapse; font-size:12px; }
-th {
-  background:var(--surface3); color:var(--text3); font-weight:600;
-  padding:8px 12px; text-align:left; font-size:11px; letter-spacing:.04em;
-  position:sticky; top:0; z-index:1;
-}
-td { padding:7px 12px; border-bottom:1px solid var(--border); color:var(--text2); }
-tr:hover td { background:var(--surface3); }
-.amt-cell { font-family:'JetBrains Mono',monospace; text-align:right; }
+th { background:var(--surface2); color:var(--text3); font-weight:600; padding:8px 14px; text-align:left; font-size:11px; letter-spacing:.04em; position:sticky; top:0; z-index:1; border-bottom:1px solid var(--border); }
+td { padding:7px 14px; border-bottom:1px solid var(--border); color:var(--text2); }
+tr:hover td { background:#f8f9fb; }
+.amt-cell { font-family:'JetBrains Mono',monospace; text-align:right; color:var(--text); }
 .num-cell { text-align:right; color:var(--text3); }
 .bar-wrap { display:flex; align-items:center; gap:8px; }
-.bar-bg { flex:1; height:4px; background:var(--border); border-radius:2px; overflow:hidden; }
-.bar-fill { height:100%; border-radius:2px; }
-.bar-lbl { font-family:'JetBrains Mono',monospace; font-size:11px; white-space:nowrap; min-width:72px; text-align:right; }
+.bar-bg { flex:1; height:5px; background:var(--border); border-radius:3px; min-width:60px; overflow:hidden; }
+.bar-fill { height:100%; border-radius:3px; transition:width .3s; }
+.bar-lbl { font-family:'JetBrains Mono',monospace; font-size:11px; white-space:nowrap; min-width:80px; text-align:right; color:var(--text); }
 .chg-up { color:var(--green); }
 .chg-dn { color:var(--red); }
 
-/* ── COMPARE BANNER ── */
-.compare-row {
-  display:grid; gap:12px; margin-bottom:20px;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-}
-.cmp-card {
-  background:var(--surface2); border:1px solid var(--border); border-radius:var(--radius);
-  padding:14px 16px; display:flex; flex-direction:column; gap:4px;
-}
-.cmp-label { font-size:10px; color:var(--text3); text-transform:uppercase; letter-spacing:.06em; }
-.cmp-vals { display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
-.cmp-fy { font-size:14px; font-weight:700; font-family:'JetBrains Mono',monospace; }
-.cmp-delta { font-size:11px; font-weight:600; }
-
 /* ── SCROLLBAR ── */
-::-webkit-scrollbar { width:4px; height:4px; }
-::-webkit-scrollbar-track { background:var(--surface); }
-::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
+::-webkit-scrollbar { width:5px; height:5px; }
+::-webkit-scrollbar-track { background:var(--bg); }
+::-webkit-scrollbar-thumb { background:var(--border2); border-radius:3px; }
 
-@media (max-width:900px) {
-  .g2,.g3 { grid-template-columns:1fr; }
-  .kpi-strip { flex-direction:column; }
-}
+@media (max-width:900px) { .g2,.g3 { grid-template-columns:1fr; } .kpi-strip { flex-direction:column; } }
 </style>
 </head>
 <body>
 
-<!-- ローディング画面 -->
 <div class="loading-screen" id="loadingScreen">
   <div class="loading-spinner"></div>
   <div class="loading-text">データを読み込んでいます...</div>
 </div>
 
-<!-- ヘッダー -->
 <div class="header">
-  <div class="header-title">MX事業部 売上分析ダッシュボード</div>
+  <div class="header-title">📊 MX事業部 売上分析ダッシュボード</div>
   <div class="last-updated" id="lastUpdated">—</div>
 </div>
 
-<!-- FY切り替えバー -->
 <div class="fy-bar" id="fyBar">
-  <button class="fy-btn fy-all active" data-fy="all" onclick="switchFY('all')">全期間比較</button>
+  <button class="fy-btn active" data-fy="all" onclick="switchFY('all')" style="background:#374151;color:#fff">全期間比較</button>
   <span class="fy-sep">|</span>
-  <!-- FYボタンはJSで動的生成 -->
 </div>
 
-<!-- タブナビ -->
 <nav id="mainNav">
   <div class="nav-tab active" onclick="showTab('overview')">📊 概況・KPI</div>
   <div class="nav-tab" onclick="showTab('trend')">📅 四半期トレンド</div>
@@ -214,35 +174,26 @@ tr:hover td { background:var(--surface3); }
 </nav>
 
 <main>
-  <!-- ── TAB: 概況 ── -->
+  <!-- 概況 -->
   <div class="tab-panel active" id="tab-overview">
     <div id="errorBanner" class="error-banner" style="display:none"></div>
-
     <div class="section-header" style="margin-top:8px">
       <span class="section-title" id="overviewTitle">概況・KPI</span>
       <span class="section-sub" id="overviewSub">—</span>
       <div class="section-line"></div>
     </div>
-
-    <!-- KPI Strip -->
     <div class="kpi-strip" id="kpiStrip"></div>
-
-    <!-- 全期間比較バナー（FY=all のとき表示） -->
     <div id="compareSection" style="display:none">
-      <div class="section-header">
-        <span class="section-title">年度別比較</span>
-        <div class="section-line"></div>
-      </div>
+      <div class="section-header"><span class="section-title">年度別比較</span><div class="section-line"></div></div>
       <div class="compare-row" id="compareRow"></div>
     </div>
-
     <div class="g2">
       <div class="card">
         <div class="card-head"><span class="card-title">配信金額（Q別）</span></div>
         <div class="card-chart" style="height:260px"><canvas id="chartQAmt"></canvas></div>
       </div>
       <div class="card">
-        <div class="card-head"><span class="card-title">案件数 / CL数（Q別）</span></div>
+        <div class="card-head"><span class="card-title">案件数（Q別）</span></div>
         <div class="card-chart" style="height:260px"><canvas id="chartQCases"></canvas></div>
       </div>
     </div>
@@ -258,12 +209,9 @@ tr:hover td { background:var(--surface3); }
     </div>
   </div>
 
-  <!-- ── TAB: トレンド ── -->
+  <!-- トレンド -->
   <div class="tab-panel" id="tab-trend">
-    <div class="section-header" style="margin-top:8px">
-      <span class="section-title">四半期トレンド分析</span>
-      <div class="section-line"></div>
-    </div>
+    <div class="section-header" style="margin-top:8px"><span class="section-title">四半期トレンド分析</span><div class="section-line"></div></div>
     <div class="g1">
       <div class="card">
         <div class="card-head"><span class="card-title">月次 配信金額推移</span></div>
@@ -272,7 +220,7 @@ tr:hover td { background:var(--surface3); }
     </div>
     <div class="g2">
       <div class="card">
-        <div class="card-head"><span class="card-title">Q別 配信金額（FY重ね表示）</span></div>
+        <div class="card-head"><span class="card-title">Q別 配信金額（FY比較）</span></div>
         <div class="card-chart" style="height:260px"><canvas id="chartQComp"></canvas></div>
       </div>
       <div class="card">
@@ -282,12 +230,9 @@ tr:hover td { background:var(--surface3); }
     </div>
   </div>
 
-  <!-- ── TAB: 組織別 ── -->
+  <!-- 組織別 -->
   <div class="tab-panel" id="tab-dept">
-    <div class="section-header" style="margin-top:8px">
-      <span class="section-title">組織別分析</span>
-      <div class="section-line"></div>
-    </div>
+    <div class="section-header" style="margin-top:8px"><span class="section-title">組織別分析</span><div class="section-line"></div></div>
     <div class="g2">
       <div class="card">
         <div class="card-head"><span class="card-title">部署別 配信金額</span></div>
@@ -301,17 +246,14 @@ tr:hover td { background:var(--surface3); }
     <div class="g1">
       <div class="card">
         <div class="card-head"><span class="card-title">部署別 詳細</span></div>
-        <div class="card-body"><div class="tbl-wrap"><table id="tblDept"></table></div></div>
+        <div style="padding:0"><div class="tbl-wrap"><table id="tblDept"></table></div></div>
       </div>
     </div>
   </div>
 
-  <!-- ── TAB: クライアント ── -->
+  <!-- クライアント -->
   <div class="tab-panel" id="tab-client">
-    <div class="section-header" style="margin-top:8px">
-      <span class="section-title">クライアント分析</span>
-      <div class="section-line"></div>
-    </div>
+    <div class="section-header" style="margin-top:8px"><span class="section-title">クライアント分析</span><div class="section-line"></div></div>
     <div class="g1">
       <div class="card">
         <div class="card-head"><span class="card-title">エンドクライアント TOP20</span></div>
@@ -331,17 +273,14 @@ tr:hover td { background:var(--surface3); }
     <div class="g1">
       <div class="card">
         <div class="card-head"><span class="card-title">エンドクライアント詳細</span></div>
-        <div class="card-body"><div class="tbl-wrap"><table id="tblEnd"></table></div></div>
+        <div style="padding:0"><div class="tbl-wrap"><table id="tblEnd"></table></div></div>
       </div>
     </div>
   </div>
 
-  <!-- ── TAB: 代理店 ── -->
+  <!-- 代理店 -->
   <div class="tab-panel" id="tab-agency">
-    <div class="section-header" style="margin-top:8px">
-      <span class="section-title">代理店分析</span>
-      <div class="section-line"></div>
-    </div>
+    <div class="section-header" style="margin-top:8px"><span class="section-title">代理店分析</span><div class="section-line"></div></div>
     <div class="g1">
       <div class="card">
         <div class="card-head"><span class="card-title">代理店別 配信金額 TOP20</span></div>
@@ -351,41 +290,35 @@ tr:hover td { background:var(--surface3); }
     <div class="g1">
       <div class="card">
         <div class="card-head"><span class="card-title">代理店別 詳細</span></div>
-        <div class="card-body"><div class="tbl-wrap"><table id="tblAgency"></table></div></div>
+        <div style="padding:0"><div class="tbl-wrap"><table id="tblAgency"></table></div></div>
       </div>
     </div>
   </div>
 
-  <!-- ── TAB: 媒体別 ── -->
+  <!-- 媒体別 -->
   <div class="tab-panel" id="tab-media">
-    <div class="section-header" style="margin-top:8px">
-      <span class="section-title">媒体・商品別分析</span>
-      <div class="section-line"></div>
-    </div>
+    <div class="section-header" style="margin-top:8px"><span class="section-title">媒体・商品別分析</span><div class="section-line"></div></div>
     <div class="g2">
       <div class="card">
         <div class="card-head"><span class="card-title">媒体別 配信金額</span></div>
         <div class="card-chart" style="height:300px"><canvas id="chartMedia"></canvas></div>
       </div>
       <div class="card">
-        <div class="card-head"><span class="card-title">媒体別 構成比（FY比較）</span></div>
-        <div class="card-chart" style="height:300px"><canvas id="chartMediaShare"></canvas></div>
+        <div class="card-head"><span class="card-title">媒体別 構成比</span></div>
+        <div class="card-chart" style="height:300px"><canvas id="chartMediaDonut"></canvas></div>
       </div>
     </div>
     <div class="g1">
       <div class="card">
         <div class="card-head"><span class="card-title">媒体別 詳細</span></div>
-        <div class="card-body"><div class="tbl-wrap"><table id="tblMedia"></table></div></div>
+        <div style="padding:0"><div class="tbl-wrap"><table id="tblMedia"></table></div></div>
       </div>
     </div>
   </div>
 
-  <!-- ── TAB: 担当者別 ── -->
+  <!-- 担当者別 -->
   <div class="tab-panel" id="tab-sales">
-    <div class="section-header" style="margin-top:8px">
-      <span class="section-title">担当者別分析</span>
-      <div class="section-line"></div>
-    </div>
+    <div class="section-header" style="margin-top:8px"><span class="section-title">担当者別分析</span><div class="section-line"></div></div>
     <div class="g1">
       <div class="card">
         <div class="card-head"><span class="card-title">担当者別 配信金額 TOP15</span></div>
@@ -395,48 +328,35 @@ tr:hover td { background:var(--surface3); }
     <div class="g1">
       <div class="card">
         <div class="card-head"><span class="card-title">担当者別 詳細</span></div>
-        <div class="card-body"><div class="tbl-wrap"><table id="tblSales"></table></div></div>
+        <div style="padding:0"><div class="tbl-wrap"><table id="tblSales"></table></div></div>
       </div>
     </div>
   </div>
 </main>
 
 <script>
-// ═══════════════════════════════════════════
+// ═══════════════════════
 // CONFIG
-// ═══════════════════════════════════════════
-const DATA_URL = './data.json'; // GitHub Pages上のパス
+// ═══════════════════════
+var DATA_URL = './data.json';
+var FY_COLORS = { 2024:'#2563eb', 2025:'#e11d87', 2026:'#16a34a', 2027:'#ea580c' };
+var PALETTE = ['#2563eb','#e11d87','#16a34a','#ea580c','#7c3aed','#0d9488','#d97706','#dc2626','#0891b2','#65a30d','#9333ea','#c2410c'];
+var Q_LABELS = ['Q1','Q2','Q3','Q4'];
 
-// カラーパレット（FY別 + 汎用）
-const FY_COLORS = {
-  2024: '#38bdf8',
-  2025: '#f472b6',
-  2026: '#4ade80',
-  2027: '#fb923c',
-};
-const PALETTE = ['#38bdf8','#f472b6','#4ade80','#fb923c','#a78bfa','#2dd4bf','#fbbf24','#f87171','#e879f9','#34d399','#60a5fa','#f97316'];
-const BASE_OPT = {
-  responsive: true, maintainAspectRatio: false,
-  plugins: {
-    legend: { labels: { color: '#94a3b8', font: { size: 10 } } },
-    tooltip: { backgroundColor: '#1e2638', bodyColor: '#94a3b8', titleColor: '#e2e8f0' }
-  }
-};
-
-// ═══════════════════════════════════════════
+// ═══════════════════════
 // STATE
-// ═══════════════════════════════════════════
-let G = {};          // グローバルデータ (data.json)
-let currentFY = 'all';
-let currentTab = 'overview';
-const chartMap = {};  // tabId -> [Chart instances]
+// ═══════════════════════
+var G = {};
+var currentFY = 'all';
+var currentTab = 'overview';
+var chartMap = {};
 
-// ═══════════════════════════════════════════
+// ═══════════════════════
 // INIT
-// ═══════════════════════════════════════════
+// ═══════════════════════
 async function init() {
   try {
-    const res = await fetch(DATA_URL + '?t=' + Date.now());
+    var res = await fetch(DATA_URL + '?t=' + Date.now());
     if (!res.ok) throw new Error('HTTP ' + res.status);
     G = await res.json();
     document.getElementById('lastUpdated').textContent = '最終更新: ' + (G.meta && G.meta.updated_at || '—');
@@ -445,23 +365,24 @@ async function init() {
     document.getElementById('loadingScreen').style.display = 'none';
   } catch(e) {
     document.getElementById('loadingScreen').style.display = 'none';
-    document.getElementById('errorBanner').style.display = 'block';
-    document.getElementById('errorBanner').textContent = 'データ読み込みエラー: ' + e.message + ' — data.json が正しく配置されているか確認してください。';
+    var eb = document.getElementById('errorBanner');
+    eb.style.display = 'block';
+    eb.textContent = 'データ読み込みエラー: ' + e.message;
   }
 }
 
-// ═══════════════════════════════════════════
+// ═══════════════════════
 // FY SWITCHER
-// ═══════════════════════════════════════════
+// ═══════════════════════
 function buildFYButtons() {
-  const bar = document.getElementById('fyBar');
-  const fys = G.fiscal_years || [];
-  fys.forEach(function(fy) {
-    const btn = document.createElement('button');
+  var bar = document.getElementById('fyBar');
+  (G.fiscal_years || []).forEach(function(fy) {
+    var btn = document.createElement('button');
     btn.className = 'fy-btn';
     btn.dataset.fy = fy;
-    btn.textContent = fy + '年度';
-    btn.style.borderColor = FY_COLORS[fy] || '#94a3b8';
+    btn.textContent = 'FY' + fy;
+    btn.style.borderColor = FY_COLORS[fy] || '#999';
+    btn.style.color = FY_COLORS[fy] || '#999';
     btn.onclick = function() { switchFY(fy); };
     bar.appendChild(btn);
   });
@@ -470,44 +391,42 @@ function buildFYButtons() {
 function switchFY(fy) {
   currentFY = fy;
   document.querySelectorAll('.fy-btn').forEach(function(b) {
-    b.classList.toggle('active', b.dataset.fy === String(fy));
-    if (b.dataset.fy === String(fy)) {
-      const col = FY_COLORS[fy] || '#e2e8f0';
-      b.style.background = fy === 'all' ? '#e2e8f0' : col;
-      b.style.color = '#06080f';
+    var bfy = b.dataset.fy === 'all' ? 'all' : parseInt(b.dataset.fy);
+    var active = (String(bfy) === String(fy));
+    b.classList.toggle('active', active);
+    if (active) {
+      var col = fy === 'all' ? '#374151' : (FY_COLORS[fy] || '#374151');
+      b.style.background = col; b.style.color = '#fff'; b.style.borderColor = col;
     } else {
       b.style.background = 'transparent';
-      b.style.color = '#94a3b8';
+      var c = b.dataset.fy === 'all' ? '#374151' : (FY_COLORS[parseInt(b.dataset.fy)] || '#374151');
+      b.style.color = c; b.style.borderColor = c;
     }
   });
   renderAll();
 }
 
-// ═══════════════════════════════════════════
-// TAB NAV
-// ═══════════════════════════════════════════
+// ═══════════════════════
+// TABS
+// ═══════════════════════
 function showTab(name) {
   currentTab = name;
   document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
   document.querySelectorAll('.nav-tab').forEach(function(t) { t.classList.remove('active'); });
   document.getElementById('tab-' + name).classList.add('active');
   var tabs = ['overview','trend','dept','client','agency','media','sales'];
-  var idx = tabs.indexOf(name);
   var navTabs = document.querySelectorAll('.nav-tab');
+  var idx = tabs.indexOf(name);
   if (idx >= 0 && navTabs[idx]) navTabs[idx].classList.add('active');
   renderTab(name);
 }
 
-// ═══════════════════════════════════════════
+// ═══════════════════════
 // RENDER
-// ═══════════════════════════════════════════
-function renderAll() {
-  destroyCharts();
-  renderTab(currentTab);
-}
-
+// ═══════════════════════
+function renderAll() { destroyCharts(); renderTab(currentTab); }
 function renderTab(tab) {
-  var data = getViewData(); // currentFYに応じたデータ
+  var data = getViewData();
   if (tab === 'overview') renderOverview(data);
   if (tab === 'trend')    renderTrend(data);
   if (tab === 'dept')     renderDept(data);
@@ -517,79 +436,76 @@ function renderTab(tab) {
   if (tab === 'sales')    renderSales(data);
 }
 
-// currentFYに応じてデータを取得・集約
 function getViewData() {
-  if (currentFY === 'all') {
-    return { mode: 'all', fys: G.fiscal_years || [], byFY: G.by_fy || {} };
-  }
-  return { mode: 'single', fy: currentFY, d: (G.by_fy || {})[currentFY] || {} };
+  if (currentFY === 'all') return { mode:'all', fys: G.fiscal_years || [], byFY: G.by_fy || {} };
+  return { mode:'single', fy: currentFY, d: (G.by_fy || {})[String(currentFY)] || {} };
 }
 
-// ═══════════════════════════════════════════
+// ═══════════════════════
 // FORMATTERS
-// ═══════════════════════════════════════════
+// ═══════════════════════
 function fmt(n) {
   n = Number(n) || 0;
   if (n >= 1e8) return '\u00A5' + (n/1e8).toFixed(1) + '\u5104';
   if (n >= 1e7) return '\u00A5' + (n/1e7).toFixed(1) + '\u5343\u4e07';
   if (n >= 1e6) return '\u00A5' + (n/1e6).toFixed(1) + '\u767e\u4e07';
-  if (n >= 1e4) return '\u00A5' + (n/1e4).toFixed(0) + '\u4e07';
+  if (n >= 1e4) return '\u00A5' + Math.round(n/1e4) + '\u4e07';
   return '\u00A5' + Math.round(n).toLocaleString();
 }
 function fmtFull(n) { return '\u00A5' + Math.round(Number(n)||0).toLocaleString(); }
-function pct(a, b) { return b ? ((a/b)*100).toFixed(1)+'%' : '—'; }
 function yoy(cur, prev) {
   if (!prev) return { txt:'NEW', cls:'chg-up' };
   var r = (cur - prev) / prev * 100;
   return { txt:(r>=0?'+':'')+r.toFixed(1)+'%', cls: r>=0?'chg-up':'chg-dn' };
 }
 
-// ═══════════════════════════════════════════
+// ═══════════════════════
 // CHART HELPERS
-// ═══════════════════════════════════════════
+// ═══════════════════════
+var BASE_OPT = {
+  responsive: true, maintainAspectRatio: false,
+  plugins: {
+    legend: { labels: { color:'#4a5568', font:{ size:11 } } },
+    tooltip: { backgroundColor:'#1e293b', bodyColor:'#cbd5e1', titleColor:'#f1f5f9', padding:10,
+      callbacks: { label: function(ctx) { return ' ' + fmtFull(ctx.raw); } }
+    }
+  }
+};
+function axX() { return { ticks:{ color:'#64748b', font:{size:11} }, grid:{ color:'#e2e6ed' } }; }
+function axY() { return { ticks:{ color:'#64748b', font:{size:10}, callback:function(v){ return fmt(v); } }, grid:{ color:'#e2e6ed' } }; }
+function axYn() { return { ticks:{ color:'#64748b', font:{size:10} }, grid:{ color:'#e2e6ed' } }; }
+
 function mkChart(id, cfg) {
-  var el = document.getElementById(id);
-  if (!el) return null;
+  var el = document.getElementById(id); if (!el) return null;
   if (chartMap[id]) { chartMap[id].destroy(); }
   var c = new Chart(el, cfg);
-  chartMap[id] = c;
-  return c;
+  chartMap[id] = c; return c;
 }
 function destroyCharts() {
-  Object.keys(chartMap).forEach(function(k) {
-    if (chartMap[k]) { chartMap[k].destroy(); delete chartMap[k]; }
-  });
+  Object.keys(chartMap).forEach(function(k) { if (chartMap[k]) { chartMap[k].destroy(); delete chartMap[k]; } });
 }
-function gridColor() { return '#1e2638'; }
-function scaleOpt(axis) {
-  return {
-    ticks: { color: '#64748b', font: { size: 10 }, callback: axis==='y'?function(v){return fmt(v);}:undefined },
-    grid: { color: gridColor() }
-  };
+function hexA(hex, a) {
+  var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
+  return 'rgba('+r+','+g+','+b+','+a+')';
 }
 
-// ═══════════════════════════════════════════
+// ═══════════════════════
 // TABLE BUILDER
-// ═══════════════════════════════════════════
+// ═══════════════════════
 function buildTable(id, rows, cols) {
-  var el = document.getElementById(id);
-  if (!el || !rows || !rows.length) return;
-  var maxAmt = rows[0] ? (rows[0].amt||rows[0].haishin||0) : 1;
+  var el = document.getElementById(id); if (!el || !rows || !rows.length) return;
+  var maxAmt = rows[0] ? (rows[0].amt || 1) : 1;
   var html = '<thead><tr>' + cols.map(function(c){ return '<th>'+c.label+'</th>'; }).join('') + '</tr></thead><tbody>';
-  rows.forEach(function(r) {
+  rows.forEach(function(r, ri) {
     html += '<tr>' + cols.map(function(c) {
       var v = r[c.key];
       if (c.fmt === 'amt') return '<td class="amt-cell">'+fmtFull(v)+'</td>';
       if (c.fmt === 'bar') {
-        var w = Math.round((v / maxAmt) * 120);
-        return '<td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:'+w+'px;background:'+(c.color||PALETTE[0])+'"></div></div><span class="bar-lbl">'+fmtFull(v)+'</span></div></td>';
+        var pct = Math.min(100, Math.round((v/maxAmt)*100));
+        var col = c.color || PALETTE[0];
+        return '<td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:'+pct+'%;background:'+col+'"></div></div><span class="bar-lbl">'+fmtFull(v)+'</span></div></td>';
       }
       if (c.fmt === 'num') return '<td class="num-cell">'+(v||0)+'</td>';
-      if (c.fmt === 'pct') return '<td class="num-cell">'+pct(v,maxAmt)+'</td>';
-      if (c.fmt === 'yoy') {
-        var y = yoy(r.amt, r.prev_amt);
-        return '<td class="'+y.cls+'">'+y.txt+'</td>';
-      }
       return '<td>'+(v||'—')+'</td>';
     }).join('') + '</tr>';
   });
@@ -597,372 +513,219 @@ function buildTable(id, rows, cols) {
   el.innerHTML = html;
 }
 
-// ═══════════════════════════════════════════
-// RENDER: 概況
-// ═══════════════════════════════════════════
+// ═══════════════════════
+// OVERVIEW
+// ═══════════════════════
 function renderOverview(data) {
   var strip = document.getElementById('kpiStrip');
   var cmpSec = document.getElementById('compareSection');
   var cmpRow = document.getElementById('compareRow');
 
   if (data.mode === 'all') {
-    // 全期間モード
     document.getElementById('overviewTitle').textContent = '全期間 概況・KPI';
-    document.getElementById('overviewSub').textContent = 'FY' + (data.fys[0]||'') + ' 〜 FY' + (data.fys[data.fys.length-1]||'');
+    document.getElementById('overviewSub').textContent = 'FY' + data.fys[0] + ' 〜 FY' + data.fys[data.fys.length-1];
     cmpSec.style.display = 'block';
-
-    // 合計KPI
-    var totAmt=0, totCases=0, totClients=0;
-    data.fys.forEach(function(fy){ var d=data.byFY[fy]||{}; totAmt+=(d.kpi&&d.kpi.amt||0); totCases+=(d.kpi&&d.kpi.cases||0); });
+    var totAmt=0, totCases=0;
+    data.fys.forEach(function(fy){ var d=data.byFY[String(fy)]||{}; totAmt+=(d.kpi&&d.kpi.amt||0); totCases+=(d.kpi&&d.kpi.cases||0); });
     strip.innerHTML = kpiCard('k-amt','累計 配信金額',fmt(totAmt),'全FY合計') + kpiCard('k-case','累計 案件数',totCases+'件','全FY合計');
 
-    // 年度比較行
-    var metrics = [
-      {key:'amt',label:'配信金額',f:fmt},{key:'cases',label:'案件数',f:function(v){return v+'件';}},
-      {key:'clients',label:'CL数',f:function(v){return v+'社';}},{key:'agencies',label:'代理店数',f:function(v){return v+'社';}}
-    ];
+    var metrics = [{key:'amt',label:'配信金額',f:fmt},{key:'cases',label:'案件数',f:function(v){return v+'件';}},{key:'clients',label:'CL数',f:function(v){return v+'社';}},{key:'agencies',label:'代理店数',f:function(v){return v+'社';}}];
     var html = '';
     metrics.forEach(function(m) {
       html += '<div class="cmp-card"><div class="cmp-label">'+m.label+'</div><div class="cmp-vals">';
       data.fys.forEach(function(fy, i) {
-        var d = data.byFY[fy]||{}; var val = d.kpi&&d.kpi[m.key]||0;
-        var col = FY_COLORS[fy]||PALETTE[i];
-        html += '<div><span style="font-size:9px;color:'+col+'">FY'+fy+'</span><br><span class="cmp-fy" style="color:'+col+'">'+m.f(val)+'</span>';
-        if (i>0) { var prev=data.byFY[data.fys[i-1]]&&data.byFY[data.fys[i-1]].kpi&&data.byFY[data.fys[i-1]].kpi[m.key]||0; var y=yoy(val,prev); html+='<br><span class="cmp-delta '+y.cls+'">'+y.txt+'</span>'; }
+        var d=data.byFY[String(fy)]||{}; var val=d.kpi&&d.kpi[m.key]||0;
+        var col=FY_COLORS[fy]||PALETTE[i];
+        html += '<div><span style="font-size:9px;color:'+col+';font-weight:700">FY'+fy+'</span><br><span class="cmp-fy" style="color:'+col+'">'+m.f(val)+'</span>';
+        if (i>0){ var prev=data.byFY[String(data.fys[i-1])]&&data.byFY[String(data.fys[i-1])].kpi&&data.byFY[String(data.fys[i-1])].kpi[m.key]||0; var y=yoy(val,prev); html+='<br><span class="cmp-delta '+y.cls+'">'+y.txt+'</span>'; }
         html += '</div>';
       });
       html += '</div></div>';
     });
     cmpRow.innerHTML = html;
 
-    // Q別チャート（全FY重ね）
     buildQChartAll(data, 'chartQAmt', 'amt');
     buildQChartAll(data, 'chartQCases', 'cases');
     buildDeptChartAll(data, 'chartDeptOverview');
-    buildIndustryDonut(data, 'chartIndustryOverview');
-
+    buildDonutAll(data, 'industry', 'name', 'chartIndustryOverview');
   } else {
-    // 単一FYモード
-    var fy = data.fy; var d = data.d;
-    var kpi = d.kpi||{};
+    var fy=data.fy; var kpi=data.d.kpi||{};
     cmpSec.style.display = 'none';
     document.getElementById('overviewTitle').textContent = 'FY'+fy+' 概況・KPI';
     document.getElementById('overviewSub').textContent = fy+'年度（'+fy+'/04 〜 '+(parseInt(fy)+1)+'/03）';
     strip.innerHTML = [
-      kpiCard('k-amt','配信金額',fmt(kpi.amt),'月計上: '+fmt(kpi.tsukikejo||0)),
-      kpiCard('k-case','案件数',( kpi.cases||0)+'件','明細 '+(kpi.rows||0)+'件'),
+      kpiCard('k-amt','配信金額',fmt(kpi.amt||0),''),
+      kpiCard('k-case','案件数',(kpi.cases||0)+'件','明細 '+(kpi.rows||0)+'件'),
       kpiCard('k-cl','クライアント数',(kpi.clients||0)+'社',''),
       kpiCard('k-ag','代理店数',(kpi.agencies||0)+'社',''),
       kpiCard('k-avg','平均単価',fmt(kpi.cases?(kpi.amt/kpi.cases):0),'')
     ].join('');
-
-    buildQChartSingle(d.quarterly||[], fy, 'chartQAmt', 'amt');
-    buildQChartSingle(d.quarterly||[], fy, 'chartQCases', 'cases');
-    buildDeptChartSingle(d.dept||[], fy, 'chartDeptOverview');
-    buildIndustryDonutSingle(d.industry||[], 'chartIndustryOverview');
+    buildQChartSingle(data.d.quarterly||[], fy, 'chartQAmt', 'amt');
+    buildQChartSingle(data.d.quarterly||[], fy, 'chartQCases', 'cases');
+    buildDeptChartSingle(data.d.dept||[], fy, 'chartDeptOverview');
+    buildDonutSingle(data.d.industry||[], 'chartIndustryOverview');
   }
 }
-
 function kpiCard(cls, label, val, sub) {
   return '<div class="kpi-card '+cls+'"><div class="kpi-label">'+label+'</div><div class="kpi-val">'+val+'</div><div class="kpi-sub">'+sub+'</div></div>';
 }
 
-// ═══════════════════════════════════════════
-// RENDER: トレンド
-// ═══════════════════════════════════════════
+// ═══════════════════════
+// TREND
+// ═══════════════════════
 function renderTrend(data) {
   if (data.mode === 'all') {
-    // 全FY月次折れ線
-    var datasets = data.fys.map(function(fy, i) {
-      var monthly = (data.byFY[fy]&&data.byFY[fy].monthly)||[];
-      return {
-        label: 'FY'+fy, data: monthly.map(function(m){return m.amt||0;}),
-        borderColor: FY_COLORS[fy]||PALETTE[i], backgroundColor: 'transparent',
-        tension: 0.3, pointRadius: 3
-      };
+    var datasets = data.fys.map(function(fy,i){
+      var m=(data.byFY[String(fy)]&&data.byFY[String(fy)].monthly)||[];
+      return { label:'FY'+fy, data:m.map(function(r){return r.amt||0;}), borderColor:FY_COLORS[fy]||PALETTE[i], backgroundColor:hexA(FY_COLORS[fy]||PALETTE[i],0.08), tension:0.3, pointRadius:3, fill:true };
     });
-    var labels = ((data.byFY[data.fys[0]]&&data.byFY[data.fys[0]].monthly)||[]).map(function(m){return m.month;});
-    mkChart('chartMonthly', {
-      type:'line', data:{labels:labels, datasets:datasets},
-      options: Object.assign({}, BASE_OPT, {
-        scales: { x: scaleOpt('x'), y: Object.assign(scaleOpt('y'), {ticks:{color:'#64748b',callback:function(v){return fmt(v);}}}) }
-      })
+    var labels = ((data.byFY[String(data.fys[0])]&&data.byFY[String(data.fys[0])].monthly)||[]).map(function(m){
+      var parts = m.month.split('-'); return parts[0]+'/'+(parseInt(parts[1]))+'月';
     });
-    buildQCompAll(data, 'chartQComp');
-    buildQAvgAll(data, 'chartQAvg');
+    mkChart('chartMonthly',{type:'line',data:{labels:labels,datasets:datasets},options:Object.assign({},BASE_OPT,{scales:{x:axX(),y:axY()}})});
+    buildQLineAll(data,'chartQComp','amt');
+    buildQLineAll(data,'chartQAvg','avg');
   } else {
-    var monthly = data.d.monthly||[];
-    mkChart('chartMonthly', {
-      type:'bar',
-      data:{ labels:monthly.map(function(m){return m.month;}),
-             datasets:[{label:'配信金額', data:monthly.map(function(m){return m.amt||0;}),
-               backgroundColor:FY_COLORS[data.fy]||PALETTE[0], borderRadius:4}]},
-      options: Object.assign({}, BASE_OPT, { scales:{ x:scaleOpt('x'), y:scaleOpt('y') } })
-    });
-    buildQCompSingle(data.d.quarterly||[], data.fy, 'chartQComp');
-    buildQAvgSingle(data.d.quarterly||[], data.fy, 'chartQAvg');
+    var m=data.d.monthly||[];
+    var mlabels = m.map(function(r){ var p=r.month.split('-'); return p[0]+'/'+(parseInt(p[1]))+'月'; });
+    mkChart('chartMonthly',{type:'bar',data:{labels:mlabels,datasets:[{label:'配信金額',data:m.map(function(r){return r.amt||0;}),backgroundColor:hexA(FY_COLORS[data.fy]||PALETTE[0],0.75),borderRadius:4}]},options:Object.assign({},BASE_OPT,{scales:{x:axX(),y:axY()}})});
+    buildQBarSingle(data.d.quarterly||[],data.fy,'chartQComp','amt');
+    buildQBarSingle(data.d.quarterly||[],data.fy,'chartQAvg','avg');
   }
 }
 
-// ═══════════════════════════════════════════
-// RENDER: 組織別
-// ═══════════════════════════════════════════
+// ═══════════════════════
+// DEPT
+// ═══════════════════════
 function renderDept(data) {
   if (data.mode === 'all') {
-    var depts = getAllDepts(data);
-    var datasets = data.fys.map(function(fy, i) {
-      var dm = deptMap(data.byFY[fy]&&data.byFY[fy].dept||[]);
-      return {
-        label:'FY'+fy, data:depts.map(function(d){return dm[d]&&dm[d].amt||0;}),
-        backgroundColor:hexAlpha(FY_COLORS[fy]||PALETTE[i],0.75), borderRadius:4
-      };
-    });
-    mkChart('chartDept',{type:'bar',data:{labels:depts,datasets:datasets},
-      options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('x'),y:scaleOpt('y')}})});
-    mkChart('chartDeptCases',{type:'bar',data:{labels:depts, datasets:data.fys.map(function(fy,i){
-      var dm=deptMap(data.byFY[fy]&&data.byFY[fy].dept||[]);
-      return {label:'FY'+fy+' 案件数',data:depts.map(function(d){return dm[d]&&dm[d].cases||0;}),backgroundColor:hexAlpha(FY_COLORS[fy]||PALETTE[i],0.75),borderRadius:4};
-    })},options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('x'),y:{ticks:{color:'#64748b'},grid:{color:gridColor()}}}})});
-    buildTable('tblDept', flattenDeptAll(data), [
-      {key:'dept',label:'部署'},{key:'fy',label:'FY'},
-      {key:'amt',label:'配信金額',fmt:'bar'},{key:'cases',label:'案件数',fmt:'num'},{key:'clients',label:'CL数',fmt:'num'}
-    ]);
+    var depts=getAllKeys(data,'dept','dept');
+    var ds=data.fys.map(function(fy,i){ var dm=toMap(data.byFY[String(fy)]&&data.byFY[String(fy)].dept||[],'dept'); return {label:'FY'+fy,data:depts.map(function(d){return dm[d]&&dm[d].amt||0;}),backgroundColor:hexA(FY_COLORS[fy]||PALETTE[i],0.8),borderRadius:4}; });
+    mkChart('chartDept',{type:'bar',data:{labels:depts,datasets:ds},options:Object.assign({},BASE_OPT,{scales:{x:axX(),y:axY()}})});
+    var ds2=data.fys.map(function(fy,i){ var dm=toMap(data.byFY[String(fy)]&&data.byFY[String(fy)].dept||[],'dept'); return {label:'FY'+fy+' 案件数',data:depts.map(function(d){return dm[d]&&dm[d].cases||0;}),backgroundColor:hexA(FY_COLORS[fy]||PALETTE[i],0.7),borderRadius:4}; });
+    mkChart('chartDeptCases',{type:'bar',data:{labels:depts,datasets:ds2},options:Object.assign({},BASE_OPT,{scales:{x:axX(),y:axYn()}})});
+    var rows=[]; data.fys.forEach(function(fy){ (data.byFY[String(fy)]&&data.byFY[String(fy)].dept||[]).forEach(function(r){ rows.push(Object.assign({fy:'FY'+fy},r)); }); });
+    buildTable('tblDept',rows.sort(function(a,b){return b.amt-a.amt;}),[{key:'fy',label:'FY'},{key:'dept',label:'部署'},{key:'amt',label:'配信金額',fmt:'bar',color:'#2563eb'},{key:'cases',label:'案件数',fmt:'num'},{key:'clients',label:'CL数',fmt:'num'}]);
   } else {
-    var dept = data.d.dept||[];
-    mkChart('chartDept',{type:'bar',indexAxis:'y',
-      data:{labels:dept.map(function(r){return r.dept;}),datasets:[{label:'配信金額',data:dept.map(function(r){return r.amt||0;}),backgroundColor:hexAlpha(FY_COLORS[data.fy]||PALETTE[0],0.75),borderRadius:4}]},
-      options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('y'),y:{ticks:{color:'#94a3b8'},grid:{display:false}}}})});
-    mkChart('chartDeptCases',{type:'bar',
-      data:{labels:dept.map(function(r){return r.dept;}),datasets:[
-        {label:'案件数',data:dept.map(function(r){return r.cases||0;}),backgroundColor:hexAlpha(FY_COLORS[data.fy]||PALETTE[0],0.6),borderRadius:4},
-        {label:'CL数',data:dept.map(function(r){return r.clients||0;}),backgroundColor:hexAlpha(PALETTE[1],0.6),borderRadius:4}
-      ]},options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('x'),y:{ticks:{color:'#64748b'},grid:{color:gridColor()}}}})});
-    buildTable('tblDept', dept, [
-      {key:'dept',label:'部署'},{key:'amt',label:'配信金額',fmt:'bar'},{key:'cases',label:'案件数',fmt:'num'},{key:'clients',label:'CL数',fmt:'num'}
-    ]);
+    var dept=data.d.dept||[];
+    mkChart('chartDept',{type:'bar',indexAxis:'y',data:{labels:dept.map(function(r){return r.dept;}),datasets:[{label:'配信金額',data:dept.map(function(r){return r.amt||0;}),backgroundColor:PALETTE.map(function(c){return hexA(c,0.8);}),borderRadius:4}]},options:Object.assign({},BASE_OPT,{scales:{x:axY(),y:{ticks:{color:'#4a5568'},grid:{display:false}}}})});
+    mkChart('chartDeptCases',{type:'bar',data:{labels:dept.map(function(r){return r.dept;}),datasets:[{label:'案件数',data:dept.map(function(r){return r.cases||0;}),backgroundColor:hexA(FY_COLORS[data.fy]||PALETTE[0],0.7),borderRadius:4},{label:'CL数',data:dept.map(function(r){return r.clients||0;}),backgroundColor:hexA(PALETTE[1],0.7),borderRadius:4}]},options:Object.assign({},BASE_OPT,{scales:{x:axX(),y:axYn()}})});
+    buildTable('tblDept',dept,[{key:'dept',label:'部署'},{key:'amt',label:'配信金額',fmt:'bar',color:FY_COLORS[data.fy]||PALETTE[0]},{key:'cases',label:'案件数',fmt:'num'},{key:'clients',label:'CL数',fmt:'num'}]);
   }
 }
 
-// ═══════════════════════════════════════════
-// RENDER: クライアント
-// ═══════════════════════════════════════════
+// ═══════════════════════
+// CLIENT
+// ═══════════════════════
 function renderClient(data) {
-  var end, industry;
-  if (data.mode === 'all') {
-    end = mergeByKey(data, 'end_clients', 'name');
-    industry = mergeByKey(data, 'industry', 'name');
-  } else {
-    end = data.d.end_clients||[];
-    industry = data.d.industry||[];
-  }
-  var top20 = end.slice(0,20);
-  mkChart('chartEnd',{type:'bar',indexAxis:'y',
-    data:{labels:top20.map(function(r){return r.name;}),datasets:[{label:'配信金額',data:top20.map(function(r){return r.amt||0;}),backgroundColor:hexAlpha(FY_COLORS[data.fy]||'#38bdf8',0.75),borderRadius:4}]},
-    options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('y'),y:{ticks:{color:'#94a3b8',font:{size:9}},grid:{display:false}}}})});
-  mkChart('chartIndustry',{type:'bar',
-    data:{labels:industry.map(function(r){return r.name;}),datasets:[{label:'配信金額',data:industry.map(function(r){return r.amt||0;}),backgroundColor:PALETTE,borderRadius:4}]},
-    options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('x'),y:scaleOpt('y')}})});
-  var donutEl = document.getElementById('chartIndustryDonut');
-  if (donutEl) {
-    if (chartMap['chartIndustryDonut']) chartMap['chartIndustryDonut'].destroy();
-    chartMap['chartIndustryDonut'] = new Chart(donutEl,{type:'doughnut',
-      data:{labels:industry.map(function(r){return r.name;}),datasets:[{data:industry.map(function(r){return r.amt||0;}),backgroundColor:PALETTE,hoverOffset:8}]},
-      options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'right',labels:{color:'#94a3b8',font:{size:10}}},tooltip:{backgroundColor:'#1e2638',callbacks:{label:function(ctx){return ' '+fmt(ctx.raw);}}}}}});
-  }
-  buildTable('tblEnd', end, [
-    {key:'name',label:'エンドクライアント名'},{key:'amt',label:'配信金額',fmt:'bar'},{key:'cases',label:'案件数',fmt:'num'},{key:'clients',label:'CL数',fmt:'num'}
-  ]);
+  var end = data.mode==='all' ? mergeAll(data,'end_clients','name') : (data.d.end_clients||[]);
+  var ind  = data.mode==='all' ? mergeAll(data,'industry','name')    : (data.d.industry||[]);
+  var top20=end.slice(0,20);
+  var fyCol = data.mode==='single' ? (FY_COLORS[data.fy]||PALETTE[0]) : '#2563eb';
+  mkChart('chartEnd',{type:'bar',indexAxis:'y',data:{labels:top20.map(function(r){return r.name;}),datasets:[{label:'配信金額',data:top20.map(function(r){return r.amt||0;}),backgroundColor:hexA(fyCol,0.75),borderRadius:4}]},options:Object.assign({},BASE_OPT,{scales:{x:axY(),y:{ticks:{color:'#4a5568',font:{size:10}},grid:{display:false}}}})});
+  mkChart('chartIndustry',{type:'bar',data:{labels:ind.map(function(r){return r.name;}),datasets:[{label:'配信金額',data:ind.map(function(r){return r.amt||0;}),backgroundColor:PALETTE.map(function(c){return hexA(c,0.8);}),borderRadius:4}]},options:Object.assign({},BASE_OPT,{scales:{x:axX(),y:axY()}})});
+  var el=document.getElementById('chartIndustryDonut'); if(el){ if(chartMap['chartIndustryDonut'])chartMap['chartIndustryDonut'].destroy(); chartMap['chartIndustryDonut']=new Chart(el,{type:'doughnut',data:{labels:ind.map(function(r){return r.name;}),datasets:[{data:ind.map(function(r){return r.amt||0;}),backgroundColor:PALETTE,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'right',labels:{color:'#4a5568',font:{size:11}}},tooltip:{backgroundColor:'#1e293b',callbacks:{label:function(ctx){return ' '+fmtFull(ctx.raw);}}}}}});}
+  buildTable('tblEnd',end,[{key:'name',label:'エンドクライアント名'},{key:'amt',label:'配信金額',fmt:'bar',color:fyCol},{key:'cases',label:'案件数',fmt:'num'},{key:'clients',label:'CL数',fmt:'num'}]);
 }
 
-// ═══════════════════════════════════════════
-// RENDER: 代理店
-// ═══════════════════════════════════════════
+// ═══════════════════════
+// AGENCY
+// ═══════════════════════
 function renderAgency(data) {
-  var ag = data.mode==='all' ? mergeByKey(data,'agencies','name') : (data.d.agencies||[]);
-  var top20 = ag.slice(0,20);
-  mkChart('chartAgency',{type:'bar',indexAxis:'y',
-    data:{labels:top20.map(function(r){return r.name;}),datasets:[{label:'配信金額',data:top20.map(function(r){return r.amt||0;}),backgroundColor:hexAlpha(FY_COLORS[data.fy]||'#f472b6',0.75),borderRadius:4}]},
-    options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('y'),y:{ticks:{color:'#94a3b8',font:{size:9}},grid:{display:false}}}})});
-  buildTable('tblAgency', ag, [
-    {key:'name',label:'代理店名'},{key:'amt',label:'配信金額',fmt:'bar'},{key:'cases',label:'案件数',fmt:'num'},{key:'clients',label:'CL数',fmt:'num'}
-  ]);
+  var ag = data.mode==='all' ? mergeAll(data,'agencies','name') : (data.d.agencies||[]);
+  var fyCol = data.mode==='single' ? (FY_COLORS[data.fy]||PALETTE[1]) : '#e11d87';
+  mkChart('chartAgency',{type:'bar',indexAxis:'y',data:{labels:ag.slice(0,20).map(function(r){return r.name;}),datasets:[{label:'配信金額',data:ag.slice(0,20).map(function(r){return r.amt||0;}),backgroundColor:hexA(fyCol,0.75),borderRadius:4}]},options:Object.assign({},BASE_OPT,{scales:{x:axY(),y:{ticks:{color:'#4a5568',font:{size:10}},grid:{display:false}}}})});
+  buildTable('tblAgency',ag,[{key:'name',label:'代理店名'},{key:'amt',label:'配信金額',fmt:'bar',color:fyCol},{key:'cases',label:'案件数',fmt:'num'},{key:'clients',label:'CL数',fmt:'num'}]);
 }
 
-// ═══════════════════════════════════════════
-// RENDER: 媒体別
-// ═══════════════════════════════════════════
+// ═══════════════════════
+// MEDIA
+// ═══════════════════════
 function renderMedia(data) {
-  if (data.mode === 'all') {
-    var medias = getAllMedia(data);
-    var datasets = data.fys.map(function(fy, i) {
-      var mm = mediaMap(data.byFY[fy]&&data.byFY[fy].media||[]);
-      return {label:'FY'+fy, data:medias.map(function(m){return mm[m]||0;}), backgroundColor:hexAlpha(FY_COLORS[fy]||PALETTE[i],0.75), borderRadius:4};
-    });
-    mkChart('chartMedia',{type:'bar',data:{labels:medias,datasets:datasets},
-      options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('x'),y:scaleOpt('y')}})});
-    // シェア比較
-    var shareDs = data.fys.map(function(fy,i){
-      var total = data.fys.reduce(function(s,f2){ var mm=mediaMap(data.byFY[f2]&&data.byFY[f2].media||[]); return s+medias.reduce(function(s2,m){return s2+(mm[m]||0);},0); },0);
-      var mm=mediaMap(data.byFY[fy]&&data.byFY[fy].media||[]);
-      return {label:'FY'+fy, data:medias.map(function(m){ var t=(data.byFY[fy]&&data.byFY[fy].kpi&&data.byFY[fy].kpi.amt)||1; return Math.round((mm[m]||0)/t*1000)/10; }),backgroundColor:hexAlpha(FY_COLORS[fy]||PALETTE[i],0.75),borderRadius:4};
-    });
-    mkChart('chartMediaShare',{type:'bar',data:{labels:medias,datasets:shareDs},
-      options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('x'),y:{ticks:{color:'#64748b',callback:function(v){return v+'%';}},grid:{color:gridColor()}}}})});
-    // テーブル
-    var rows = medias.map(function(m) {
-      var row = {name:m}; var prev=0;
-      data.fys.forEach(function(fy){ var mm=mediaMap(data.byFY[fy]&&data.byFY[fy].media||[]); row['amt_'+fy]=mm[m]||0; });
-      row.amt = data.fys.reduce(function(s,fy){return s+(row['amt_'+fy]||0);},0);
-      return row;
-    }).sort(function(a,b){return b.amt-a.amt;});
-    buildTable('tblMedia', rows, [{key:'name',label:'媒体'},{key:'amt',label:'合計',fmt:'bar'}].concat(
-      data.fys.map(function(fy){return {key:'amt_'+fy,label:'FY'+fy,fmt:'amt'};})
-    ));
-  } else {
-    var media = data.d.media||[];
-    mkChart('chartMedia',{type:'bar',
-      data:{labels:media.map(function(r){return r.name;}),datasets:[{label:'配信金額',data:media.map(function(r){return r.amt||0;}),backgroundColor:PALETTE,borderRadius:4}]},
-      options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('x'),y:scaleOpt('y')}})});
-    var total=media.reduce(function(s,r){return s+(r.amt||0);},0);
-    mkChart('chartMediaShare',{type:'bar',
-      data:{labels:media.map(function(r){return r.name;}),datasets:[{label:'シェア(%)',data:media.map(function(r){return Math.round((r.amt||0)/total*1000)/10;}),backgroundColor:hexAlpha(FY_COLORS[data.fy]||PALETTE[0],0.75),borderRadius:4}]},
-      options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('x'),y:{ticks:{color:'#64748b',callback:function(v){return v+'%';}},grid:{color:gridColor()}}}})});
-    buildTable('tblMedia', media, [
-      {key:'name',label:'媒体'},{key:'amt',label:'配信金額',fmt:'bar'},{key:'cases',label:'案件数',fmt:'num'}
-    ]);
-  }
+  var media = data.mode==='all' ? mergeAll(data,'media','name') : (data.d.media||[]);
+  var fyCol = data.mode==='single' ? (FY_COLORS[data.fy]||PALETTE[0]) : '#0d9488';
+  mkChart('chartMedia',{type:'bar',data:{labels:media.map(function(r){return r.name;}),datasets:[{label:'配信金額',data:media.map(function(r){return r.amt||0;}),backgroundColor:PALETTE.map(function(c){return hexA(c,0.8);}),borderRadius:4}]},options:Object.assign({},BASE_OPT,{scales:{x:axX(),y:axY()}})});
+  var el=document.getElementById('chartMediaDonut'); if(el){ if(chartMap['chartMediaDonut'])chartMap['chartMediaDonut'].destroy(); chartMap['chartMediaDonut']=new Chart(el,{type:'doughnut',data:{labels:media.map(function(r){return r.name;}),datasets:[{data:media.map(function(r){return r.amt||0;}),backgroundColor:PALETTE,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'right',labels:{color:'#4a5568',font:{size:11}}},tooltip:{backgroundColor:'#1e293b',callbacks:{label:function(ctx){return ' '+fmtFull(ctx.raw);}}}}}});}
+  buildTable('tblMedia',media,[{key:'name',label:'媒体'},{key:'amt',label:'配信金額',fmt:'bar',color:fyCol},{key:'cases',label:'案件数',fmt:'num'}]);
 }
 
-// ═══════════════════════════════════════════
-// RENDER: 担当者別
-// ═══════════════════════════════════════════
+// ═══════════════════════
+// SALES
+// ═══════════════════════
 function renderSales(data) {
-  var sales = data.mode==='all' ? mergeByKey(data,'sales','owner') : (data.d.sales||[]);
-  var top15 = sales.slice(0,15);
-  mkChart('chartSales',{type:'bar',indexAxis:'y',
-    data:{labels:top15.map(function(r){return r.owner;}),datasets:[{label:'配信金額',data:top15.map(function(r){return r.amt||0;}),backgroundColor:hexAlpha(FY_COLORS[data.fy]||'#4ade80',0.75),borderRadius:4}]},
-    options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('y'),y:{ticks:{color:'#94a3b8'},grid:{display:false}}}})});
-  buildTable('tblSales', sales, [
-    {key:'owner',label:'担当者'},{key:'dept',label:'部署'},{key:'amt',label:'配信金額',fmt:'bar'},{key:'cases',label:'案件数',fmt:'num'},{key:'clients',label:'CL数',fmt:'num'}
-  ]);
+  var sales = data.mode==='all' ? mergeAll(data,'sales','owner') : (data.d.sales||[]);
+  var fyCol = data.mode==='single' ? (FY_COLORS[data.fy]||PALETTE[2]) : '#16a34a';
+  mkChart('chartSales',{type:'bar',indexAxis:'y',data:{labels:sales.slice(0,15).map(function(r){return r.owner;}),datasets:[{label:'配信金額',data:sales.slice(0,15).map(function(r){return r.amt||0;}),backgroundColor:hexA(fyCol,0.75),borderRadius:4}]},options:Object.assign({},BASE_OPT,{scales:{x:axY(),y:{ticks:{color:'#4a5568'},grid:{display:false}}}})});
+  buildTable('tblSales',sales,[{key:'owner',label:'担当者'},{key:'dept',label:'部署'},{key:'amt',label:'配信金額',fmt:'bar',color:fyCol},{key:'cases',label:'案件数',fmt:'num'},{key:'clients',label:'CL数',fmt:'num'}]);
 }
 
-// ═══════════════════════════════════════════
+// ═══════════════════════
 // CHART SUB-BUILDERS
-// ═══════════════════════════════════════════
+// ═══════════════════════
 function buildQChartAll(data, id, key) {
-  var qLabels = ['Q1','Q2','Q3','Q4'];
-  var datasets = data.fys.map(function(fy,i){
-    var qd = (data.byFY[fy]&&data.byFY[fy].quarterly)||[];
-    return {label:'FY'+fy, data:qLabels.map(function(_,qi){ var r=qd[qi]||{}; return r[key]||0; }), backgroundColor:hexAlpha(FY_COLORS[fy]||PALETTE[i],0.75), borderRadius:4};
+  var ds = data.fys.map(function(fy,i){
+    var qd=(data.byFY[String(fy)]&&data.byFY[String(fy)].quarterly)||[];
+    return {label:'FY'+fy,data:Q_LABELS.map(function(_,qi){return qd[qi]&&qd[qi][key]||0;}),backgroundColor:hexA(FY_COLORS[fy]||PALETTE[i],0.8),borderRadius:4};
   });
-  mkChart(id,{type:'bar',data:{labels:qLabels,datasets:datasets},
-    options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('x'),y:key==='amt'?scaleOpt('y'):{ticks:{color:'#64748b'},grid:{color:gridColor()}}}})});
+  mkChart(id,{type:'bar',data:{labels:Q_LABELS,datasets:ds},options:Object.assign({},BASE_OPT,{scales:{x:axX(),y:key==='amt'?axY():axYn()}})});
 }
-function buildQChartSingle(quarterly, fy, id, key) {
-  mkChart(id,{type:'bar',
-    data:{labels:quarterly.map(function(q){return 'Q'+q.Q;}),datasets:[{label:'FY'+fy+' '+key,data:quarterly.map(function(q){return q[key]||0;}),backgroundColor:hexAlpha(FY_COLORS[fy]||PALETTE[0],0.75),borderRadius:4}]},
-    options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('x'),y:key==='amt'?scaleOpt('y'):{ticks:{color:'#64748b'},grid:{color:gridColor()}}}})});
+function buildQChartSingle(qdata, fy, id, key) {
+  var labels = qdata.map(function(q){return 'Q'+q.Q;});
+  mkChart(id,{type:'bar',data:{labels:labels,datasets:[{label:'FY'+fy,data:qdata.map(function(q){return q[key]||0;}),backgroundColor:hexA(FY_COLORS[fy]||PALETTE[0],0.8),borderRadius:4}]},options:Object.assign({},BASE_OPT,{scales:{x:axX(),y:key==='amt'?axY():axYn()}})});
+}
+function buildQLineAll(data, id, key) {
+  var ds = data.fys.map(function(fy,i){
+    var qd=(data.byFY[String(fy)]&&data.byFY[String(fy)].quarterly)||[];
+    var vals = Q_LABELS.map(function(_,qi){ var r=qd[qi]||{}; return key==='avg'?(r.cases?(r.amt/r.cases):0):(r[key]||0); });
+    return {label:'FY'+fy,data:vals,borderColor:FY_COLORS[fy]||PALETTE[i],backgroundColor:'transparent',tension:0.3,pointRadius:4,pointBackgroundColor:FY_COLORS[fy]||PALETTE[i]};
+  });
+  mkChart(id,{type:'line',data:{labels:Q_LABELS,datasets:ds},options:Object.assign({},BASE_OPT,{scales:{x:axX(),y:axY()}})});
+}
+function buildQBarSingle(qdata, fy, id, key) {
+  var labels=qdata.map(function(q){return 'Q'+q.Q;});
+  var vals=qdata.map(function(q){ return key==='avg'?(q.cases?(q.amt/q.cases):0):(q[key]||0); });
+  mkChart(id,{type:'bar',data:{labels:labels,datasets:[{label:key==='avg'?'平均単価':'配信金額',data:vals,backgroundColor:hexA(FY_COLORS[fy]||PALETTE[0],0.8),borderRadius:4}]},options:Object.assign({},BASE_OPT,{scales:{x:axX(),y:axY()}})});
 }
 function buildDeptChartAll(data, id) {
-  var depts = getAllDepts(data);
-  var datasets = data.fys.map(function(fy,i){
-    var dm = deptMap(data.byFY[fy]&&data.byFY[fy].dept||[]);
-    return {label:'FY'+fy, data:depts.map(function(d){return dm[d]&&dm[d].amt||0;}), backgroundColor:hexAlpha(FY_COLORS[fy]||PALETTE[i],0.75), borderRadius:4};
-  });
-  mkChart(id,{type:'bar',data:{labels:depts,datasets:datasets},options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('x'),y:scaleOpt('y')}})});
+  var depts=getAllKeys(data,'dept','dept');
+  var ds=data.fys.map(function(fy,i){ var dm=toMap(data.byFY[String(fy)]&&data.byFY[String(fy)].dept||[],'dept'); return {label:'FY'+fy,data:depts.map(function(d){return dm[d]&&dm[d].amt||0;}),backgroundColor:hexA(FY_COLORS[fy]||PALETTE[i],0.8),borderRadius:4}; });
+  mkChart(id,{type:'bar',data:{labels:depts,datasets:ds},options:Object.assign({},BASE_OPT,{scales:{x:axX(),y:axY()}})});
 }
 function buildDeptChartSingle(dept, fy, id) {
-  mkChart(id,{type:'bar',indexAxis:'y',
-    data:{labels:dept.map(function(r){return r.dept;}),datasets:[{label:'配信金額',data:dept.map(function(r){return r.amt||0;}),backgroundColor:PALETTE,borderRadius:4}]},
-    options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('y'),y:{ticks:{color:'#94a3b8'},grid:{display:false}}}})});
+  mkChart(id,{type:'bar',data:{labels:dept.map(function(r){return r.dept;}),datasets:[{label:'配信金額',data:dept.map(function(r){return r.amt||0;}),backgroundColor:PALETTE.map(function(c){return hexA(c,0.8);}),borderRadius:4}]},options:Object.assign({},BASE_OPT,{scales:{x:axX(),y:axY()}})});
 }
-function buildIndustryDonut(data, id) {
-  var ind = mergeByKey(data,'industry','name');
-  var el = document.getElementById(id); if(!el) return;
-  if(chartMap[id]) chartMap[id].destroy();
-  chartMap[id] = new Chart(el,{type:'doughnut',
-    data:{labels:ind.map(function(r){return r.name;}),datasets:[{data:ind.map(function(r){return r.amt||0;}),backgroundColor:PALETTE,hoverOffset:8}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'right',labels:{color:'#94a3b8',font:{size:10}}},tooltip:{backgroundColor:'#1e2638',callbacks:{label:function(ctx){return ' '+fmt(ctx.raw);}}}}}});
+function buildDonutAll(data, field, key, id) {
+  var rows=mergeAll(data,field,key);
+  var el=document.getElementById(id); if(!el)return; if(chartMap[id])chartMap[id].destroy();
+  chartMap[id]=new Chart(el,{type:'doughnut',data:{labels:rows.map(function(r){return r[key];}),datasets:[{data:rows.map(function(r){return r.amt||0;}),backgroundColor:PALETTE,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'right',labels:{color:'#4a5568',font:{size:11}}},tooltip:{backgroundColor:'#1e293b',callbacks:{label:function(ctx){return ' '+fmtFull(ctx.raw);}}}}}});
 }
-function buildIndustryDonutSingle(ind, id) {
-  var el = document.getElementById(id); if(!el) return;
-  if(chartMap[id]) chartMap[id].destroy();
-  chartMap[id] = new Chart(el,{type:'doughnut',
-    data:{labels:ind.map(function(r){return r.name;}),datasets:[{data:ind.map(function(r){return r.amt||0;}),backgroundColor:PALETTE,hoverOffset:8}]},
-    options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'right',labels:{color:'#94a3b8',font:{size:10}}},tooltip:{backgroundColor:'#1e2638',callbacks:{label:function(ctx){return ' '+fmt(ctx.raw);}}}}}});
-}
-function buildQCompAll(data, id) {
-  var qLabels=['Q1','Q2','Q3','Q4'];
-  var datasets=data.fys.map(function(fy,i){
-    var qd=(data.byFY[fy]&&data.byFY[fy].quarterly)||[];
-    return {label:'FY'+fy,data:qLabels.map(function(_,qi){return (qd[qi]&&qd[qi].amt)||0;}),borderColor:FY_COLORS[fy]||PALETTE[i],backgroundColor:'transparent',tension:0.3,pointRadius:4};
-  });
-  mkChart(id,{type:'line',data:{labels:qLabels,datasets:datasets},options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('x'),y:scaleOpt('y')}})});
-}
-function buildQCompSingle(qd, fy, id) {
-  mkChart(id,{type:'bar',
-    data:{labels:qd.map(function(q){return 'Q'+q.Q;}),datasets:[{label:'FY'+fy,data:qd.map(function(q){return q.amt||0;}),backgroundColor:hexAlpha(FY_COLORS[fy]||PALETTE[0],0.75),borderRadius:4}]},
-    options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('x'),y:scaleOpt('y')}})});
-}
-function buildQAvgAll(data, id) {
-  var qLabels=['Q1','Q2','Q3','Q4'];
-  var datasets=data.fys.map(function(fy,i){
-    var qd=(data.byFY[fy]&&data.byFY[fy].quarterly)||[];
-    return {label:'FY'+fy,data:qLabels.map(function(_,qi){var r=qd[qi]||{}; return r.cases?(r.amt/r.cases):0;}),borderColor:FY_COLORS[fy]||PALETTE[i],backgroundColor:'transparent',tension:0.3,pointRadius:4};
-  });
-  mkChart(id,{type:'line',data:{labels:qLabels,datasets:datasets},options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('x'),y:scaleOpt('y')}})});
-}
-function buildQAvgSingle(qd, fy, id) {
-  mkChart(id,{type:'bar',
-    data:{labels:qd.map(function(q){return 'Q'+q.Q;}),datasets:[{label:'平均単価',data:qd.map(function(q){return q.cases?(q.amt/q.cases):0;}),backgroundColor:hexAlpha(FY_COLORS[fy]||PALETTE[0],0.75),borderRadius:4}]},
-    options:Object.assign({},BASE_OPT,{scales:{x:scaleOpt('x'),y:scaleOpt('y')}})});
+function buildDonutSingle(rows, id) {
+  var el=document.getElementById(id); if(!el)return; if(chartMap[id])chartMap[id].destroy();
+  chartMap[id]=new Chart(el,{type:'doughnut',data:{labels:rows.map(function(r){return r.name;}),datasets:[{data:rows.map(function(r){return r.amt||0;}),backgroundColor:PALETTE,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'55%',plugins:{legend:{position:'right',labels:{color:'#4a5568',font:{size:11}}},tooltip:{backgroundColor:'#1e293b',callbacks:{label:function(ctx){return ' '+fmtFull(ctx.raw);}}}}}});
 }
 
-// ═══════════════════════════════════════════
+// ═══════════════════════
 // DATA HELPERS
-// ═══════════════════════════════════════════
-function mergeByKey(data, field, key) {
-  var map = {};
-  data.fys.forEach(function(fy) {
-    var rows = (data.byFY[fy]&&data.byFY[fy][field])||[];
-    rows.forEach(function(r) {
-      var k = r[key]; if(!k) return;
-      if (!map[k]) map[k] = Object.assign({},r,{amt:0,cases:0,clients:0});
-      map[k].amt = (map[k].amt||0) + (r.amt||0);
-      map[k].cases = (map[k].cases||0) + (r.cases||0);
-      map[k].clients = Math.max(map[k].clients||0, r.clients||0);
+// ═══════════════════════
+function mergeAll(data, field, key) {
+  var map={};
+  data.fys.forEach(function(fy){
+    var rows=(data.byFY[String(fy)]&&data.byFY[String(fy)][field])||[];
+    rows.forEach(function(r){
+      var k=r[key]; if(!k)return;
+      if(!map[k])map[k]={amt:0,cases:0,clients:0,dept:r.dept||'',owner:r.owner||''};
+      map[k][key]=k; map[k].amt+=(r.amt||0); map[k].cases+=(r.cases||0); map[k].clients=Math.max(map[k].clients,r.clients||0);
     });
   });
   return Object.values(map).sort(function(a,b){return b.amt-a.amt;});
 }
-function getAllDepts(data) {
-  var set = {};
-  data.fys.forEach(function(fy){ (data.byFY[fy]&&data.byFY[fy].dept||[]).forEach(function(r){set[r.dept]=1;}); });
-  return Object.keys(set);
-}
-function deptMap(arr) {
-  var m={};  arr.forEach(function(r){m[r.dept]=r;}); return m;
-}
-function getAllMedia(data) {
+function getAllKeys(data, field, key) {
   var set={};
-  data.fys.forEach(function(fy){ (data.byFY[fy]&&data.byFY[fy].media||[]).forEach(function(r){set[r.name]=1;}); });
+  data.fys.forEach(function(fy){ (data.byFY[String(fy)]&&data.byFY[String(fy)][field]||[]).forEach(function(r){set[r[key]]=1;}); });
   return Object.keys(set);
 }
-function mediaMap(arr) {
-  var m={}; arr.forEach(function(r){m[r.name]=(r.amt||0);}); return m;
-}
-function flattenDeptAll(data) {
-  var rows=[];
-  data.fys.forEach(function(fy){ (data.byFY[fy]&&data.byFY[fy].dept||[]).forEach(function(r){ rows.push(Object.assign({fy:'FY'+fy},r)); }); });
-  return rows.sort(function(a,b){return b.amt-a.amt;});
-}
-function hexAlpha(hex, a) {
-  var r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
-  return 'rgba('+r+','+g+','+b+','+a+')';
-}
+function toMap(arr, key) { var m={}; arr.forEach(function(r){m[r[key]]=r;}); return m; }
 
-// ── START ──
 window.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
