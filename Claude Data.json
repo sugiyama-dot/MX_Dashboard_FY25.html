@@ -1,0 +1,1431 @@
+{
+  "meta": {
+    "updated_at": "2026-03-05 14:00 JST",
+    "total_rows": 1188,
+    "fy_range": "FY2024 - FY2025"
+  },
+  "fiscal_years": [
+    2024,
+    2025
+  ],
+  "by_fy": {
+    "2024": {
+      "kpi": {
+        "amt": 430641211,
+        "tsukikejo": 293600687,
+        "cases": 604,
+        "rows": 843,
+        "clients": 323,
+        "agencies": 80
+      },
+      "quarterly": [
+        {
+          "Q": 1,
+          "amt": 113869027,
+          "cases": 158,
+          "clients": 106
+        },
+        {
+          "Q": 2,
+          "amt": 106097663,
+          "cases": 183,
+          "clients": 115
+        },
+        {
+          "Q": 3,
+          "amt": 100787598,
+          "cases": 125,
+          "clients": 92
+        },
+        {
+          "Q": 4,
+          "amt": 109886923,
+          "cases": 148,
+          "clients": 117
+        }
+      ],
+      "monthly": [
+        {
+          "month": "2024-04",
+          "amt": 22866080,
+          "cases": 31
+        },
+        {
+          "month": "2024-05",
+          "amt": 23423307,
+          "cases": 47
+        },
+        {
+          "month": "2024-06",
+          "amt": 17426840,
+          "cases": 45
+        },
+        {
+          "month": "2024-07",
+          "amt": 27692250,
+          "cases": 60
+        },
+        {
+          "month": "2024-08",
+          "amt": 38118760,
+          "cases": 78
+        },
+        {
+          "month": "2024-09",
+          "amt": 23595316,
+          "cases": 53
+        },
+        {
+          "month": "2024-10",
+          "amt": 45917089,
+          "cases": 56
+        },
+        {
+          "month": "2024-11",
+          "amt": 27218014,
+          "cases": 52
+        },
+        {
+          "month": "2024-12",
+          "amt": 37583647,
+          "cases": 53
+        },
+        {
+          "month": "2025-01",
+          "amt": 58287218,
+          "cases": 57
+        },
+        {
+          "month": "2025-02",
+          "amt": 42474600,
+          "cases": 53
+        },
+        {
+          "month": "2025-03",
+          "amt": 47174693,
+          "cases": 63
+        },
+        {
+          "month": "2025-04",
+          "amt": 5816779,
+          "cases": 15
+        },
+        {
+          "month": "2025-05",
+          "amt": 1573309,
+          "cases": 4
+        },
+        {
+          "month": "2025-06",
+          "amt": 800000,
+          "cases": 2
+        },
+        {
+          "month": "2025-07",
+          "amt": 1173309,
+          "cases": 3
+        },
+        {
+          "month": "2025-08",
+          "amt": 500000,
+          "cases": 1
+        }
+      ],
+      "dept": [
+        {
+          "dept": "PMXG",
+          "amt": 302967011,
+          "cases": 294,
+          "clients": 174
+        },
+        {
+          "dept": "おでかけG",
+          "amt": 36580254,
+          "cases": 137,
+          "clients": 92
+        },
+        {
+          "dept": "DMXG",
+          "amt": 36159745,
+          "cases": 86,
+          "clients": 31
+        },
+        {
+          "dept": "不動産G",
+          "amt": 28018621,
+          "cases": 40,
+          "clients": 18
+        },
+        {
+          "dept": "不明",
+          "amt": 26915580,
+          "cases": 47,
+          "clients": 37
+        }
+      ],
+      "end_clients": [
+        {
+          "name": "株式会社東京インテリア家具",
+          "amt": 68413000,
+          "cases": 7,
+          "clients": 18
+        },
+        {
+          "name": "住友電装株式会社",
+          "amt": 18000000,
+          "cases": 2,
+          "clients": 6
+        },
+        {
+          "name": "株式会社ＢＲＥＸＡ　Ｎｅｘｔ",
+          "amt": 13400000,
+          "cases": 7,
+          "clients": 15
+        },
+        {
+          "name": "学校法人高崎商科大学",
+          "amt": 12560000,
+          "cases": 4,
+          "clients": 18
+        },
+        {
+          "name": "サガミシード株式会社",
+          "amt": 11100000,
+          "cases": 30,
+          "clients": 48
+        },
+        {
+          "name": "株式会社スタッフサービス",
+          "amt": 10800000,
+          "cases": 3,
+          "clients": 5
+        },
+        {
+          "name": "株式会社川島コーポレーション",
+          "amt": 10500000,
+          "cases": 7,
+          "clients": 23
+        },
+        {
+          "name": "株式会社早稲田アカデミー",
+          "amt": 8540000,
+          "cases": 5,
+          "clients": 12
+        },
+        {
+          "name": "徳島県鳴門市",
+          "amt": 8331818,
+          "cases": 2,
+          "clients": 4
+        },
+        {
+          "name": "株式会社ケン・コーポレーション",
+          "amt": 8305000,
+          "cases": 13,
+          "clients": 13
+        },
+        {
+          "name": "アルテリア・ネットワークス株式会社",
+          "amt": 8000000,
+          "cases": 7,
+          "clients": 16
+        },
+        {
+          "name": "株式会社ＪＲ西日本コミュニケーションズ",
+          "amt": 7200000,
+          "cases": 1,
+          "clients": 8
+        },
+        {
+          "name": "日清医療食品株式会社",
+          "amt": 6900000,
+          "cases": 4,
+          "clients": 5
+        },
+        {
+          "name": "株式会社コシダカ",
+          "amt": 6600000,
+          "cases": 21,
+          "clients": 21
+        },
+        {
+          "name": "防衛省",
+          "amt": 6410000,
+          "cases": 9,
+          "clients": 9
+        },
+        {
+          "name": "ライクキッズ株式会社",
+          "amt": 6008647,
+          "cases": 4,
+          "clients": 7
+        },
+        {
+          "name": "青森トヨペット株式会社",
+          "amt": 5800000,
+          "cases": 1,
+          "clients": 4
+        },
+        {
+          "name": "株式会社リョーマゴルフ",
+          "amt": 5439279,
+          "cases": 1,
+          "clients": 4
+        },
+        {
+          "name": "三井不動産レジデンシャルリース株式会社",
+          "amt": 5414621,
+          "cases": 7,
+          "clients": 8
+        },
+        {
+          "name": "トヨタバッテリー株式会社",
+          "amt": 5190000,
+          "cases": 4,
+          "clients": 12
+        },
+        {
+          "name": "オリックス生命保険株式会社",
+          "amt": 4443684,
+          "cases": 2,
+          "clients": 5
+        },
+        {
+          "name": "一般社団法人下呂温泉観光協会",
+          "amt": 4285714,
+          "cases": 1,
+          "clients": 2
+        },
+        {
+          "name": "茨城県",
+          "amt": 4000000,
+          "cases": 3,
+          "clients": 5
+        },
+        {
+          "name": "三菱地所ハウスネット株式会社",
+          "amt": 4000000,
+          "cases": 1,
+          "clients": 3
+        },
+        {
+          "name": "デジタル・アドバタイジング・コンソーシアム株式会社",
+          "amt": 4000000,
+          "cases": 1,
+          "clients": 1
+        },
+        {
+          "name": "積水ハウス不動産東京株式会社",
+          "amt": 3609000,
+          "cases": 2,
+          "clients": 3
+        },
+        {
+          "name": "三井不動産レジデンシャル株式会社",
+          "amt": 3520000,
+          "cases": 3,
+          "clients": 6
+        },
+        {
+          "name": "センチュリービークルズ株式会社",
+          "amt": 3400000,
+          "cases": 6,
+          "clients": 11
+        },
+        {
+          "name": "東光電気工事株式会社",
+          "amt": 3375000,
+          "cases": 1,
+          "clients": 2
+        },
+        {
+          "name": "中部薬品株式会社",
+          "amt": 3000000,
+          "cases": 2,
+          "clients": 7
+        }
+      ],
+      "agencies": [
+        {
+          "name": "株式会社日本エージェンシー",
+          "amt": 68413000,
+          "cases": 7,
+          "clients": 1
+        },
+        {
+          "name": "株式会社関東朝日広告社",
+          "amt": 32082000,
+          "cases": 36,
+          "clients": 20
+        },
+        {
+          "name": "株式会社リクルート",
+          "amt": 29678641,
+          "cases": 39,
+          "clients": 20
+        },
+        {
+          "name": "ＮＴＴタウンページ株式会社",
+          "amt": 26647000,
+          "cases": 45,
+          "clients": 31
+        },
+        {
+          "name": "株式会社ゼンリンマーケティングソリューションズ",
+          "amt": 20989000,
+          "cases": 124,
+          "clients": 83
+        },
+        {
+          "name": "株式会社アクセスプログレス",
+          "amt": 18287080,
+          "cases": 32,
+          "clients": 21
+        },
+        {
+          "name": "住友電装株式会社",
+          "amt": 18000000,
+          "cases": 2,
+          "clients": 1
+        },
+        {
+          "name": "株式会社揚羽",
+          "amt": 15239097,
+          "cases": 14,
+          "clients": 11
+        },
+        {
+          "name": "株式会社ＢＲＥＸＡ　Ｎｅｘｔ",
+          "amt": 13400000,
+          "cases": 7,
+          "clients": 1
+        },
+        {
+          "name": "日本貿易印刷株式会社",
+          "amt": 12726000,
+          "cases": 34,
+          "clients": 5
+        },
+        {
+          "name": "ダイオーミウラ株式会社",
+          "amt": 12400000,
+          "cases": 10,
+          "clients": 3
+        },
+        {
+          "name": "デジタル・アドバタイジング・コンソーシアム株式会社",
+          "amt": 11229128,
+          "cases": 8,
+          "clients": 7
+        },
+        {
+          "name": "株式会社スタッフサービス",
+          "amt": 10800000,
+          "cases": 3,
+          "clients": 1
+        },
+        {
+          "name": "株式会社早稲田アカデミー",
+          "amt": 8540000,
+          "cases": 5,
+          "clients": 1
+        },
+        {
+          "name": "株式会社トーコン",
+          "amt": 8370000,
+          "cases": 13,
+          "clients": 9
+        },
+        {
+          "name": "株式会社キネッソジャパン",
+          "amt": 8331818,
+          "cases": 2,
+          "clients": 1
+        },
+        {
+          "name": "ＧＭＯ ＮＩＫＫＯ株式会社",
+          "amt": 8000000,
+          "cases": 7,
+          "clients": 1
+        },
+        {
+          "name": "株式会社ＣＡＲＴＡ　ＺＥＲＯ",
+          "amt": 7839279,
+          "cases": 6,
+          "clients": 4
+        },
+        {
+          "name": "株式会社アドバ",
+          "amt": 7220000,
+          "cases": 15,
+          "clients": 11
+        },
+        {
+          "name": "セーラー広告株式会社",
+          "amt": 6600000,
+          "cases": 21,
+          "clients": 1
+        },
+        {
+          "name": "ライクキッズ株式会社",
+          "amt": 6008647,
+          "cases": 4,
+          "clients": 1
+        },
+        {
+          "name": "株式会社東日本朝日広告社",
+          "amt": 5800000,
+          "cases": 1,
+          "clients": 1
+        },
+        {
+          "name": "トラコム株式会社",
+          "amt": 5450000,
+          "cases": 11,
+          "clients": 6
+        },
+        {
+          "name": "レジデントファースト株式会社",
+          "amt": 5414621,
+          "cases": 7,
+          "clients": 1
+        },
+        {
+          "name": "トヨタバッテリー株式会社",
+          "amt": 5190000,
+          "cases": 4,
+          "clients": 1
+        }
+      ],
+      "media": [
+        {
+          "name": "その他",
+          "amt": 76015532,
+          "cases": 91
+        },
+        {
+          "name": "リエルコ",
+          "amt": 62101925,
+          "cases": 77
+        },
+        {
+          "name": "PPAD",
+          "amt": 56762343,
+          "cases": 114
+        },
+        {
+          "name": "YDA",
+          "amt": 56162072,
+          "cases": 171
+        },
+        {
+          "name": "LINE",
+          "amt": 47271236,
+          "cases": 91
+        },
+        {
+          "name": "GDN",
+          "amt": 39236564,
+          "cases": 53
+        },
+        {
+          "name": "Instagram",
+          "amt": 36644400,
+          "cases": 86
+        },
+        {
+          "name": "Universe",
+          "amt": 24938800,
+          "cases": 19
+        },
+        {
+          "name": "YouTube",
+          "amt": 10520000,
+          "cases": 13
+        },
+        {
+          "name": "Facebook",
+          "amt": 7918839,
+          "cases": 13
+        },
+        {
+          "name": "Logicad",
+          "amt": 5339500,
+          "cases": 9
+        },
+        {
+          "name": "TikTok",
+          "amt": 4030000,
+          "cases": 3
+        },
+        {
+          "name": "P-MAX",
+          "amt": 2100000,
+          "cases": 3
+        },
+        {
+          "name": "Gリスティング",
+          "amt": 1600000,
+          "cases": 5
+        }
+      ],
+      "sales": [
+        {
+          "owner": "ブイヤ 未夢",
+          "dept": "PMXG",
+          "amt": 93930000,
+          "cases": 57,
+          "clients": 40
+        },
+        {
+          "owner": "横山 史弥",
+          "dept": "PMXG",
+          "amt": 67188225,
+          "cases": 57,
+          "clients": 39
+        },
+        {
+          "owner": "清水 裕文",
+          "dept": "PMXG",
+          "amt": 57592000,
+          "cases": 79,
+          "clients": 56
+        },
+        {
+          "owner": "脇屋 木夏",
+          "dept": "PMXG",
+          "amt": 44507507,
+          "cases": 75,
+          "clients": 24
+        },
+        {
+          "owner": "西原 安二郎",
+          "dept": "おでかけG",
+          "amt": 28090000,
+          "cases": 127,
+          "clients": 86
+        },
+        {
+          "owner": "菊池 遼",
+          "dept": "DMXG",
+          "amt": 19170000,
+          "cases": 61,
+          "clients": 15
+        },
+        {
+          "owner": "萩原 卓哉",
+          "dept": "不動産G",
+          "amt": 19158621,
+          "cases": 22,
+          "clients": 8
+        },
+        {
+          "owner": "井上 倖一",
+          "dept": "PMXG",
+          "amt": 17379279,
+          "cases": 9,
+          "clients": 9
+        },
+        {
+          "owner": "瀬良 健太朗",
+          "dept": "不明",
+          "amt": 16260000,
+          "cases": 19,
+          "clients": 17
+        },
+        {
+          "owner": "志賀 健真",
+          "dept": "DMXG",
+          "amt": 16243127,
+          "cases": 23,
+          "clients": 16
+        },
+        {
+          "owner": "竹上 透",
+          "dept": "PMXG",
+          "amt": 13150000,
+          "cases": 4,
+          "clients": 4
+        },
+        {
+          "owner": "石原 佑真",
+          "dept": "不明",
+          "amt": 10655580,
+          "cases": 28,
+          "clients": 20
+        },
+        {
+          "owner": "三井 彩子",
+          "dept": "おでかけG",
+          "amt": 7490254,
+          "cases": 8,
+          "clients": 5
+        },
+        {
+          "owner": "宇木 千央",
+          "dept": "PMXG",
+          "amt": 7400000,
+          "cases": 10,
+          "clients": 8
+        },
+        {
+          "owner": "髙瀬 実裕",
+          "dept": "不動産G",
+          "amt": 5160000,
+          "cases": 10,
+          "clients": 5
+        }
+      ],
+      "industry": [
+        {
+          "name": "その他",
+          "amt": 191189348,
+          "clients": 184
+        },
+        {
+          "name": "教育",
+          "amt": 44322287,
+          "clients": 52
+        },
+        {
+          "name": "不動産・建設",
+          "amt": 37479621,
+          "clients": 28
+        },
+        {
+          "name": "金融・保険",
+          "amt": 25493684,
+          "clients": 7
+        },
+        {
+          "name": "官公庁・自治体",
+          "amt": 19391818,
+          "clients": 4
+        },
+        {
+          "name": "食品・飲食",
+          "amt": 17700000,
+          "clients": 2
+        },
+        {
+          "name": "採用・人材",
+          "amt": 17308647,
+          "clients": 3
+        },
+        {
+          "name": "医療・介護",
+          "amt": 17200000,
+          "clients": 11
+        },
+        {
+          "name": "IT・テクノロジー",
+          "amt": 16253333,
+          "clients": 8
+        },
+        {
+          "name": "旅行・交通",
+          "amt": 13105714,
+          "clients": 6
+        },
+        {
+          "name": "生協・流通",
+          "amt": 11705000,
+          "clients": 3
+        },
+        {
+          "name": "自動車",
+          "amt": 11502480,
+          "clients": 11
+        },
+        {
+          "name": "スポーツ・レジャー",
+          "amt": 7989279,
+          "clients": 4
+        }
+      ]
+    },
+    "2025": {
+      "kpi": {
+        "amt": 159764811,
+        "tsukikejo": 92756311,
+        "cases": 259,
+        "rows": 345,
+        "clients": 176,
+        "agencies": 62
+      },
+      "quarterly": [
+        {
+          "Q": 1,
+          "amt": 100915410,
+          "cases": 146,
+          "clients": 115
+        },
+        {
+          "Q": 2,
+          "amt": 57687901,
+          "cases": 106,
+          "clients": 76
+        },
+        {
+          "Q": 3,
+          "amt": 1161500,
+          "cases": 8,
+          "clients": 7
+        }
+      ],
+      "monthly": [
+        {
+          "month": "2024-05",
+          "amt": 300000,
+          "cases": 1
+        },
+        {
+          "month": "2025-03",
+          "amt": 0,
+          "cases": 1
+        },
+        {
+          "month": "2025-04",
+          "amt": 8220000,
+          "cases": 25
+        },
+        {
+          "month": "2025-05",
+          "amt": 21099339,
+          "cases": 35
+        },
+        {
+          "month": "2025-06",
+          "amt": 41687339,
+          "cases": 49
+        },
+        {
+          "month": "2025-07",
+          "amt": 34860000,
+          "cases": 59
+        },
+        {
+          "month": "2025-08",
+          "amt": 28993732,
+          "cases": 39
+        },
+        {
+          "month": "2025-09",
+          "amt": 22237901,
+          "cases": 44
+        },
+        {
+          "month": "2025-10",
+          "amt": 2366500,
+          "cases": 13
+        }
+      ],
+      "dept": [
+        {
+          "dept": "PMXG",
+          "amt": 123582811,
+          "cases": 150,
+          "clients": 109
+        },
+        {
+          "dept": "DMXG",
+          "amt": 25082000,
+          "cases": 85,
+          "clients": 52
+        },
+        {
+          "dept": "不動産G",
+          "amt": 10000000,
+          "cases": 21,
+          "clients": 14
+        },
+        {
+          "dept": "おでかけG",
+          "amt": 1100000,
+          "cases": 3,
+          "clients": 3
+        }
+      ],
+      "end_clients": [
+        {
+          "name": "株式会社川島コーポレーション",
+          "amt": 12000000,
+          "cases": 8,
+          "clients": 20
+        },
+        {
+          "name": "徳島県鳴門市",
+          "amt": 10837339,
+          "cases": 1,
+          "clients": 1
+        },
+        {
+          "name": "株式会社中央コンタクト",
+          "amt": 8928732,
+          "cases": 1,
+          "clients": 4
+        },
+        {
+          "name": "学校法人日本教育財団",
+          "amt": 7230000,
+          "cases": 1,
+          "clients": 2
+        },
+        {
+          "name": "株式会社西武不動産プロパティマネジメント",
+          "amt": 6280000,
+          "cases": 3,
+          "clients": 3
+        },
+        {
+          "name": "防衛省",
+          "amt": 6170000,
+          "cases": 5,
+          "clients": 8
+        },
+        {
+          "name": "株式会社東京インテリア家具",
+          "amt": 6000000,
+          "cases": 2,
+          "clients": 2
+        },
+        {
+          "name": "学校法人高崎商科大学",
+          "amt": 4990000,
+          "cases": 1,
+          "clients": 7
+        },
+        {
+          "name": "株式会社早稲田アカデミー",
+          "amt": 4940000,
+          "cases": 7,
+          "clients": 13
+        },
+        {
+          "name": "株式会社京進",
+          "amt": 3200000,
+          "cases": 3,
+          "clients": 4
+        },
+        {
+          "name": "株式会社河合塾マナビス",
+          "amt": 3000000,
+          "cases": 1,
+          "clients": 5
+        },
+        {
+          "name": "株式会社城島高原オペレーションズ",
+          "amt": 2800000,
+          "cases": 1,
+          "clients": 3
+        },
+        {
+          "name": "株式会社キーエンス",
+          "amt": 2440000,
+          "cases": 2,
+          "clients": 6
+        },
+        {
+          "name": "三井不動産レジデンシャルリース株式会社",
+          "amt": 2400000,
+          "cases": 3,
+          "clients": 4
+        },
+        {
+          "name": "株式会社三井住友フィナンシャルグループ",
+          "amt": 2325901,
+          "cases": 1,
+          "clients": 1
+        },
+        {
+          "name": "ライクキッズ株式会社",
+          "amt": 2200000,
+          "cases": 1,
+          "clients": 2
+        },
+        {
+          "name": "住友商事株式会社",
+          "amt": 2100000,
+          "cases": 1,
+          "clients": 1
+        },
+        {
+          "name": "楽天グループ株式会社",
+          "amt": 2000000,
+          "cases": 3,
+          "clients": 6
+        },
+        {
+          "name": "西日本旅客鉄道株式会社",
+          "amt": 1890000,
+          "cases": 1,
+          "clients": 2
+        },
+        {
+          "name": "株式会社コシダカ",
+          "amt": 1800000,
+          "cases": 6,
+          "clients": 6
+        },
+        {
+          "name": "日清医療食品株式会社",
+          "amt": 1700000,
+          "cases": 1,
+          "clients": 1
+        },
+        {
+          "name": "中部薬品株式会社",
+          "amt": 1600000,
+          "cases": 1,
+          "clients": 2
+        },
+        {
+          "name": "株式会社もち吉",
+          "amt": 1400000,
+          "cases": 1,
+          "clients": 1
+        },
+        {
+          "name": "学校法人日通学園",
+          "amt": 1300000,
+          "cases": 3,
+          "clients": 3
+        },
+        {
+          "name": "株式会社藤商事",
+          "amt": 1260000,
+          "cases": 1,
+          "clients": 1
+        },
+        {
+          "name": "ライオン企画株式会社",
+          "amt": 1200000,
+          "cases": 4,
+          "clients": 4
+        },
+        {
+          "name": "株式会社タイトー",
+          "amt": 1200000,
+          "cases": 2,
+          "clients": 2
+        },
+        {
+          "name": "株式会社ヤナセ",
+          "amt": 1130000,
+          "cases": 1,
+          "clients": 1
+        },
+        {
+          "name": "パナソニックハウジングソリューションズ株式会社",
+          "amt": 1122000,
+          "cases": 1,
+          "clients": 1
+        },
+        {
+          "name": "株式会社ヤマハミュージックジャパン",
+          "amt": 1050000,
+          "cases": 3,
+          "clients": 3
+        }
+      ],
+      "agencies": [
+        {
+          "name": "ダイオーミウラ株式会社",
+          "amt": 13500000,
+          "cases": 11,
+          "clients": 3
+        },
+        {
+          "name": "ＮＴＴタウンページ株式会社",
+          "amt": 11660000,
+          "cases": 18,
+          "clients": 14
+        },
+        {
+          "name": "株式会社関東朝日広告社",
+          "amt": 10910000,
+          "cases": 15,
+          "clients": 10
+        },
+        {
+          "name": "株式会社キネッソジャパン",
+          "amt": 10837339,
+          "cases": 1,
+          "clients": 1
+        },
+        {
+          "name": "株式会社Ｈａｋｕｈｏｄｏ　ＤＹ　ＯＮＥ",
+          "amt": 10547401,
+          "cases": 7,
+          "clients": 5
+        },
+        {
+          "name": "株式会社ゼンリンマーケティングソリューションズ",
+          "amt": 10010000,
+          "cases": 76,
+          "clients": 43
+        },
+        {
+          "name": "株式会社デジタルアイデンティティ",
+          "amt": 8928732,
+          "cases": 1,
+          "clients": 1
+        },
+        {
+          "name": "株式会社ジーニー",
+          "amt": 7830000,
+          "cases": 2,
+          "clients": 2
+        },
+        {
+          "name": "株式会社マイクロアド",
+          "amt": 6822000,
+          "cases": 6,
+          "clients": 6
+        },
+        {
+          "name": "株式会社日本エージェンシー",
+          "amt": 6000000,
+          "cases": 2,
+          "clients": 1
+        },
+        {
+          "name": "株式会社早稲田アカデミー",
+          "amt": 4940000,
+          "cases": 7,
+          "clients": 1
+        },
+        {
+          "name": "株式会社ＫＡＫＥＨＡＳＨＩ",
+          "amt": 4550000,
+          "cases": 3,
+          "clients": 3
+        },
+        {
+          "name": "株式会社大阪朝日広告社",
+          "amt": 3800000,
+          "cases": 4,
+          "clients": 2
+        },
+        {
+          "name": "株式会社リクルート",
+          "amt": 3720000,
+          "cases": 5,
+          "clients": 5
+        },
+        {
+          "name": "株式会社河合塾マナビス",
+          "amt": 3000000,
+          "cases": 1,
+          "clients": 1
+        },
+        {
+          "name": "株式会社クイック福岡",
+          "amt": 3000000,
+          "cases": 10,
+          "clients": 8
+        },
+        {
+          "name": "株式会社ライフマップ",
+          "amt": 2800000,
+          "cases": 6,
+          "clients": 5
+        },
+        {
+          "name": "レジデントファースト株式会社",
+          "amt": 2700000,
+          "cases": 4,
+          "clients": 2
+        },
+        {
+          "name": "株式会社ｅｖｏｌｉａ",
+          "amt": 2500000,
+          "cases": 4,
+          "clients": 3
+        },
+        {
+          "name": "株式会社オーリーズ",
+          "amt": 2440000,
+          "cases": 2,
+          "clients": 1
+        },
+        {
+          "name": "ライクキッズ株式会社",
+          "amt": 2200000,
+          "cases": 1,
+          "clients": 1
+        },
+        {
+          "name": "株式会社インオーダー",
+          "amt": 1800000,
+          "cases": 6,
+          "clients": 6
+        },
+        {
+          "name": "セーラー広告株式会社",
+          "amt": 1800000,
+          "cases": 6,
+          "clients": 1
+        },
+        {
+          "name": "株式会社トーコン",
+          "amt": 1700000,
+          "cases": 4,
+          "clients": 4
+        },
+        {
+          "name": "株式会社クオラス",
+          "amt": 1700000,
+          "cases": 1,
+          "clients": 1
+        }
+      ],
+      "media": [
+        {
+          "name": "その他",
+          "amt": 30334480,
+          "cases": 32
+        },
+        {
+          "name": "Instagram",
+          "amt": 20387000,
+          "cases": 43
+        },
+        {
+          "name": "LINE",
+          "amt": 20212878,
+          "cases": 33
+        },
+        {
+          "name": "P-MAX",
+          "amt": 19121219,
+          "cases": 18
+        },
+        {
+          "name": "YDA",
+          "amt": 19099235,
+          "cases": 94
+        },
+        {
+          "name": "GDN",
+          "amt": 17074999,
+          "cases": 36
+        },
+        {
+          "name": "リエルコ",
+          "amt": 10720000,
+          "cases": 15
+        },
+        {
+          "name": "YouTube",
+          "amt": 7750000,
+          "cases": 10
+        },
+        {
+          "name": "Universe",
+          "amt": 6370000,
+          "cases": 13
+        },
+        {
+          "name": "TikTok",
+          "amt": 2900000,
+          "cases": 4
+        },
+        {
+          "name": "Logicad",
+          "amt": 2550000,
+          "cases": 8
+        },
+        {
+          "name": "Facebook",
+          "amt": 2095000,
+          "cases": 5
+        },
+        {
+          "name": "Gリスティング",
+          "amt": 850000,
+          "cases": 3
+        },
+        {
+          "name": "PPAD",
+          "amt": 300000,
+          "cases": 1
+        }
+      ],
+      "sales": [
+        {
+          "owner": "井上 倖一",
+          "dept": "PMXG",
+          "amt": 39816071,
+          "cases": 29,
+          "clients": 26
+        },
+        {
+          "owner": "脇屋 木夏",
+          "dept": "PMXG",
+          "amt": 22300000,
+          "cases": 18,
+          "clients": 8
+        },
+        {
+          "owner": "清水 裕文",
+          "dept": "PMXG",
+          "amt": 21440000,
+          "cases": 29,
+          "clients": 21
+        },
+        {
+          "owner": "ブイヤ 未夢",
+          "dept": "PMXG",
+          "amt": 16760000,
+          "cases": 35,
+          "clients": 24
+        },
+        {
+          "owner": "宇木 千央",
+          "dept": "PMXG",
+          "amt": 11260000,
+          "cases": 19,
+          "clients": 12
+        },
+        {
+          "owner": "志賀 健真",
+          "dept": "DMXG",
+          "amt": 10010000,
+          "cases": 76,
+          "clients": 43
+        },
+        {
+          "owner": "竹上 透",
+          "dept": "PMXG",
+          "amt": 8130074,
+          "cases": 11,
+          "clients": 10
+        },
+        {
+          "owner": "菊池 遼",
+          "dept": "DMXG",
+          "amt": 7830000,
+          "cases": 2,
+          "clients": 2
+        },
+        {
+          "owner": "宇佐美 章",
+          "dept": "DMXG",
+          "amt": 6822000,
+          "cases": 6,
+          "clients": 6
+        },
+        {
+          "owner": "萩原 卓哉",
+          "dept": "不動産G",
+          "amt": 4600000,
+          "cases": 10,
+          "clients": 8
+        },
+        {
+          "owner": "簗田 芽依",
+          "dept": "PMXG",
+          "amt": 3876666,
+          "cases": 9,
+          "clients": 9
+        },
+        {
+          "owner": "野村 実央",
+          "dept": "不動産G",
+          "amt": 3000000,
+          "cases": 2,
+          "clients": 2
+        },
+        {
+          "owner": "後藤 寛太",
+          "dept": "不動産G",
+          "amt": 2100000,
+          "cases": 3,
+          "clients": 3
+        },
+        {
+          "owner": "三井 彩子",
+          "dept": "おでかけG",
+          "amt": 800000,
+          "cases": 2,
+          "clients": 2
+        },
+        {
+          "owner": "赤津 遼",
+          "dept": "DMXG",
+          "amt": 420000,
+          "cases": 1,
+          "clients": 1
+        }
+      ],
+      "industry": [
+        {
+          "name": "その他",
+          "amt": 43981294,
+          "clients": 80
+        },
+        {
+          "name": "教育",
+          "amt": 31930000,
+          "clients": 33
+        },
+        {
+          "name": "不動産・建設",
+          "amt": 26980000,
+          "clients": 21
+        },
+        {
+          "name": "官公庁・自治体",
+          "amt": 17507339,
+          "clients": 3
+        },
+        {
+          "name": "医療・介護",
+          "amt": 14328732,
+          "clients": 8
+        },
+        {
+          "name": "金融・保険",
+          "amt": 8725901,
+          "clients": 6
+        },
+        {
+          "name": "旅行・交通",
+          "amt": 5140000,
+          "clients": 3
+        },
+        {
+          "name": "自動車",
+          "amt": 3120000,
+          "clients": 10
+        },
+        {
+          "name": "採用・人材",
+          "amt": 2500000,
+          "clients": 2
+        },
+        {
+          "name": "IT・テクノロジー",
+          "amt": 2301545,
+          "clients": 4
+        },
+        {
+          "name": "食品・飲食",
+          "amt": 2100000,
+          "clients": 2
+        },
+        {
+          "name": "生協・流通",
+          "amt": 1100000,
+          "clients": 3
+        },
+        {
+          "name": "スポーツ・レジャー",
+          "amt": 50000,
+          "clients": 1
+        }
+      ]
+    }
+  }
+}
