@@ -966,13 +966,13 @@ const C = {
   palette: ['#38bdf8','#f472b6','#4ade80','#fbbf24','#a78bfa','#2dd4bf','#fb923c','#e879f9','#34d399','#60a5fa','#f59e0b','#818cf8','#10b981'],
 };
 function fmt(n) {
-  if (n >= 1e8) return '¥' + (n/1e8).toFixed(1) + '億';
-  if (n >= 1e7) return '¥' + (n/1e7).toFixed(1) + '千万';
-  if (n >= 1e6) return '¥' + (n/1e6).toFixed(1) + '百万';
-  if (n >= 1e4) return '¥' + (n/1e4).toFixed(0) + '万';
-  return '¥' + n.toLocaleString();
+  if (n >= 1e8) return '\u00A5' + (n/1e8).toFixed(1) + '億';
+  if (n >= 1e7) return '\u00A5' + (n/1e7).toFixed(1) + '千万';
+  if (n >= 1e6) return '\u00A5' + (n/1e6).toFixed(1) + '百万';
+  if (n >= 1e4) return '\u00A5' + (n/1e4).toFixed(0) + '万';
+  return '\u00A5' + n.toLocaleString();
 }
-function fmtFull(n) { return '¥' + Math.round(n).toLocaleString(); }
+function fmtFull(n) { return '\u00A5' + Math.round(n).toLocaleString(); }
 function pct(a,b) { return b ? ((a/b-1)*100).toFixed(1) : '–'; }
 const baseOpts = {
   responsive: true, maintainAspectRatio: false,
@@ -1002,7 +1002,7 @@ function maxAmt(rows, key='haishin') { return Math.max(...rows.map(r=>r[key]||0)
 
 function buildTable(id, rows, cols) {
   const el = document.getElementById(id); if (!el) return;
-  const head = '<thead><tr>' + cols.map(c=>`<th>${c.label}</th>`).join('') + '</tr></thead>';
+  const head = '<thead><tr>' + cols.map(function(c){ return '<th>'+c.label+'</th>'; }).join('') + '</tr></thead>';
   const tbody = '<tbody>' + rows.map((r,i)=>{
     return '<tr>' + cols.map(c => {
       let v = r[c.key]; let cls = '';
@@ -1016,10 +1016,10 @@ function buildTable(id, rows, cols) {
       else if (c.fmt === 'bar') {
         const mx = c.max || 1;
         const w = Math.max(2, Math.round((v||0)/mx*100));
-        v = `<div class="bar-cell"><div class="bar-inner" style="width:${w}px;background:${c.color||'var(--fy24)'}"></div>${fmt(v||0)}</div>`;
+        v = '<div class="bar-cell"><div class="bar-inner" style="width:'+w+'px;background:'+(c.color||'var(--fy24)')+'"></div>'+fmt(v||0)+'</div>';
       }
       if (c.key === 'rank') v = i+1;
-      return `<td class="${cls}">${v}</td>`;
+      return '<td class="'+cls+'">'+v+'</td>';
     }).join('') + '</tr>';
   }).join('') + '</tbody>';
   el.innerHTML = head + tbody;
@@ -1030,10 +1030,13 @@ function buildTable(id, rows, cols) {
 // ═══════════════════════════════════════════════════
 const chartBuilt = {};
 function showTab(name) {
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-  document.querySelectorAll('.nav-tab').forEach(t=>{ if(t.onclick?.toString().includes(`'${name}'`)) t.classList.add('active'); });
+  document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.nav-tab').forEach(function(t){ t.classList.remove('active'); });
+  var panel = document.getElementById('tab-'+name);
+  if (panel) panel.classList.add('active');
+  var tabs = document.querySelectorAll('.nav-tab');
+  var idx = ['overview','trend','dept','client','agency','media','repeat','insight'].indexOf(name);
+  if (idx >= 0 && tabs[idx]) tabs[idx].classList.add('active');
   if (!chartBuilt[name]) { chartBuilt[name]=true; buildCharts(name); }
 }
 
@@ -1242,13 +1245,25 @@ function buildCharts(tab) {
         { label:'FY25', data:inds.map(r=>r.fy25), backgroundColor:C.fy25a, borderRadius:4 },
       ]}
     });
-    mkChart('chartIndustryDonut', {
-      type:'doughnut',
-      data: { labels:inds.map(r=>r.name), datasets:[
-        { label:'FY24', data:inds.map(r=>r.fy24), backgroundColor:C.palette, hoverOffset:6 },
-      ]},
-      options: { plugins:{ legend:{position:'right',labels:{color:'#94a3b8',font:{size:10}}}, tooltip:{callbacks:{label:ctx=>' '+fmt(ctx.raw)+' ('+((ctx.raw/inds.reduce((s,r)=>s+r.fy24,0))*100).toFixed(1)+'%)'}} }, cutout:'60%' } }
-    });
+    var donutEl = document.getElementById('chartIndustryDonut');
+    if (donutEl) {
+      new Chart(donutEl, {
+        type: 'doughnut',
+        data: {
+          labels: inds.map(function(r){ return r.name; }),
+          datasets: [{ data: inds.map(function(r){ return r.fy24; }), backgroundColor: C.palette, hoverOffset: 6 }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          cutout: '60%',
+          plugins: {
+            legend: { position: 'right', labels: { color: '#94a3b8', font: { size: 10 } } },
+            tooltip: { backgroundColor: '#1e2638', bodyColor: '#94a3b8' }
+          }
+        }
+      });
+    }
 
     buildTable('tblEnd24', D.end_fy24, [
       {key:'name',label:'エンドクライアント名'},
@@ -1316,13 +1331,15 @@ function buildCharts(tab) {
       chg: m.fy24>0 ? ((m.fy25/m.fy24-1)*100).toFixed(1) : '–',
     }));
     const el = document.getElementById('tblMedia'); if (el) {
-      el.innerHTML = `<thead><tr><th>媒体</th><th>FY24配信金額</th><th>FY24シェア</th><th>FY25配信金額</th><th>FY25シェア</th><th>増減率</th></tr></thead>
-      <tbody>${rows.map(r=>{
-        const chg = parseFloat(r.chg);
-        const cc = isNaN(chg)?'':(chg>0?'chg-up':'chg-dn');
-        const cv = isNaN(chg)?'–':(chg>0?'▲':'▼')+Math.abs(chg).toFixed(1)+'%';
-        return `<tr><td>${r.name}</td><td class="amt-fy24">${fmt(r.fy24)}</td><td>${r.sh24}%</td><td class="amt-fy25">${fmt(r.fy25)}</td><td>${r.sh25}%</td><td class="${cc}">${cv}</td></tr>`;
-      }).join('')}</tbody>`;
+      var mHtml = '<thead><tr><th>媒体</th><th>FY24配信金額</th><th>FY24シェア</th><th>FY25配信金額</th><th>FY25シェア</th><th>増減率</th></tr></thead><tbody>';
+    rows.forEach(function(r){
+      var chg = parseFloat(r.chg);
+      var cc = isNaN(chg)?'':(chg>0?'chg-up':'chg-dn');
+      var cv = isNaN(chg)?'-':(chg>0?'+':'')+chg+'%';
+      mHtml += '<tr><td>'+r.name+'</td><td class="amt-fy24">'+fmt(r.fy24)+'</td><td>'+r.sh24+'%</td><td class="amt-fy25">'+fmt(r.fy25)+'</td><td>'+r.sh25+'%</td><td class="'+cc+'">'+cv+'</td></tr>';
+    });
+    mHtml += '</tbody>';
+    el.innerHTML = mHtml;
     }
   }
 
