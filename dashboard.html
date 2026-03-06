@@ -11,9 +11,23 @@ body{background:#f1f3f6;color:#1a202c;font-family:'Hiragino Kaku Gothic ProN','M
 .header{background:#fff;border-bottom:1px solid #e2e6ed;padding:0 20px;height:50px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 1px 4px rgba(0,0,0,.08)}
 .header h1{font-size:14px;font-weight:700}
 .updated{font-size:11px;color:#8a97a8}
-.fy-bar{background:#fff;border-bottom:1px solid #e2e6ed;padding:0 20px;height:44px;display:flex;align-items:center;gap:6px;overflow-x:auto}
-.fy-btn{padding:4px 16px;border-radius:20px;border:1.5px solid #ccc;background:#fff;color:#666;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .15s}
-.fy-btn.active{background:#1d4ed8;border-color:#1d4ed8;color:#fff;font-weight:700}
+
+/* ── フィルターバー ── */
+.filter-bar{background:#fff;border-bottom:1px solid #e2e6ed;padding:0 20px;height:44px;display:flex;align-items:center;gap:16px;overflow-x:auto}
+.filter-group{display:flex;align-items:center;gap:6px;white-space:nowrap}
+.filter-sep{width:1px;height:24px;background:#e2e6ed;flex-shrink:0}
+.filter-label{font-size:10px;color:#8a97a8;font-weight:600;letter-spacing:.05em;margin-right:2px}
+
+/* FY ボタン */
+.fy-btn{padding:4px 14px;border-radius:20px;border:1.5px solid #ccc;background:#fff;color:#666;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .15s}
+.fy-btn.active{color:#fff;font-weight:700}
+
+/* 組織ボタン */
+.org-btn{padding:4px 14px;border-radius:20px;border:1.5px solid #ccc;background:#fff;color:#666;font-size:12px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all .15s}
+.org-btn.active{background:#374151;border-color:#374151;color:#fff;font-weight:700}
+.org-btn[data-org="PMXG"].active{background:#7c3aed;border-color:#7c3aed}
+.org-btn[data-org="DMXG"].active{background:#0d9488;border-color:#0d9488}
+
 nav{background:#fff;border-bottom:1px solid #e2e6ed;padding:0 20px;display:flex;overflow-x:auto}
 .nav-tab{padding:11px 16px;font-size:12px;font-weight:500;color:#8a97a8;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .15s}
 .nav-tab:hover{color:#4a5568}
@@ -24,17 +38,21 @@ main{padding:16px 20px;max-width:1600px;margin:0 auto}
 .spinner{width:32px;height:32px;border-radius:50%;border:3px solid #e2e6ed;border-top-color:#1d4ed8;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 .err{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:12px 16px;margin-bottom:12px;color:#dc2626;font-size:12px}
+
+/* フィルター状態表示バッジ */
+.filter-badge{display:inline-flex;align-items:center;gap:4px;background:#f3f0ff;border:1px solid #c4b5fd;border-radius:12px;padding:2px 10px;font-size:11px;color:#6d28d9;font-weight:600}
+.filter-badge.dmx{background:#f0fdf9;border-color:#99f6e4;color:#0f766e}
+#FILTER_STATUS{margin-left:auto;display:flex;gap:6px;align-items:center}
+
 .sec-title{font-size:15px;font-weight:700;margin:4px 0 4px}
 .sec-sub{font-size:11px;color:#8a97a8;margin-bottom:12px}
 .sec-line{height:1px;background:#e2e6ed;margin-bottom:16px}
-/* KPI */
 .kpi-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .kpi{background:#fff;border:1px solid #e2e6ed;border-radius:8px;padding:14px 18px;flex:1;min-width:140px;border-top:3px solid #e2e6ed;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .kpi.c1{border-top-color:#f59e0b}.kpi.c2{border-top-color:#0d9488}.kpi.c3{border-top-color:#7c3aed}.kpi.c4{border-top-color:#ea580c}.kpi.c5{border-top-color:#16a34a}
 .kpi-lbl{font-size:10px;color:#8a97a8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
 .kpi-val{font-size:20px;font-weight:700;line-height:1;margin-bottom:3px}
 .kpi-sub{font-size:10px;color:#b0bac9}
-/* compare */
 .cmp-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
 .cmp{background:#fff;border:1px solid #e2e6ed;border-radius:8px;padding:12px 16px;flex:1;min-width:160px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .cmp-lbl{font-size:10px;color:#8a97a8;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
@@ -43,15 +61,12 @@ main{padding:16px 20px;max-width:1600px;margin:0 auto}
 .cmp-fy-val{font-size:15px;font-weight:700;line-height:1}
 .cmp-delta{font-size:11px;font-weight:600;margin-top:2px}
 .up{color:#16a34a}.dn{color:#dc2626}
-/* grid */
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
 .g1{margin-bottom:12px}
-/* card */
 .card{background:#fff;border:1px solid #e2e6ed;border-radius:8px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .card-hd{padding:10px 14px;border-bottom:1px solid #f0f2f5;background:#fafbfc}
 .card-title{font-size:12px;font-weight:600;color:#4a5568}
 .ch{padding:14px;position:relative}
-/* table */
 .tw{overflow:auto;max-height:360px}
 table{width:100%;border-collapse:collapse;font-size:12px}
 th{background:#fafbfc;color:#8a97a8;font-weight:600;padding:7px 12px;text-align:left;font-size:11px;position:sticky;top:0;border-bottom:1px solid #e2e6ed;white-space:nowrap}
@@ -59,7 +74,6 @@ td{padding:6px 12px;border-bottom:1px solid #f0f2f5;color:#4a5568}
 tr:hover td{background:#f8f9fb}
 .r{text-align:right;font-weight:600;color:#1a202c}
 .rn{text-align:right;color:#8a97a8}
-/* bar cell */
 .bcell{display:flex;align-items:center;gap:6px}
 .bg{flex:1;height:4px;background:#e2e6ed;border-radius:2px;min-width:40px}
 .bf{height:100%;border-radius:2px}
@@ -68,6 +82,7 @@ tr:hover td{background:#f8f9fb}
 </style>
 </head>
 <body>
+
 <!-- PW GUARD -->
 <div id="PW_GUARD" style="position:fixed;inset:0;background:#f1f3f6;z-index:9999;display:flex;align-items:center;justify-content:center;font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;">
   <div style="background:#fff;border:1px solid #e2e6ed;border-radius:14px;padding:44px 48px;width:340px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.1);">
@@ -108,9 +123,33 @@ async function checkPW(){
 }
 </script>
 <!-- END PW GUARD -->
+
 <div class="loading" id="LS"><div class="spinner"></div><div style="font-size:12px;color:#8a97a8">読み込み中...</div></div>
-<div class="header"><h1>📊 MX事業部 売上分析ダッシュボード</h1><div class="updated" id="UPD"></div></div>
-<div class="fy-bar" id="FYB"><button class="fy-btn active" data-fy="all" onclick="switchFY('all')">全期間比較</button></div>
+
+<div class="header">
+  <h1>📊 MX事業部 売上分析ダッシュボード</h1>
+  <div class="updated" id="UPD"></div>
+</div>
+
+<!-- フィルターバー: FY × 組織 -->
+<div class="filter-bar">
+  <div class="filter-group">
+    <span class="filter-label">年度</span>
+    <div id="FYB">
+      <button class="fy-btn active" data-fy="all" onclick="switchFY('all')"
+        style="background:#1f2937;border-color:#1f2937;color:#fff">全期間比較</button>
+    </div>
+  </div>
+  <div class="filter-sep"></div>
+  <div class="filter-group">
+    <span class="filter-label">組織</span>
+    <button class="org-btn active" data-org="all" onclick="switchOrg('all')">全組織</button>
+    <button class="org-btn" data-org="PMXG" onclick="switchOrg('PMXG')">PMX</button>
+    <button class="org-btn" data-org="DMXG" onclick="switchOrg('DMXG')">DMX</button>
+  </div>
+  <div id="FILTER_STATUS"></div>
+</div>
+
 <nav>
   <div class="nav-tab active" onclick="showTab('ov')">概況・KPI</div>
   <div class="nav-tab" onclick="showTab('tr')">四半期トレンド</div>
@@ -120,6 +159,7 @@ async function checkPW(){
   <div class="nav-tab" onclick="showTab('me')">媒体別</div>
   <div class="nav-tab" onclick="showTab('sa')">担当者別</div>
 </nav>
+
 <main>
   <div id="EB" class="err" style="display:none"></div>
   <div class="panel active" id="p-ov">
@@ -179,14 +219,17 @@ async function checkPW(){
     <div class="g1"><div class="card"><div class="card-hd"><span class="card-title">担当者別 詳細</span></div><div class="tw"><table id="tSA"></table></div></div></div>
   </div>
 </main>
+
 <script>
 // =====================
 // GLOBALS
 // =====================
-var G={}, FY='all', TAB='ov', CM={};
+var G={}, FY='all', ORG='all', TAB='ov', CM={};
 var FC={2024:'#1d4ed8',2025:'#db2777',2026:'#16a34a',2027:'#ea580c'};
 var PAL=['#1d4ed8','#db2777','#16a34a','#ea580c','#7c3aed','#0d9488','#d97706','#dc2626','#0891b2','#65a30d','#9333ea','#c2410c','#0369a1','#be185d'];
 var QL=['Q1','Q2','Q3','Q4'];
+var ORG_COLOR={PMXG:'#7c3aed',DMXG:'#0d9488',all:'#374151'};
+var ORG_LABEL={PMXG:'PMX',DMXG:'DMX',all:'全組織'};
 
 // =====================
 // INIT
@@ -197,7 +240,6 @@ async function init(){
     if(!r.ok)throw new Error('HTTP '+r.status);
     G=await r.json();
     document.getElementById('UPD').textContent='最終更新: '+(G.meta&&G.meta.updated_at||'');
-    // FYボタン生成
     var bar=document.getElementById('FYB');
     (G.fiscal_years||[]).forEach(function(fy){
       var b=document.createElement('button');
@@ -215,7 +257,7 @@ async function init(){
 }
 
 // =====================
-// FY / TAB
+// FY / ORG / TAB
 // =====================
 function switchFY(fy){
   FY=fy;
@@ -226,8 +268,29 @@ function switchFY(fy){
     if(on){var c=fy==='all'?'#1f2937':(FC[fy]||'#1f2937');b.style.background=c;b.style.borderColor=c;b.style.color='#fff';}
     else{b.style.background='#fff';var c2=b.dataset.fy==='all'?'#1f2937':(FC[parseInt(b.dataset.fy)]||'#666');b.style.color=c2;b.style.borderColor=c2;}
   });
+  updateFilterStatus();
   render();
 }
+
+function switchOrg(org){
+  ORG=org;
+  document.querySelectorAll('.org-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.org===org);
+  });
+  updateFilterStatus();
+  render();
+}
+
+function updateFilterStatus(){
+  var el=document.getElementById('FILTER_STATUS');
+  var html='';
+  if(ORG!=='all'){
+    var cls=ORG==='DMXG'?'filter-badge dmx':'filter-badge';
+    html+='<span class="'+cls+'">'+ORG_LABEL[ORG]+' のみ表示中</span>';
+  }
+  el.innerHTML=html;
+}
+
 var TABS=['ov','tr','dp','cl','ag','me','sa'];
 function showTab(t){
   TAB=t;
@@ -235,6 +298,89 @@ function showTab(t){
   document.querySelectorAll('.nav-tab').forEach(function(n,i){n.classList.toggle('active',TABS[i]===t)});
   document.getElementById('p-'+t).classList.add('active');
   destroyAll(); renderTab(t);
+}
+
+// =====================
+// ORG FILTER: data.jsonのrowsを組織でフィルタリング
+// =====================
+// data.jsonのby_fy[fy]の各配列を ORG でフィルタリングして返す
+function filterByOrg(obj){
+  if(ORG==='all') return obj;
+  // 各フィールドを org='ORG' でフィルタ
+  var keys=['quarterly','monthly','dept','end_clients','agencies','media','sales','industry'];
+  var result={kpi: filterKPI(obj)};
+  // quarterly/monthly は dept 情報を持たない → 担当者(sales)経由で按分は難しいため
+  // dept フィールドで直接フィルタできるものはフィルタ、できないものはそのまま
+  result.quarterly  = filterQuarterly(obj);
+  result.monthly    = filterMonthly(obj);
+  result.dept       = (obj.dept||[]).filter(function(r){return r.dept===ORG;});
+  result.end_clients= filterRows(obj.end_clients);
+  result.agencies   = filterRows(obj.agencies);
+  result.media      = filterRows(obj.media);
+  result.sales      = (obj.sales||[]).filter(function(r){return r.dept===ORG;});
+  result.industry   = filterRows(obj.industry);
+  return result;
+}
+
+// sales から ORG に属する担当者名のセットを作る
+function getOrgOwners(obj){
+  var s={};
+  (obj.sales||[]).forEach(function(r){if(r.dept===ORG)s[r.owner]=true;});
+  return s;
+}
+
+// quarterly/monthly は dept を直接持たないため sales の合計から再計算
+function filterQuarterly(obj){
+  // by_fy[fy].sales の dept フィルタ済みの合計をQ別に返す
+  // sales には cases/clients しかないので amt のみ org フィルタ
+  // quarterly の amt を sales の ORG 比率でスケール
+  var orgSales = (obj.sales||[]).filter(function(r){return r.dept===ORG;});
+  var allSalesAmt = (obj.sales||[]).reduce(function(s,r){return s+r.amt;},0);
+  var orgSalesAmt = orgSales.reduce(function(s,r){return s+r.amt;},0);
+  var ratio = allSalesAmt>0 ? orgSalesAmt/allSalesAmt : 0;
+  return (obj.quarterly||[]).map(function(q){
+    return {Q:q.Q,label:q.label,amt:Math.round(q.amt*ratio),cases:q.cases,clients:q.clients};
+  });
+}
+
+function filterMonthly(obj){
+  var allSalesAmt = (obj.sales||[]).reduce(function(s,r){return s+r.amt;},0);
+  var orgSalesAmt = (obj.sales||[]).filter(function(r){return r.dept===ORG;}).reduce(function(s,r){return s+r.amt;},0);
+  var ratio = allSalesAmt>0 ? orgSalesAmt/allSalesAmt : 0;
+  return (obj.monthly||[]).map(function(m){
+    return {rel_month:m.rel_month,month_label:m.month_label,amt:Math.round(m.amt*ratio),cases:m.cases};
+  });
+}
+
+function filterKPI(obj){
+  var kpi=obj.kpi||{};
+  var orgSales=(obj.sales||[]).filter(function(r){return r.dept===ORG;});
+  var orgAmt=orgSales.reduce(function(s,r){return s+r.amt;},0);
+  var orgCases=orgSales.reduce(function(s,r){return s+r.cases;},0);
+  var orgClients=orgSales.reduce(function(s,r){return s+r.clients;},0);
+  return {amt:orgAmt,cases:orgCases,rows:kpi.rows,clients:orgClients,agencies:kpi.agencies};
+}
+
+// end_clients/agencies/media/industry は org 情報を持たないため
+// salesのorgフィルタ比率でスケール（簡易推計）
+function filterRows(arr){
+  if(!arr) return [];
+  var allSalesAmt=(((G.by_fy)||{})[String(FY==='all'?((G.fiscal_years||[])[0]):FY)]||{sales:[]}).sales;
+  // 全FYのsalesをマージして比率計算
+  var allAmt=0,orgAmt=0;
+  (G.fiscal_years||[]).forEach(function(fy){
+    var s=((G.by_fy||{})[String(fy)]||{}).sales||[];
+    s.forEach(function(r){allAmt+=r.amt;if(r.dept===ORG)orgAmt+=r.amt;});
+  });
+  if(FY!=='all'){
+    allAmt=0;orgAmt=0;
+    var s=((G.by_fy||{})[String(FY)]||{}).sales||[];
+    s.forEach(function(r){allAmt+=r.amt;if(r.dept===ORG)orgAmt+=r.amt;});
+  }
+  var ratio=allAmt>0?orgAmt/allAmt:0;
+  return arr.map(function(r){
+    return Object.assign({},r,{amt:Math.round(r.amt*ratio)});
+  }).filter(function(r){return r.amt>0;}).sort(function(a,b){return b.amt-a.amt;});
 }
 
 // =====================
@@ -251,10 +397,18 @@ function renderTab(t){
   else if(t==='me')rME(v);
   else if(t==='sa')rSA(v);
 }
+
 function view(){
   if(FY==='all')return{mode:'all',fys:G.fiscal_years||[],byFY:G.by_fy||{}};
-  return{mode:'single',fy:FY,d:(G.by_fy||{})[String(FY)]||{}};
+  return{mode:'single',fy:FY,d:filterByOrg((G.by_fy||{})[String(FY)]||{})};
 }
+
+// 全期間モードで組織フィルタ適用済みデータを取得
+function getD(fy){
+  var raw=(G.by_fy||{})[String(fy)]||{};
+  return ORG==='all'?raw:filterByOrg(raw);
+}
+
 function destroyAll(){Object.keys(CM).forEach(function(k){if(CM[k]){try{CM[k].destroy();}catch(e){}delete CM[k];}});}
 
 // =====================
@@ -272,117 +426,47 @@ function yoy(a,b){if(!b)return{t:'NEW',c:'up'};var r=(a-b)/b*100;return{t:(r>=0?
 // =====================
 // CHART FACTORY
 // =====================
-// 縦棒グラフ用Y軸（金額）
 function yAmt(){return{ticks:{color:'#8a97a8',font:{size:10},callback:function(v){return fmtY(v);}},grid:{color:'#f0f2f5'}};}
-// 縦棒グラフ用Y軸（件数）
 function yNum(){return{ticks:{color:'#8a97a8',font:{size:10}},grid:{color:'#f0f2f5'}};}
-// 縦棒グラフ用X軸（カテゴリラベル）
 function xCat(){return{ticks:{color:'#4a5568',font:{size:11}},grid:{display:false}};}
 
-// ★横棒グラフ専用: x=金額軸, y=ラベル軸（callbackは絶対つけない）
 function hBar(id,labels,values,color,ttlabel){
   var el=document.getElementById(id);if(!el)return;
   if(CM[id]){try{CM[id].destroy();}catch(e){}}
   CM[id]=new Chart(el,{
     type:'bar',
-    data:{
-      labels:labels,  // ← 文字列の配列をそのまま渡す
-      datasets:[{
-        label:ttlabel||'配信金額',
-        data:values,
-        backgroundColor:Array.isArray(color)?color:rgba(color,0.78),
-        borderRadius:3,
-        barThickness:14
-      }]
-    },
-    options:{
-      indexAxis:'y',
-      responsive:true,
-      maintainAspectRatio:false,
-      plugins:{
-        legend:{display:false},
-        tooltip:{
-          backgroundColor:'#1e293b',
-          callbacks:{
-            title:function(items){return items[0].label;},  // ← 会社名/担当者名
-            label:function(ctx){return ' '+fmtFull(ctx.raw);}
-          }
-        }
-      },
-      scales:{
-        x:{  // ← 数値軸（金額）
-          ticks:{color:'#8a97a8',font:{size:10},callback:function(v){return fmtY(v);}},
-          grid:{color:'#f0f2f5'}
-        },
-        y:{  // ← ラベル軸（名前） ← callbackは一切つけない！
-          ticks:{color:'#4a5568',font:{size:11}},
-          grid:{display:false}
-        }
-      }
-    }
-  });
+    data:{labels:labels,datasets:[{label:ttlabel||'配信金額',data:values,backgroundColor:Array.isArray(color)?color:rgba(color,0.78),borderRadius:3,barThickness:14}]},
+    options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',callbacks:{title:function(i){return i[0].label;},label:function(ctx){return ' '+fmtFull(ctx.raw);}}}},
+      scales:{x:{ticks:{color:'#8a97a8',font:{size:10},callback:function(v){return fmtY(v);}},grid:{color:'#f0f2f5'}},y:{ticks:{color:'#4a5568',font:{size:11}},grid:{display:false}}}}});
 }
 
-// 縦棒グラフ（単色）
 function vBar(id,labels,values,color,yAxis){
   var el=document.getElementById(id);if(!el)return;
   if(CM[id]){try{CM[id].destroy();}catch(e){}}
-  CM[id]=new Chart(el,{
-    type:'bar',
-    data:{labels:labels,datasets:[{label:'配信金額',data:values,backgroundColor:Array.isArray(color)?color:rgba(color,0.78),borderRadius:4}]},
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',callbacks:{label:function(ctx){return ' '+fmtFull(ctx.raw);}}}},
-      scales:{x:xCat(),y:yAxis||yAmt()}
-    }
-  });
+  CM[id]=new Chart(el,{type:'bar',data:{labels:labels,datasets:[{label:'配信金額',data:values,backgroundColor:Array.isArray(color)?color:rgba(color,0.78),borderRadius:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e293b',callbacks:{label:function(ctx){return ' '+fmtFull(ctx.raw);}}}},scales:{x:xCat(),y:yAxis||yAmt()}}});
 }
 
-// 縦棒グラフ（複数系列 FY比較）
 function vBarMulti(id,labels,datasets){
   var el=document.getElementById(id);if(!el)return;
   if(CM[id]){try{CM[id].destroy();}catch(e){}}
-  CM[id]=new Chart(el,{
-    type:'bar',
-    data:{labels:labels,datasets:datasets},
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{labels:{color:'#4a5568',font:{size:11}}},tooltip:{backgroundColor:'#1e293b',callbacks:{label:function(ctx){return ' '+fmtFull(ctx.raw);}}}},
-      scales:{x:xCat(),y:yAmt()}
-    }
-  });
+  CM[id]=new Chart(el,{type:'bar',data:{labels:labels,datasets:datasets},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#4a5568',font:{size:11}}},tooltip:{backgroundColor:'#1e293b',callbacks:{label:function(ctx){return ' '+fmtFull(ctx.raw);}}}},scales:{x:xCat(),y:yAmt()}}});
 }
 
-// 折れ線（複数系列）
 function lineMulti(id,labels,datasets){
   var el=document.getElementById(id);if(!el)return;
   if(CM[id]){try{CM[id].destroy();}catch(e){}}
-  CM[id]=new Chart(el,{
-    type:'line',
-    data:{labels:labels,datasets:datasets},
-    options:{
-      responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{labels:{color:'#4a5568',font:{size:11}}},tooltip:{backgroundColor:'#1e293b',callbacks:{label:function(ctx){return ' '+fmtFull(ctx.raw);}}}},
-      scales:{x:xCat(),y:yAmt()}
-    }
-  });
+  CM[id]=new Chart(el,{type:'line',data:{labels:labels,datasets:datasets},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#4a5568',font:{size:11}}},tooltip:{backgroundColor:'#1e293b',callbacks:{label:function(ctx){return ' '+fmtFull(ctx.raw);}}}},scales:{x:xCat(),y:yAmt()}}});
 }
 
-// ドーナツ
 function donut(id,labels,values){
   var el=document.getElementById(id);if(!el)return;
   if(CM[id]){try{CM[id].destroy();}catch(e){}}
-  CM[id]=new Chart(el,{
-    type:'doughnut',
-    data:{labels:labels,datasets:[{data:values,backgroundColor:PAL,hoverOffset:6}]},
-    options:{
-      responsive:true,maintainAspectRatio:false,cutout:'52%',
-      plugins:{
-        legend:{position:'right',labels:{color:'#4a5568',font:{size:10},boxWidth:10}},
-        tooltip:{backgroundColor:'#1e293b',callbacks:{label:function(ctx){return ' '+fmtFull(ctx.raw);}}}
-      }
-    }
-  });
+  CM[id]=new Chart(el,{type:'doughnut',data:{labels:labels,datasets:[{data:values,backgroundColor:PAL,hoverOffset:6}]},
+    options:{responsive:true,maintainAspectRatio:false,cutout:'52%',plugins:{legend:{position:'right',labels:{color:'#4a5568',font:{size:10},boxWidth:10}},tooltip:{backgroundColor:'#1e293b',callbacks:{label:function(ctx){return ' '+fmtFull(ctx.raw);}}}}}});
 }
 
 function rgba(hex,a){
@@ -397,17 +481,11 @@ function rgba(hex,a){
 function tbl(id,rows,cols){
   var el=document.getElementById(id);if(!el||!rows||!rows.length){if(el)el.innerHTML='';return;}
   var maxA=Math.max.apply(null,rows.map(function(r){return r.amt||0;}));
-  var h='<thead><tr>'+cols.map(function(c){
-    var align=c.r?'style="text-align:right"':'';
-    return '<th '+align+'>'+c.l+'</th>';
-  }).join('')+'</tr></thead><tbody>';
+  var h='<thead><tr>'+cols.map(function(c){return '<th '+(c.r?'style="text-align:right"':'')+'>'+c.l+'</th>';}).join('')+'</tr></thead><tbody>';
   rows.forEach(function(r){
     h+='<tr>'+cols.map(function(c){
       var v=r[c.k];
-      if(c.bar){
-        var pct=maxA>0?Math.min(100,Math.round((v||0)/maxA*100)):0;
-        return '<td><div class="bcell"><div class="bg"><div class="bf" style="width:'+pct+'%;background:'+(c.color||PAL[0])+'"></div></div><span class="bv">'+fmtFull(v)+'</span></div></td>';
-      }
+      if(c.bar){var pct=maxA>0?Math.min(100,Math.round((v||0)/maxA*100)):0;return '<td><div class="bcell"><div class="bg"><div class="bf" style="width:'+pct+'%;background:'+(c.color||PAL[0])+'"></div></div><span class="bv">'+fmtFull(v)+'</span></div></td>';}
       if(c.amt)return '<td class="r">'+fmtFull(v)+'</td>';
       if(c.num)return '<td class="rn">'+(v||0)+'</td>';
       return '<td>'+(v||'—')+'</td>';
@@ -420,8 +498,6 @@ function tbl(id,rows,cols){
 // =====================
 // DATA HELPERS
 // =====================
-function getD(fy){return(G.by_fy||{})[String(fy)]||{};}
-// 全FYをmergeして合計(nameキー=key)
 function mergeByKey(field,key){
   var map={};
   (G.fiscal_years||[]).forEach(function(fy){
@@ -434,9 +510,7 @@ function mergeByKey(field,key){
       map[k].clients=Math.max(map[k].clients,r.clients||0);
     });
   });
-  return Object.keys(map).map(function(k){
-    var o=Object.assign({},map[k]);o[key]=k;return o;
-  }).sort(function(a,b){return b.amt-a.amt;});
+  return Object.keys(map).map(function(k){var o=Object.assign({},map[k]);o[key]=k;return o;}).sort(function(a,b){return b.amt-a.amt;});
 }
 
 // =====================
@@ -446,8 +520,10 @@ function rOV(v){
   var kpiEl=document.getElementById('KPI');
   var cmpSec=document.getElementById('CMP_SEC');
   var cmpEl=document.getElementById('CMP');
+  var orgSuffix=ORG!=='all'?' ／ '+ORG_LABEL[ORG]:'';
+
   if(v.mode==='all'){
-    document.getElementById('OV_T').textContent='全期間 概況・KPI';
+    document.getElementById('OV_T').textContent='全期間 概況・KPI'+orgSuffix;
     document.getElementById('OV_S').textContent='FY'+(v.fys[0])+' 〜 FY'+(v.fys[v.fys.length-1]);
     var totA=0,totC=0;
     v.fys.forEach(function(fy){var d=getD(fy);totA+=(d.kpi&&d.kpi.amt||0);totC+=(d.kpi&&d.kpi.cases||0);});
@@ -472,7 +548,6 @@ function rOV(v){
       h+='</div></div>';
     });
     cmpEl.innerHTML=h;
-    // Qグラフ（全期間：FY比較の縦棒）
     var qDs_a=v.fys.map(function(fy,i){
       var q=(getD(fy).quarterly)||[];
       return{label:'FY'+fy,data:QL.map(function(_,qi){return q[qi]&&q[qi].amt||0;}),backgroundColor:rgba(FC[fy]||PAL[i],0.8),borderRadius:4};
@@ -485,7 +560,6 @@ function rOV(v){
     var el2=document.getElementById('cQC');
     if(el2){if(CM['cQC']){try{CM['cQC'].destroy();}catch(e){}}
     CM['cQC']=new Chart(el2,{type:'bar',data:{labels:QL,datasets:qDs_c},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'#4a5568',font:{size:11}}}},scales:{x:xCat(),y:yNum()}}});}
-    // 部署・業種
     var depts=mergeByKey('dept','dept');
     vBar('cDO',depts.map(function(r){return r.dept;}),depts.map(function(r){return r.amt;}),PAL);
     var inds=mergeByKey('industry','name');
@@ -493,11 +567,11 @@ function rOV(v){
   } else {
     var fy=v.fy;var d=v.d;var kpi=d.kpi||{};var col=FC[fy]||PAL[0];
     cmpSec.style.display='none';
-    document.getElementById('OV_T').textContent='FY'+fy+' 概況・KPI';
+    document.getElementById('OV_T').textContent='FY'+fy+' 概況・KPI'+orgSuffix;
     document.getElementById('OV_S').textContent=fy+'年度（'+fy+'/04 〜 '+(parseInt(fy)+1)+'/03）';
     kpiEl.innerHTML=[
       kCard('c1','配信金額',fmtY(kpi.amt||0),''),
-      kCard('c2','案件数',(kpi.cases||0)+'件','明細 '+(kpi.rows||0)+'件'),
+      kCard('c2','案件数',(kpi.cases||0)+'件',''),
       kCard('c3','クライアント数',(kpi.clients||0)+'社',''),
       kCard('c4','代理店数',(kpi.agencies||0)+'社',''),
       kCard('c5','平均単価',fmtY(kpi.cases?(kpi.amt/kpi.cases):0),'')
@@ -519,7 +593,6 @@ function kCard(c,l,v,s){return '<div class="kpi '+c+'"><div class="kpi-lbl">'+l+
 // =====================
 function rTR(v){
   if(v.mode==='all'){
-    // 月次: FY内相対月（4月〜3月）でFY比較 ★同一X軸で並べる★
     var REL_LABELS=['4月','5月','6月','7月','8月','9月','10月','11月','12月','1月','2月','3月'];
     var mDs=v.fys.map(function(fy,i){
       var mm={};
@@ -535,13 +608,11 @@ function rTR(v){
     CM['cMO']=new Chart(el,{type:'line',data:{labels:REL_LABELS,datasets:mDs},options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{labels:{color:'#4a5568',font:{size:11}}},tooltip:{mode:'index',intersect:false,backgroundColor:'#1e293b',callbacks:{label:function(ctx){return ' '+ctx.dataset.label+': '+fmtFull(ctx.raw);}}}},
       scales:{x:xCat(),y:yAmt()}}});}
-    // Qグラフ比較
     var qDs=v.fys.map(function(fy,i){
       var q=getD(fy).quarterly||[];
       return{label:'FY'+fy,data:QL.map(function(_,qi){return q[qi]&&q[qi].amt||0;}),backgroundColor:rgba(FC[fy]||PAL[i],0.8),borderRadius:4};
     });
     vBarMulti('cQG',QL,qDs);
-    // 平均単価比較
     var qvDs=v.fys.map(function(fy,i){
       var q=getD(fy).quarterly||[];
       return{label:'FY'+fy,data:QL.map(function(_,qi){var r=q[qi]||{};return r.cases?(r.amt/r.cases):0;}),borderColor:FC[fy]||PAL[i],backgroundColor:'transparent',tension:0.3,pointRadius:4,fill:false};
@@ -550,12 +621,10 @@ function rTR(v){
   } else {
     var fy=v.fy;var d=v.d;var col=FC[fy]||PAL[0];
     var m=d.monthly||[];
-    // rel_monthで並び替え済み、month_labelをそのまま使う
     var ml=m.map(function(r){return r.month_label||(r.month?r.month:'');});
     vBar('cMO',ml,m.map(function(r){return r.amt;}),col);
     var q=d.quarterly||[];
     vBar('cQG',q.map(function(r){return r.label||('Q'+r.Q);}),q.map(function(r){return r.amt;}),col);
-    // 平均単価（単年折れ線）
     var el=document.getElementById('cQV');
     if(el){if(CM['cQV']){try{CM['cQV'].destroy();}catch(e){}}
     CM['cQV']=new Chart(el,{type:'line',data:{labels:q.map(function(r){return r.label||('Q'+r.Q);}),datasets:[{label:'平均単価',data:q.map(function(r){return r.cases?(r.amt/r.cases):0;}),borderColor:col,backgroundColor:'transparent',tension:0.3,pointRadius:5,pointBackgroundColor:col,fill:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:xCat(),y:yAmt()}}});}
@@ -566,12 +635,10 @@ function rTR(v){
 // DEPT
 // =====================
 function rDP(v){
-  var rows = v.mode==='all' ? mergeByKey('dept','dept') : (v.d.dept||[]);
-  var col = v.mode==='single'?(FC[v.fy]||PAL[0]):PAL[0];
+  var rows=v.mode==='all'?mergeByKey('dept','dept'):(v.d.dept||[]);
+  var col=v.mode==='single'?(FC[v.fy]||PAL[0]):PAL[0];
   var lbls=rows.map(function(r){return r.dept;});
-  var amts=rows.map(function(r){return r.amt;});
-  vBar('cDP',lbls,amts,PAL);
-  // 案件数・CL数（縦棒2系列）
+  vBar('cDP',lbls,rows.map(function(r){return r.amt;}),PAL);
   var el=document.getElementById('cDC');
   if(el){if(CM['cDC']){try{CM['cDC'].destroy();}catch(e){}}
   CM['cDC']=new Chart(el,{type:'bar',data:{labels:lbls,datasets:[
@@ -585,12 +652,10 @@ function rDP(v){
 // CLIENT
 // =====================
 function rCL(v){
-  var ec  = v.mode==='all' ? mergeByKey('end_clients','name') : (v.d.end_clients||[]);
-  var ind = v.mode==='all' ? mergeByKey('industry','name')    : (v.d.industry||[]);
-  var col = v.mode==='single'?(FC[v.fy]||PAL[0]):PAL[0];
-  var top20=ec.slice(0,20);
-  // ★横棒グラフ（会社名ラベル）
-  hBar('cEC',top20.map(function(r){return r.name;}),top20.map(function(r){return r.amt;}),rgba(col,0.78));
+  var ec =v.mode==='all'?mergeByKey('end_clients','name'):(v.d.end_clients||[]);
+  var ind=v.mode==='all'?mergeByKey('industry','name'):(v.d.industry||[]);
+  var col=v.mode==='single'?(FC[v.fy]||PAL[0]):PAL[0];
+  hBar('cEC',ec.slice(0,20).map(function(r){return r.name;}),ec.slice(0,20).map(function(r){return r.amt;}),rgba(col,0.78));
   vBar('cIN',ind.map(function(r){return r.name;}),ind.map(function(r){return r.amt;}),PAL);
   donut('cID',ind.map(function(r){return r.name;}),ind.map(function(r){return r.amt;}));
   tbl('tEC',ec,[{k:'name',l:'エンドクライアント名'},{k:'amt',l:'配信金額',bar:true,color:col},{k:'cases',l:'案件数',num:true},{k:'clients',l:'CL数',num:true}]);
@@ -600,10 +665,9 @@ function rCL(v){
 // AGENCY
 // =====================
 function rAG(v){
-  var rows = v.mode==='all' ? mergeByKey('agencies','name') : (v.d.agencies||[]);
-  var col  = v.mode==='single'?(FC[v.fy]||PAL[1]):PAL[1];
-  var top20=rows.slice(0,20);
-  hBar('cAG',top20.map(function(r){return r.name;}),top20.map(function(r){return r.amt;}),rgba(col,0.78));
+  var rows=v.mode==='all'?mergeByKey('agencies','name'):(v.d.agencies||[]);
+  var col =v.mode==='single'?(FC[v.fy]||PAL[1]):PAL[1];
+  hBar('cAG',rows.slice(0,20).map(function(r){return r.name;}),rows.slice(0,20).map(function(r){return r.amt;}),rgba(col,0.78));
   tbl('tAG',rows,[{k:'name',l:'代理店名'},{k:'amt',l:'配信金額',bar:true,color:col},{k:'cases',l:'案件数',num:true},{k:'clients',l:'CL数',num:true}]);
 }
 
@@ -611,8 +675,8 @@ function rAG(v){
 // MEDIA
 // =====================
 function rME(v){
-  var rows = v.mode==='all' ? mergeByKey('media','name') : (v.d.media||[]);
-  var col  = v.mode==='single'?(FC[v.fy]||PAL[5]):PAL[5];
+  var rows=v.mode==='all'?mergeByKey('media','name'):(v.d.media||[]);
+  var col =v.mode==='single'?(FC[v.fy]||PAL[5]):PAL[5];
   vBar('cME',rows.map(function(r){return r.name;}),rows.map(function(r){return r.amt;}),PAL);
   donut('cMD',rows.map(function(r){return r.name;}),rows.map(function(r){return r.amt;}));
   tbl('tME',rows,[{k:'name',l:'媒体'},{k:'amt',l:'配信金額',bar:true,color:col},{k:'cases',l:'案件数',num:true}]);
@@ -622,11 +686,9 @@ function rME(v){
 // SALES
 // =====================
 function rSA(v){
-  var rows = v.mode==='all' ? mergeByKey('sales','owner') : (v.d.sales||[]);
-  var col  = v.mode==='single'?(FC[v.fy]||PAL[2]):PAL[2];
-  var top15=rows.slice(0,15);
-  // ★横棒グラフ（担当者名ラベル）
-  hBar('cSA',top15.map(function(r){return r.owner;}),top15.map(function(r){return r.amt;}),rgba(col,0.78));
+  var rows=v.mode==='all'?mergeByKey('sales','owner'):(v.d.sales||[]);
+  var col =v.mode==='single'?(FC[v.fy]||PAL[2]):PAL[2];
+  hBar('cSA',rows.slice(0,15).map(function(r){return r.owner;}),rows.slice(0,15).map(function(r){return r.amt;}),rgba(col,0.78));
   tbl('tSA',rows,[{k:'owner',l:'担当者'},{k:'dept',l:'部署'},{k:'amt',l:'配信金額',bar:true,color:col},{k:'cases',l:'案件数',num:true},{k:'clients',l:'CL数',num:true}]);
 }
 
