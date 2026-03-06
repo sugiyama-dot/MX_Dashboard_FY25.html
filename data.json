@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updated_at": "2026-03-06 21:00 JST",
+    "updated_at": "2026-03-06 21:04 JST",
     "total_rows": 3785,
     "fy_range": "FY2024 - FY2026"
   },
@@ -122,6 +122,228 @@
           "cases": 110
         }
       ],
+      "by_dept": {
+        "PMXG": {
+          "kpi": {
+            "amt": 261868669,
+            "cases": 276,
+            "rows": 961,
+            "clients": 170,
+            "agencies": 51
+          },
+          "quarterly": [
+            {
+              "Q": 1,
+              "label": "Q1",
+              "amt": 29291849,
+              "cases": 60,
+              "clients": 37
+            },
+            {
+              "Q": 2,
+              "label": "Q2",
+              "amt": 51016853,
+              "cases": 78,
+              "clients": 56
+            },
+            {
+              "Q": 3,
+              "label": "Q3",
+              "amt": 59652335,
+              "cases": 97,
+              "clients": 75
+            },
+            {
+              "Q": 4,
+              "label": "Q4",
+              "amt": 121907632,
+              "cases": 154,
+              "clients": 113
+            }
+          ],
+          "monthly": [
+            {
+              "rel_month": 1,
+              "month_label": "4月",
+              "amt": 6128695,
+              "cases": 15
+            },
+            {
+              "rel_month": 2,
+              "month_label": "5月",
+              "amt": 13072122,
+              "cases": 37
+            },
+            {
+              "rel_month": 3,
+              "month_label": "6月",
+              "amt": 10091032,
+              "cases": 45
+            },
+            {
+              "rel_month": 4,
+              "month_label": "7月",
+              "amt": 18387219,
+              "cases": 47
+            },
+            {
+              "rel_month": 5,
+              "month_label": "8月",
+              "amt": 22946359,
+              "cases": 51
+            },
+            {
+              "rel_month": 6,
+              "month_label": "9月",
+              "amt": 9683275,
+              "cases": 48
+            },
+            {
+              "rel_month": 7,
+              "month_label": "10月",
+              "amt": 24067548,
+              "cases": 56
+            },
+            {
+              "rel_month": 8,
+              "month_label": "11月",
+              "amt": 15365264,
+              "cases": 68
+            },
+            {
+              "rel_month": 9,
+              "month_label": "12月",
+              "amt": 20219523,
+              "cases": 66
+            },
+            {
+              "rel_month": 10,
+              "month_label": "1月",
+              "amt": 32573729,
+              "cases": 79
+            },
+            {
+              "rel_month": 11,
+              "month_label": "2月",
+              "amt": 38460542,
+              "cases": 92
+            },
+            {
+              "rel_month": 12,
+              "month_label": "3月",
+              "amt": 50873361,
+              "cases": 97
+            }
+          ]
+        },
+        "DMXG": {
+          "kpi": {
+            "amt": 34800389,
+            "cases": 97,
+            "rows": 241,
+            "clients": 39,
+            "agencies": 16
+          },
+          "quarterly": [
+            {
+              "Q": 1,
+              "label": "Q1",
+              "amt": 1617049,
+              "cases": 17,
+              "clients": 11
+            },
+            {
+              "Q": 2,
+              "label": "Q2",
+              "amt": 5034819,
+              "cases": 50,
+              "clients": 14
+            },
+            {
+              "Q": 3,
+              "label": "Q3",
+              "amt": 11638936,
+              "cases": 29,
+              "clients": 19
+            },
+            {
+              "Q": 4,
+              "label": "Q4",
+              "amt": 16509585,
+              "cases": 29,
+              "clients": 19
+            }
+          ],
+          "monthly": [
+            {
+              "rel_month": 2,
+              "month_label": "5月",
+              "amt": 249275,
+              "cases": 4
+            },
+            {
+              "rel_month": 3,
+              "month_label": "6月",
+              "amt": 1367774,
+              "cases": 17
+            },
+            {
+              "rel_month": 4,
+              "month_label": "7月",
+              "amt": 705426,
+              "cases": 11
+            },
+            {
+              "rel_month": 5,
+              "month_label": "8月",
+              "amt": 2202301,
+              "cases": 38
+            },
+            {
+              "rel_month": 6,
+              "month_label": "9月",
+              "amt": 2127092,
+              "cases": 40
+            },
+            {
+              "rel_month": 7,
+              "month_label": "10月",
+              "amt": 2690688,
+              "cases": 14
+            },
+            {
+              "rel_month": 8,
+              "month_label": "11月",
+              "amt": 3330134,
+              "cases": 14
+            },
+            {
+              "rel_month": 9,
+              "month_label": "12月",
+              "amt": 5618114,
+              "cases": 18
+            },
+            {
+              "rel_month": 10,
+              "month_label": "1月",
+              "amt": 6300360,
+              "cases": 18
+            },
+            {
+              "rel_month": 11,
+              "month_label": "2月",
+              "amt": 5058079,
+              "cases": 11
+            },
+            {
+              "rel_month": 12,
+              "month_label": "3月",
+              "amt": 5151146,
+              "cases": 13
+            }
+          ]
+        }
+      },
       "dept": [
         {
           "amt": 261868669,
@@ -2169,6 +2391,234 @@
           "cases": 182
         }
       ],
+      "by_dept": {
+        "PMXG": {
+          "kpi": {
+            "amt": 360009568,
+            "cases": 448,
+            "rows": 1887,
+            "clients": 275,
+            "agencies": 85
+          },
+          "quarterly": [
+            {
+              "Q": 1,
+              "label": "Q1",
+              "amt": 69559595,
+              "cases": 153,
+              "clients": 121
+            },
+            {
+              "Q": 2,
+              "label": "Q2",
+              "amt": 89907022,
+              "cases": 184,
+              "clients": 141
+            },
+            {
+              "Q": 3,
+              "label": "Q3",
+              "amt": 79878459,
+              "cases": 183,
+              "clients": 147
+            },
+            {
+              "Q": 4,
+              "label": "Q4",
+              "amt": 120664492,
+              "cases": 186,
+              "clients": 152
+            }
+          ],
+          "monthly": [
+            {
+              "rel_month": 1,
+              "month_label": "4月",
+              "amt": 24334647,
+              "cases": 87
+            },
+            {
+              "rel_month": 2,
+              "month_label": "5月",
+              "amt": 19120280,
+              "cases": 92
+            },
+            {
+              "rel_month": 3,
+              "month_label": "6月",
+              "amt": 26104668,
+              "cases": 100
+            },
+            {
+              "rel_month": 4,
+              "month_label": "7月",
+              "amt": 29664304,
+              "cases": 119
+            },
+            {
+              "rel_month": 5,
+              "month_label": "8月",
+              "amt": 29212960,
+              "cases": 125
+            },
+            {
+              "rel_month": 6,
+              "month_label": "9月",
+              "amt": 31029758,
+              "cases": 115
+            },
+            {
+              "rel_month": 7,
+              "month_label": "10月",
+              "amt": 27578126,
+              "cases": 116
+            },
+            {
+              "rel_month": 8,
+              "month_label": "11月",
+              "amt": 26516127,
+              "cases": 120
+            },
+            {
+              "rel_month": 9,
+              "month_label": "12月",
+              "amt": 25784206,
+              "cases": 125
+            },
+            {
+              "rel_month": 10,
+              "month_label": "1月",
+              "amt": 24967199,
+              "cases": 116
+            },
+            {
+              "rel_month": 11,
+              "month_label": "2月",
+              "amt": 33621218,
+              "cases": 139
+            },
+            {
+              "rel_month": 12,
+              "month_label": "3月",
+              "amt": 62076075,
+              "cases": 138
+            }
+          ]
+        },
+        "DMXG": {
+          "kpi": {
+            "amt": 117977428,
+            "cases": 231,
+            "rows": 456,
+            "clients": 123,
+            "agencies": 6
+          },
+          "quarterly": [
+            {
+              "Q": 1,
+              "label": "Q1",
+              "amt": 4013011,
+              "cases": 37,
+              "clients": 26
+            },
+            {
+              "Q": 2,
+              "label": "Q2",
+              "amt": 20136610,
+              "cases": 63,
+              "clients": 42
+            },
+            {
+              "Q": 3,
+              "label": "Q3",
+              "amt": 46508541,
+              "cases": 83,
+              "clients": 58
+            },
+            {
+              "Q": 4,
+              "label": "Q4",
+              "amt": 47319266,
+              "cases": 92,
+              "clients": 61
+            }
+          ],
+          "monthly": [
+            {
+              "rel_month": 1,
+              "month_label": "4月",
+              "amt": 1355540,
+              "cases": 17
+            },
+            {
+              "rel_month": 2,
+              "month_label": "5月",
+              "amt": 1028350,
+              "cases": 13
+            },
+            {
+              "rel_month": 3,
+              "month_label": "6月",
+              "amt": 1629121,
+              "cases": 18
+            },
+            {
+              "rel_month": 4,
+              "month_label": "7月",
+              "amt": 7328416,
+              "cases": 28
+            },
+            {
+              "rel_month": 5,
+              "month_label": "8月",
+              "amt": 8654650,
+              "cases": 29
+            },
+            {
+              "rel_month": 6,
+              "month_label": "9月",
+              "amt": 4153544,
+              "cases": 29
+            },
+            {
+              "rel_month": 7,
+              "month_label": "10月",
+              "amt": 13699603,
+              "cases": 29
+            },
+            {
+              "rel_month": 8,
+              "month_label": "11月",
+              "amt": 22405350,
+              "cases": 31
+            },
+            {
+              "rel_month": 9,
+              "month_label": "12月",
+              "amt": 10403588,
+              "cases": 49
+            },
+            {
+              "rel_month": 10,
+              "month_label": "1月",
+              "amt": 14205211,
+              "cases": 46
+            },
+            {
+              "rel_month": 11,
+              "month_label": "2月",
+              "amt": 12908131,
+              "cases": 46
+            },
+            {
+              "rel_month": 12,
+              "month_label": "3月",
+              "amt": 20205924,
+              "cases": 44
+            }
+          ]
+        }
+      },
       "dept": [
         {
           "amt": 360009568,
@@ -5467,6 +5917,180 @@
           "cases": 1
         }
       ],
+      "by_dept": {
+        "PMXG": {
+          "kpi": {
+            "amt": 22336765,
+            "cases": 56,
+            "rows": 215,
+            "clients": 54,
+            "agencies": 14
+          },
+          "quarterly": [
+            {
+              "Q": 1,
+              "label": "Q1",
+              "amt": 17769864,
+              "cases": 56,
+              "clients": 54
+            },
+            {
+              "Q": 2,
+              "label": "Q2",
+              "amt": 3491904,
+              "cases": 14,
+              "clients": 13
+            },
+            {
+              "Q": 3,
+              "label": "Q3",
+              "amt": 826085,
+              "cases": 6,
+              "clients": 5
+            },
+            {
+              "Q": 4,
+              "label": "Q4",
+              "amt": 248912,
+              "cases": 3,
+              "clients": 3
+            }
+          ],
+          "monthly": [
+            {
+              "rel_month": 1,
+              "month_label": "4月",
+              "amt": 9090377,
+              "cases": 56
+            },
+            {
+              "rel_month": 2,
+              "month_label": "5月",
+              "amt": 6091154,
+              "cases": 34
+            },
+            {
+              "rel_month": 3,
+              "month_label": "6月",
+              "amt": 2588333,
+              "cases": 25
+            },
+            {
+              "rel_month": 4,
+              "month_label": "7月",
+              "amt": 1721905,
+              "cases": 14
+            },
+            {
+              "rel_month": 5,
+              "month_label": "8月",
+              "amt": 1308085,
+              "cases": 12
+            },
+            {
+              "rel_month": 6,
+              "month_label": "9月",
+              "amt": 461914,
+              "cases": 8
+            },
+            {
+              "rel_month": 7,
+              "month_label": "10月",
+              "amt": 317022,
+              "cases": 6
+            },
+            {
+              "rel_month": 8,
+              "month_label": "11月",
+              "amt": 250359,
+              "cases": 4
+            },
+            {
+              "rel_month": 9,
+              "month_label": "12月",
+              "amt": 258704,
+              "cases": 4
+            },
+            {
+              "rel_month": 10,
+              "month_label": "1月",
+              "amt": 156857,
+              "cases": 3
+            },
+            {
+              "rel_month": 11,
+              "month_label": "2月",
+              "amt": 92055,
+              "cases": 1
+            }
+          ]
+        },
+        "DMXG": {
+          "kpi": {
+            "amt": 6336133,
+            "cases": 16,
+            "rows": 25,
+            "clients": 12,
+            "agencies": 4
+          },
+          "quarterly": [
+            {
+              "Q": 1,
+              "label": "Q1",
+              "amt": 6293276,
+              "cases": 16,
+              "clients": 12
+            },
+            {
+              "Q": 2,
+              "label": "Q2",
+              "amt": 42857,
+              "cases": 1,
+              "clients": 1
+            },
+            {
+              "Q": 3,
+              "label": "Q3",
+              "amt": 0,
+              "cases": 0,
+              "clients": 0
+            },
+            {
+              "Q": 4,
+              "label": "Q4",
+              "amt": 0,
+              "cases": 0,
+              "clients": 0
+            }
+          ],
+          "monthly": [
+            {
+              "rel_month": 1,
+              "month_label": "4月",
+              "amt": 4398913,
+              "cases": 14
+            },
+            {
+              "rel_month": 2,
+              "month_label": "5月",
+              "amt": 1839143,
+              "cases": 6
+            },
+            {
+              "rel_month": 3,
+              "month_label": "6月",
+              "amt": 55220,
+              "cases": 3
+            },
+            {
+              "rel_month": 4,
+              "month_label": "7月",
+              "amt": 42857,
+              "cases": 1
+            }
+          ]
+        }
+      },
       "dept": [
         {
           "amt": 22336765,
