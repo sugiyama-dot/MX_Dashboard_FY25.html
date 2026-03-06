@@ -68,6 +68,47 @@ tr:hover td{background:#f8f9fb}
 </style>
 </head>
 <body>
+<!-- PW GUARD -->
+<div id="PW_GUARD" style="position:fixed;inset:0;background:#f1f3f6;z-index:9999;display:flex;align-items:center;justify-content:center;font-family:'Hiragino Kaku Gothic ProN','Meiryo',sans-serif;">
+  <div style="background:#fff;border:1px solid #e2e6ed;border-radius:14px;padding:44px 48px;width:340px;text-align:center;box-shadow:0 8px 32px rgba(0,0,0,.1);">
+    <div style="font-size:28px;margin-bottom:8px;">🔒</div>
+    <div style="font-size:16px;font-weight:700;color:#1a202c;margin-bottom:4px;">MX事業部 ダッシュボード</div>
+    <div style="font-size:12px;color:#8a97a8;margin-bottom:28px;">アクセスにはパスワードが必要です</div>
+    <input id="PW_INPUT" type="password" placeholder="パスワードを入力"
+      style="width:100%;padding:11px 14px;border-radius:8px;border:1px solid #e2e6ed;background:#f8f9fb;color:#1a202c;font-size:14px;outline:none;margin-bottom:12px;"
+      onkeydown="if(event.key==='Enter')checkPW()">
+    <button onclick="checkPW()"
+      style="width:100%;padding:11px;border-radius:8px;border:none;background:linear-gradient(135deg,#1d4ed8,#6366f1);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">
+      ログイン
+    </button>
+    <div id="PW_ERR" style="color:#dc2626;font-size:12px;margin-top:10px;display:none;">パスワードが正しくありません</div>
+  </div>
+</div>
+<script>
+(function(){
+  if(sessionStorage.getItem('mx_auth')==='1'){
+    document.getElementById('PW_GUARD').style.display='none';return;
+  }
+  document.body.style.overflow='hidden';
+})();
+async function checkPW(){
+  var v=document.getElementById('PW_INPUT').value;
+  if(!v)return;
+  var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v));
+  var hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(hex==='4801be4126759544cacb1da40778dd36f280bb99934c6ee90dcdccaa74062888'){
+    sessionStorage.setItem('mx_auth','1');
+    document.getElementById('PW_GUARD').style.display='none';
+    document.body.style.overflow='';
+  } else {
+    document.getElementById('PW_ERR').style.display='block';
+    document.getElementById('PW_INPUT').value='';
+    document.getElementById('PW_INPUT').focus();
+  }
+}
+</script>
+<!-- END PW GUARD -->
+
 <div class="loading" id="LS"><div class="spinner"></div><div style="font-size:12px;color:#8a97a8">読み込み中...</div></div>
 <div class="header"><h1>📊 MX事業部 売上分析ダッシュボード</h1><div class="updated" id="UPD"></div></div>
 <div class="fy-bar" id="FYB"><button class="fy-btn active" data-fy="all" onclick="switchFY('all')">全期間比較</button></div>
