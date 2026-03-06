@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updated_at": "2026-03-06 20:25 JST",
+    "updated_at": "2026-03-06 20:53 JST",
     "total_rows": 3785,
     "fy_range": "FY2024 - FY2026"
   },
@@ -36,15 +36,15 @@
         {
           "Q": 3,
           "label": "Q3",
-          "amt": 80291271,
-          "cases": 127,
-          "clients": 95
+          "amt": 71291271,
+          "cases": 126,
+          "clients": 94
         },
         {
           "Q": 4,
           "label": "Q4",
-          "amt": 129417217,
-          "cases": 182,
+          "amt": 138417217,
+          "cases": 183,
           "clients": 131
         }
       ],
@@ -94,8 +94,8 @@
         {
           "rel_month": 8,
           "month_label": "11月",
-          "amt": 27695398,
-          "cases": 83
+          "amt": 18695398,
+          "cases": 82
         },
         {
           "rel_month": 9,
@@ -106,8 +106,8 @@
         {
           "rel_month": 10,
           "month_label": "1月",
-          "amt": 29874089,
-          "cases": 96
+          "amt": 38874089,
+          "cases": 97
         },
         {
           "rel_month": 11,
