@@ -301,83 +301,43 @@ function showTab(t){
 }
 
 // =====================
-// ORG FILTER: data.jsonのrowsを組織でフィルタリング
+// ORG FILTER
 // =====================
-// data.jsonのby_fy[fy]の各配列を ORG でフィルタリングして返す
 function filterByOrg(obj){
   if(ORG==='all') return obj;
-  // 各フィールドを org='ORG' でフィルタ
-  var keys=['quarterly','monthly','dept','end_clients','agencies','media','sales','industry'];
-  var result={kpi: filterKPI(obj)};
-  // quarterly/monthly は dept 情報を持たない → 担当者(sales)経由で按分は難しいため
-  // dept フィールドで直接フィルタできるものはフィルタ、できないものはそのまま
-  result.quarterly  = filterQuarterly(obj);
-  result.monthly    = filterMonthly(obj);
-  result.dept       = (obj.dept||[]).filter(function(r){return r.dept===ORG;});
-  result.end_clients= filterRows(obj.end_clients);
-  result.agencies   = filterRows(obj.agencies);
-  result.media      = filterRows(obj.media);
-  result.sales      = (obj.sales||[]).filter(function(r){return r.dept===ORG;});
-  result.industry   = filterRows(obj.industry);
-  return result;
+
+  // GASが出力したby_dept[ORG]から正確な値を取得
+  var bd = (obj.by_dept || {})[ORG] || {};
+
+  return {
+    kpi:         bd.kpi        || buildEmptyKPI(),
+    quarterly:   bd.quarterly  || [],
+    monthly:     bd.monthly    || [],
+    // dept: ORG1件だけ
+    dept:        (obj.dept||[]).filter(function(r){return r.dept===ORG;}),
+    // end_clients/agencies/media/industry はsales比率で推計（個票情報なし）
+    end_clients: scaleByOrgRatio(obj.end_clients, obj, ORG),
+    agencies:    scaleByOrgRatio(obj.agencies,    obj, ORG),
+    media:       scaleByOrgRatio(obj.media,        obj, ORG),
+    industry:    scaleByOrgRatio(obj.industry,     obj, ORG),
+    sales:       (obj.sales||[]).filter(function(r){return r.dept===ORG;}),
+    by_dept:     obj.by_dept,
+  };
 }
 
-// sales から ORG に属する担当者名のセットを作る
-function getOrgOwners(obj){
-  var s={};
-  (obj.sales||[]).forEach(function(r){if(r.dept===ORG)s[r.owner]=true;});
-  return s;
+function buildEmptyKPI(){
+  return {amt:0,cases:0,rows:0,clients:0,agencies:0};
 }
 
-// quarterly/monthly は dept を直接持たないため sales の合計から再計算
-function filterQuarterly(obj){
-  // by_fy[fy].sales の dept フィルタ済みの合計をQ別に返す
-  // sales には cases/clients しかないので amt のみ org フィルタ
-  // quarterly の amt を sales の ORG 比率でスケール
-  var orgSales = (obj.sales||[]).filter(function(r){return r.dept===ORG;});
-  var allSalesAmt = (obj.sales||[]).reduce(function(s,r){return s+r.amt;},0);
-  var orgSalesAmt = orgSales.reduce(function(s,r){return s+r.amt;},0);
-  var ratio = allSalesAmt>0 ? orgSalesAmt/allSalesAmt : 0;
-  return (obj.quarterly||[]).map(function(q){
-    return {Q:q.Q,label:q.label,amt:Math.round(q.amt*ratio),cases:q.cases,clients:q.clients};
-  });
+function getOrgRatio(obj, org){
+  var all=0, orgAmt=0;
+  (obj.sales||[]).forEach(function(r){all+=r.amt; if(r.dept===org)orgAmt+=r.amt;});
+  return all>0 ? orgAmt/all : 0;
 }
 
-function filterMonthly(obj){
-  var allSalesAmt = (obj.sales||[]).reduce(function(s,r){return s+r.amt;},0);
-  var orgSalesAmt = (obj.sales||[]).filter(function(r){return r.dept===ORG;}).reduce(function(s,r){return s+r.amt;},0);
-  var ratio = allSalesAmt>0 ? orgSalesAmt/allSalesAmt : 0;
-  return (obj.monthly||[]).map(function(m){
-    return {rel_month:m.rel_month,month_label:m.month_label,amt:Math.round(m.amt*ratio),cases:m.cases};
-  });
-}
-
-function filterKPI(obj){
-  var kpi=obj.kpi||{};
-  var orgSales=(obj.sales||[]).filter(function(r){return r.dept===ORG;});
-  var orgAmt=orgSales.reduce(function(s,r){return s+r.amt;},0);
-  var orgCases=orgSales.reduce(function(s,r){return s+r.cases;},0);
-  var orgClients=orgSales.reduce(function(s,r){return s+r.clients;},0);
-  return {amt:orgAmt,cases:orgCases,rows:kpi.rows,clients:orgClients,agencies:kpi.agencies};
-}
-
-// end_clients/agencies/media/industry は org 情報を持たないため
-// salesのorgフィルタ比率でスケール（簡易推計）
-function filterRows(arr){
+function scaleByOrgRatio(arr, obj, org){
   if(!arr) return [];
-  var allSalesAmt=(((G.by_fy)||{})[String(FY==='all'?((G.fiscal_years||[])[0]):FY)]||{sales:[]}).sales;
-  // 全FYのsalesをマージして比率計算
-  var allAmt=0,orgAmt=0;
-  (G.fiscal_years||[]).forEach(function(fy){
-    var s=((G.by_fy||{})[String(fy)]||{}).sales||[];
-    s.forEach(function(r){allAmt+=r.amt;if(r.dept===ORG)orgAmt+=r.amt;});
-  });
-  if(FY!=='all'){
-    allAmt=0;orgAmt=0;
-    var s=((G.by_fy||{})[String(FY)]||{}).sales||[];
-    s.forEach(function(r){allAmt+=r.amt;if(r.dept===ORG)orgAmt+=r.amt;});
-  }
-  var ratio=allAmt>0?orgAmt/allAmt:0;
+  var ratio = getOrgRatio(obj, org);
   return arr.map(function(r){
     return Object.assign({},r,{amt:Math.round(r.amt*ratio)});
   }).filter(function(r){return r.amt>0;}).sort(function(a,b){return b.amt-a.amt;});
