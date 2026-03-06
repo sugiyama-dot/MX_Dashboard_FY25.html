@@ -54,9 +54,54 @@
   .fy26-row { font-weight: 700; font-size: 12px; color: #fb923c; }
   .note { padding: 8px 18px; border-top: 1px solid #21262d; color: #484f58; font-size: 10px; }
   @media (max-width: 600px) { #main { padding: 16px 12px; } #summary-cards { grid-template-columns: 1fr; } }
+
+  /* Password screen */
+  #pw-screen {
+    position: fixed; inset: 0; background: #0d1117;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+  }
+  #pw-box {
+    background: #161b22; border: 1px solid #21262d; border-radius: 14px;
+    padding: 40px 48px; text-align: center; width: 340px;
+  }
+  #pw-box .pw-brand { font-size: 10px; letter-spacing: 3px; color: #388bfd; font-weight: 700; margin-bottom: 8px; }
+  #pw-box .pw-title { font-size: 18px; font-weight: 700; color: #e6edf3; margin-bottom: 6px; }
+  #pw-box .pw-sub { font-size: 12px; color: #6e7681; margin-bottom: 28px; }
+  #pw-input {
+    width: 100%; background: #0d1117; border: 1px solid #30363d;
+    border-radius: 8px; color: #e6edf3; font-size: 14px;
+    padding: 10px 14px; outline: none; text-align: center;
+    letter-spacing: 2px; margin-bottom: 12px;
+    transition: border-color 0.2s;
+  }
+  #pw-input:focus { border-color: #388bfd; }
+  #pw-input.error { border-color: #f85149; animation: shake 0.3s; }
+  #pw-btn {
+    width: 100%; background: #1f6feb; border: none; border-radius: 8px;
+    color: #fff; font-size: 14px; font-weight: 600; padding: 10px;
+    cursor: pointer; transition: background 0.2s;
+  }
+  #pw-btn:hover { background: #388bfd; }
+  #pw-error { font-size: 12px; color: #f85149; margin-top: 10px; min-height: 18px; }
+  @keyframes shake {
+    0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)}
+  }
+
 </style>
 </head>
 <body>
+<div id="pw-screen">
+  <div id="pw-box">
+    <div class="pw-brand">MX事業部</div>
+    <div class="pw-title">月次売上ダッシュボード</div>
+    <div class="pw-sub">パスワードを入力してください</div>
+    <input id="pw-input" type="password" placeholder="••••••••••••" onkeydown="if(event.key==='Enter')checkPw()">
+    <button id="pw-btn" onclick="checkPw()">ログイン</button>
+    <div id="pw-error"></div>
+  </div>
+</div>
+
 <div id="header">
   <div>
     <span class="brand">MX事業部</span>
@@ -249,5 +294,31 @@ function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g
 buildMonthlyTable();
 renderClientTable();
 </script>
+
+<script>
+(function(){
+  // SHA-256ハッシュで比較（平文をソースに書かない）
+  async function sha256(msg) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+    return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  }
+  // echo -n "blogwatcherMX" | sha256sum
+  const HASH = '4801be4126759544cacb1da40778dd36f280bb99934c6ee90dcdccaa74062888';
+  window.checkPw = async function() {
+    const val = document.getElementById('pw-input').value;
+    const h = await sha256(val);
+    if (h === HASH) {
+      document.getElementById('pw-screen').style.display = 'none';
+      document.getElementById('pw-input').value = '';
+    } else {
+      const inp = document.getElementById('pw-input');
+      inp.classList.add('error');
+      document.getElementById('pw-error').textContent = 'パスワードが違います';
+      setTimeout(()=>inp.classList.remove('error'), 400);
+    }
+  };
+})();
+</script>
+
 </body>
 </html>
