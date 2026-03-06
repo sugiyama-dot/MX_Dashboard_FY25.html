@@ -1,6 +1,6 @@
 {
   "meta": {
-    "updated_at": "2026-03-06 09:02 JST",
+    "updated_at": "2026-03-06 09:33 JST",
     "total_rows": 1329,
     "fy_range": "FY2024 - FY2025"
   },
@@ -20,24 +20,28 @@
       "quarterly": [
         {
           "Q": 1,
+          "label": "Q1",
           "amt": 74910758,
           "cases": 94,
           "clients": 60
         },
         {
           "Q": 2,
+          "label": "Q2",
           "amt": 76768178,
           "cases": 116,
           "clients": 61
         },
         {
           "Q": 3,
+          "label": "Q3",
           "amt": 84712977,
           "cases": 79,
           "clients": 61
         },
         {
           "Q": 4,
+          "label": "Q4",
           "amt": 118115537,
           "cases": 121,
           "clients": 100
@@ -45,119 +49,76 @@
       ],
       "monthly": [
         {
-          "month": "2024-04",
+          "rel_month": 1,
+          "month_label": "4月",
           "amt": 19273000,
           "cases": 15
         },
         {
-          "month": "2024-05",
+          "rel_month": 2,
+          "month_label": "5月",
           "amt": 7182628,
           "cases": 26
         },
         {
-          "month": "2024-06",
+          "rel_month": 3,
+          "month_label": "6月",
           "amt": 12508973,
           "cases": 40
         },
         {
-          "month": "2024-07",
+          "rel_month": 4,
+          "month_label": "7月",
           "amt": 17191998,
           "cases": 23
         },
         {
-          "month": "2024-08",
-          "amt": 30243962,
-          "cases": 61
+          "rel_month": 5,
+          "month_label": "8月",
+          "amt": 30999962,
+          "cases": 62
         },
         {
-          "month": "2024-09",
+          "rel_month": 6,
+          "month_label": "9月",
           "amt": 11668546,
           "cases": 23
         },
         {
-          "month": "2024-10",
+          "rel_month": 7,
+          "month_label": "10月",
           "amt": 35051449,
           "cases": 32
         },
         {
-          "month": "2024-11",
-          "amt": 21506270,
-          "cases": 32
+          "rel_month": 8,
+          "month_label": "11月",
+          "amt": 31426270,
+          "cases": 35
         },
         {
-          "month": "2024-12",
+          "rel_month": 9,
+          "month_label": "12月",
           "amt": 28918163,
           "cases": 32
         },
         {
-          "month": "2025-01",
+          "rel_month": 10,
+          "month_label": "1月",
           "amt": 49830157,
           "cases": 38
         },
         {
-          "month": "2025-02",
-          "amt": 37555595,
-          "cases": 37
+          "rel_month": 11,
+          "month_label": "2月",
+          "amt": 67695513,
+          "cases": 65
         },
         {
-          "month": "2025-03",
+          "rel_month": 12,
+          "month_label": "3月",
           "amt": 42760791,
           "cases": 49
-        },
-        {
-          "month": "2025-04",
-          "amt": 21421980,
-          "cases": 22
-        },
-        {
-          "month": "2025-05",
-          "amt": 3500629,
-          "cases": 6
-        },
-        {
-          "month": "2025-06",
-          "amt": 500000,
-          "cases": 1
-        },
-        {
-          "month": "2025-07",
-          "amt": 873309,
-          "cases": 2
-        },
-        {
-          "month": "2025-08",
-          "amt": 500000,
-          "cases": 1
-        },
-        {
-          "month": "2025-10",
-          "amt": 500000,
-          "cases": 1
-        },
-        {
-          "month": "2025-11",
-          "amt": 820000,
-          "cases": 2
-        },
-        {
-          "month": "2025-12",
-          "amt": 500000,
-          "cases": 1
-        },
-        {
-          "month": "2026-01",
-          "amt": 500000,
-          "cases": 1
-        },
-        {
-          "month": "2026-02",
-          "amt": 1200000,
-          "cases": 3
-        },
-        {
-          "month": "2026-03",
-          "amt": 1500000,
-          "cases": 2
         }
       ],
       "dept": [
@@ -2208,24 +2169,28 @@
       "quarterly": [
         {
           "Q": 1,
+          "label": "Q1",
           "amt": 124984684,
           "cases": 164,
           "clients": 129
         },
         {
           "Q": 2,
+          "label": "Q2",
           "amt": 120590634,
           "cases": 153,
           "clients": 118
         },
         {
           "Q": 3,
+          "label": "Q3",
           "amt": 121524417,
           "cases": 158,
           "clients": 118
         },
         {
           "Q": 4,
+          "label": "Q4",
           "amt": 45152019,
           "cases": 88,
           "clients": 75
@@ -2233,77 +2198,74 @@
       ],
       "monthly": [
         {
-          "month": "2024-05",
-          "amt": 300000,
-          "cases": 1
-        },
-        {
-          "month": "2025-02",
-          "amt": 400000,
-          "cases": 1
-        },
-        {
-          "month": "2025-03",
-          "amt": 25171,
-          "cases": 1
-        },
-        {
-          "month": "2025-04",
+          "rel_month": 1,
+          "month_label": "4月",
           "amt": 8393416,
           "cases": 27
         },
         {
-          "month": "2025-05",
-          "amt": 21526814,
-          "cases": 36
+          "rel_month": 2,
+          "month_label": "5月",
+          "amt": 21851985,
+          "cases": 38
         },
         {
-          "month": "2025-06",
+          "rel_month": 3,
+          "month_label": "6月",
           "amt": 42612469,
           "cases": 50
         },
         {
-          "month": "2025-07",
+          "rel_month": 4,
+          "month_label": "7月",
           "amt": 40400169,
           "cases": 58
         },
         {
-          "month": "2025-08",
-          "amt": 39301208,
-          "cases": 52
+          "rel_month": 5,
+          "month_label": "8月",
+          "amt": 39701208,
+          "cases": 53
         },
         {
-          "month": "2025-09",
+          "rel_month": 6,
+          "month_label": "9月",
           "amt": 28835780,
           "cases": 48
         },
         {
-          "month": "2025-10",
+          "rel_month": 7,
+          "month_label": "10月",
           "amt": 49461919,
           "cases": 49
         },
         {
-          "month": "2025-11",
+          "rel_month": 8,
+          "month_label": "11月",
           "amt": 43520564,
           "cases": 59
         },
         {
-          "month": "2025-12",
+          "rel_month": 9,
+          "month_label": "12月",
           "amt": 43055185,
           "cases": 63
         },
         {
-          "month": "2026-01",
+          "rel_month": 10,
+          "month_label": "1月",
           "amt": 30094438,
           "cases": 53
         },
         {
-          "month": "2026-02",
+          "rel_month": 11,
+          "month_label": "2月",
           "amt": 44961421,
           "cases": 59
         },
         {
-          "month": "2026-03",
+          "rel_month": 12,
+          "month_label": "3月",
           "amt": 19363200,
           "cases": 20
         }
@@ -5107,8 +5069,8 @@
       "industry": [
         {
           "name": "その他",
-          "amt": 193929034,
-          "clients": 216
+          "amt": 193779037,
+          "clients": 214
         },
         {
           "name": "教育",
@@ -5147,8 +5109,8 @@
         },
         {
           "name": "採用・人材",
-          "amt": 5500000,
-          "clients": 4
+          "amt": 5649997,
+          "clients": 6
         },
         {
           "name": "食品・飲食",
