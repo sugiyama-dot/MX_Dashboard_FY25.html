@@ -158,6 +158,46 @@ tr:last-child td { border-bottom:none; }
 </style>
 </head>
 <body>
+<!-- PW GUARD -->
+<div id="PW_GUARD" style="position:fixed;inset:0;background:#07090f;z-index:9999;display:flex;align-items:center;justify-content:center;font-family:'Noto Sans JP','Hiragino Kaku Gothic ProN','Meiryo',sans-serif;">
+  <div style="background:#0e1118;border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:44px 48px;width:340px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.6);">
+    <div style="font-size:28px;margin-bottom:8px;">🔒</div>
+    <div style="font-size:16px;font-weight:700;color:#e2e8f0;margin-bottom:4px;">MX Group BI Dashboard</div>
+    <div style="font-size:12px;color:#475569;margin-bottom:28px;">アクセスにはパスワードが必要です</div>
+    <input id="PW_INPUT" type="password" placeholder="パスワードを入力"
+      style="width:100%;padding:11px 14px;border-radius:8px;border:1px solid rgba(255,255,255,0.12);background:#141820;color:#e2e8f0;font-size:14px;outline:none;margin-bottom:12px;"
+      onkeydown="if(event.key==='Enter')checkPW()">
+    <button onclick="checkPW()"
+      style="width:100%;padding:11px;border-radius:8px;border:none;background:linear-gradient(135deg,#3b82f6,#6366f1);color:#fff;font-size:14px;font-weight:600;cursor:pointer;">
+      ログイン
+    </button>
+    <div id="PW_ERR" style="color:#ef4444;font-size:12px;margin-top:10px;display:none;">パスワードが正しくありません</div>
+  </div>
+</div>
+<script>
+(function(){
+  if(sessionStorage.getItem('mx_auth')==='1'){
+    document.getElementById('PW_GUARD').style.display='none';return;
+  }
+  document.body.style.overflow='hidden';
+})();
+async function checkPW(){
+  var v=document.getElementById('PW_INPUT').value;
+  if(!v)return;
+  var buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(v));
+  var hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+  if(hex==='4801be4126759544cacb1da40778dd36f280bb99934c6ee90dcdccaa74062888'){
+    sessionStorage.setItem('mx_auth','1');
+    document.getElementById('PW_GUARD').style.display='none';
+    document.body.style.overflow='';
+  } else {
+    document.getElementById('PW_ERR').style.display='block';
+    document.getElementById('PW_INPUT').value='';
+    document.getElementById('PW_INPUT').focus();
+  }
+}
+</script>
+<!-- END PW GUARD -->
 
 <header>
   <span class="hd-badge">MX</span>
